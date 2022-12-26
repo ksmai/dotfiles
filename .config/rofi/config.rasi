@@ -1,0 +1,13 @@
+configuration {
+  modes: "window,drun,combi";
+  combi-modes: "window,drun";
+  matching: "fuzzy";
+  font: "DejaVu Sans Mono 12";
+  window-format: "<b>{w}:</b> {c}";
+  window-match-fields: "class";
+  drun-display-format: "{name}";
+  drun-match-fields: "name,exec";
+  combi-display-format: "<b>{mode}</b> {text}";
+}
+
+@theme "/usr/share/rofi/themes/dmenu.rasi"
