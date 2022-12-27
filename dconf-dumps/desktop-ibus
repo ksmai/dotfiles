@@ -1,0 +1,15 @@
+[general]
+engines-order=['xkb:us::eng', 'table:quick-classic']
+preload-engines=['xkb:us::eng', 'table:quick-classic']
+use-system-keyboard-layout=true
+version='1.5.27'
+
+[general/hotkey]
+triggers=['<Control>space']
+
+[panel]
+custom-font='Noto Sans 12'
+use-custom-font=true
+
+[panel/emoji]
+hotkey=['<Control><Shift>e']
