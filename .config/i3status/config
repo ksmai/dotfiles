@@ -29,9 +29,9 @@ cpu_temperature 0 {
 cpu_usage {
   format = "⚡%usage"
   degraded_threshold = 80
-  format_above_degraded_threshold = "⚡%usage !!!"
+  format_above_degraded_threshold = "⚡%usage⚠️"
   max_threshold = 90
-  format_above_threshold = "⚡%usage !!!"
+  format_above_threshold = "⚡%usage⚠️"
 }
 
 load {
@@ -41,7 +41,7 @@ load {
 memory {
   format = "💾%percentage_used"
   threshold_degraded = "20%"
-  format_degraded = "💾%percentage_used !!!"
+  format_degraded = "💾%percentage_used⚠️"
 }
 
 disk "/" {
