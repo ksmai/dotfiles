@@ -34,6 +34,10 @@ font pango:monospace 12
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 #exec --no-startup-id nm-applet
 
+# https://wiki.archlinux.org/title/GNOME/Keyring
+exec --no-startup-id dbus-update-activation-environment --all
+exec --no-startup-id gnome-keyring-daemon --start --components=secrets
+
 # start dunst before dbus-daemon starts it when some programs send notifications
 exec --no-startup-id dunst
 
