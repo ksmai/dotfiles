@@ -18,7 +18,7 @@ fade:		True
 unfade:		False
 fadeSeconds:	0:00:05
 ignoreUninstalledPrograms:False
-dpmsEnabled:	True
+dpmsEnabled:	False
 dpmsQuickOff:	True
 dpmsStandby:	0:10:00
 dpmsSuspend:	0:10:00
@@ -26,14 +26,14 @@ dpmsOff:	0:10:00
 grabDesktopImages:  False
 grabVideoFrames:    False
 chooseRandomImages: False
-imageDirectory:	
+imageDirectory:
 
 mode:		blank
 selected:	-1
 
 textMode:	date
 textLiteral:	XScreenSaver
-textFile:	
+textFile:
 textProgram:	fortune
 textURL:	https://en.wikipedia.org/w/index.php?title=Special:NewPages&feed=rss
 dialogTheme:	darkgray
