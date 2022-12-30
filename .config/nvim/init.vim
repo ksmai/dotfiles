@@ -211,8 +211,8 @@ autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 " fugitive
 nnoremap <silent> <Leader>gs :Git<CR><C-w>_
 nnoremap <silent> <Leader>gd :Gvdiffsplit<CR>
-nnoremap <silent> <Leader>gh :0Gclog<CR>
-nnoremap <silent> <Leader>gl :Gclog %<CR>
+nnoremap <silent> <Leader>gl :0Gclog<CR>
+vnoremap <silent> <Leader>gl :Gclog<CR>
 
 " editorconfig-vim
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
