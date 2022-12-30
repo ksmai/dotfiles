@@ -96,16 +96,16 @@ let g:lightline = {
     \     [ 'fileformat', 'fileencoding', 'filetype' ],
     \   ],
     \ },
-	\ 'inactive': {
-	\   'left': [
+    \ 'inactive': {
+    \   'left': [
     \     [ 'fugitive', 'readonly', 'filename', 'modified' ],
     \   ],
-	\   'right': [
+    \   'right': [
     \     [ 'lineinfo' ],
-	\     [ 'percent' ],
+    \     [ 'percent' ],
     \     [ 'fileformat', 'fileencoding', 'filetype' ],
     \   ],
-    \  },
+    \ },
     \ 'component_function': {
     \   'fugitive': 'FugitiveStatusline',
     \ } }
@@ -133,7 +133,7 @@ let g:expand_region_text_objects = {
       \ }
 
 " NERDTree
-nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <silent> <C-n> :NERDTreeToggle<CR>
 " NERDTrees File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
  exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
@@ -174,9 +174,15 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 let g:NERDTreeShowHidden = 1
 
 " FZF
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 let g:fzf_layout = { 'down': '25%' }
 let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-/']
 nnoremap <silent> <C-p> :execute !empty(FugitiveGitDir(bufnr(''))) ? 'GFiles --cached --others --exclude-standard' : 'Files'<CR>
+nnoremap <silent> <Leader>gg :GGrep<CR>
 
 " spellchecking
 augroup setSpelling
@@ -193,8 +199,8 @@ let g:strip_whitespace_on_save=1
 autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 
 " fugitive
-nnoremap <Leader>gs :Git<CR><C-w>_
-nnoremap <Leader>gd :Gvdiffsplit<CR>
+nnoremap <silent> <Leader>gs :Git<CR><C-w>_
+nnoremap <silent> <Leader>gd :Gvdiffsplit<CR>
 
 " editorconfig-vim
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
@@ -202,6 +208,77 @@ au FileType gitcommit let b:EditorConfig_disable = 1
 
 " rust.vim
 let g:rustfmt_autosave = 1
+
+" https://github.com/kutsan/dotfiles/blob/24e22188ceec893be98ccf055d4d155d3ba512c6/.vim/autoload/kutsan/mappings/normal/terminal.vim
+" https://github.com/NicksIdeaEngine/dotfiles/blob/6373d11aa9b893e4812b58e15ecc62a0b0b07971/.config/nvim/functions.vim#L139
+" Toggle terminal buffer or create new one if there is none.
+nnoremap <silent> <leader>. :call nvim_open_win(bufnr('%'), v:true, {'relative': 'editor', 'anchor': 'NW', 'width': winwidth(0), 'height': 2*winheight(0)/5, 'row': 1, 'col': 0})<cr>:call TerminalToggle()<cr>
+tnoremap <silent> <leader>. <c-\><c-n>:call TerminalToggle()<cr>:q<cr>
+
+function! TerminalCreate() abort
+  if !has('nvim')
+    return v:false
+  endif
+
+  if !exists('g:terminal')
+    let g:terminal = {
+          \ 'opts': {},
+          \ 'term': {
+          \ 'loaded': v:null,
+          \ 'bufferid': v:null
+          \ },
+          \ 'origin': {
+          \ 'bufferid': v:null
+          \ }
+          \ }
+
+    function! g:terminal.opts.on_exit(jobid, data, event) abort
+      silent execute 'buffer' g:terminal.origin.bufferid
+      silent execute 'bdelete!' g:terminal.term.bufferid
+
+      let g:terminal.term.loaded = v:null
+      let g:terminal.term.bufferid = v:null
+      let g:terminal.origin.bufferid = v:null
+    endfunction
+  endif
+
+  if g:terminal.term.loaded
+    return v:false
+  endif
+
+  let g:terminal.origin.bufferid = bufnr('')
+
+  enew
+  call termopen(&shell, g:terminal.opts)
+
+  let g:terminal.term.loaded = v:true
+  let g:terminal.term.bufferid = bufnr('')
+  startinsert
+endfunction
+
+function! TerminalToggle()
+  if !has('nvim')
+    return v:false
+  endif
+
+  " Create the terminal buffer.
+  if !exists('g:terminal') || !g:terminal.term.loaded
+    return TerminalCreate()
+  endif
+
+  " Go back to origin buffer if current buffer is terminal.
+  if g:terminal.term.bufferid ==# bufnr('')
+    silent execute 'buffer' g:terminal.origin.bufferid
+
+    " Launch terminal buffer and start insert mode.
+  else
+    let g:terminal.origin.bufferid = bufnr('')
+
+    silent execute 'buffer' g:terminal.term.bufferid
+    startinsert
+  endif
+endfunction
+
 
 " miscellaneous
 set mouse=a
@@ -243,6 +320,8 @@ nnoremap <Leader>P "+P
 
 " quick save
 nnoremap <Leader>w :w<CR>
+" quick remove highlight
+nnoremap <silent> <CR> :nohlsearch<CR>
 
 " very magic by default
 nnoremap ? ?\v
