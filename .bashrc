@@ -11,3 +11,4 @@ export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export EDITOR=nvim
+export FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git/'

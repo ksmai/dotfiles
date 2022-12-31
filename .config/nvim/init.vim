@@ -191,8 +191,12 @@ command! -bang -nargs=* GGrep
 
 let g:fzf_layout = { 'down': '25%' }
 let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-/']
-nnoremap <silent> <C-p> :execute !empty(FugitiveGitDir(bufnr(''))) ? 'GFiles --cached --others --exclude-standard' : 'Files'<CR>
-nnoremap <silent> <Leader>gg :GGrep<CR>
+nnoremap <silent> <C-p> :Files<CR>
+
+if executable('rg')
+  nnoremap <silent> <C-g> :Rg<CR>
+  set grepprg=rg\ --no-heading\ --vimgrep\ --hidden\ --iglob\ !.git/
+endif
 
 " spellchecking
 augroup setSpelling
@@ -334,6 +338,17 @@ nnoremap <Leader>P "+P
 nnoremap <Leader>w :w<CR>
 " quick remove highlight
 nnoremap <silent> <CR> :nohlsearch<CR>
+
+" quick fix window
+function! ToggleQuickFix()
+  if empty(filter(getwininfo(), 'v:val.quickfix'))
+    copen
+  else
+    cclose
+  endif
+endfunction
+
+nnoremap <silent> <Leader>q :call ToggleQuickFix()<CR>
 
 " very magic by default
 nnoremap ? ?\v
