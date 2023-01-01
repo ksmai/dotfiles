@@ -184,11 +184,6 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 let g:NERDTreeShowHidden = 1
 
 " FZF
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
-  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
-
 let g:fzf_layout = { 'down': '25%' }
 let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-/']
 nnoremap <silent> <C-p> :Files<CR>
