@@ -331,8 +331,6 @@ nnoremap <Leader>P "+P
 
 " quick save
 nnoremap <Leader>w :w<CR>
-" quick remove highlight
-nnoremap <silent> <CR> :nohlsearch<CR>
 
 " quick fix window
 function! ToggleQuickFix()
