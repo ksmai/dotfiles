@@ -189,7 +189,7 @@ let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-/']
 nnoremap <silent> <C-p> :Files<CR>
 
 if executable('rg')
-  nnoremap <silent> <C-g> :Rg<CR>
+  nnoremap <silent> <Leader>rg :Rg<CR>
   set grepprg=rg\ --no-heading\ --vimgrep\ --hidden\ --iglob\ !.git/
 endif
 
