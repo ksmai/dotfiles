@@ -343,11 +343,6 @@ endfunction
 
 nnoremap <silent> <Leader>q :call ToggleQuickFix()<CR>
 
-" very magic by default
-nnoremap ? ?\v
-nnoremap / /\v
-cnoremap %s/ %sv/
-
 " handle frequent typos
 command! Q :q
 command! W :w
@@ -366,10 +361,14 @@ EOF
 set completeopt=menu,menuone,noselect
 
 lua <<EOF
+  vim.diagnostic.config({
+    virtual_text = false,
+  })
+
   -- Set up nvim-cmp.
+
   -- Super-Tab like mapping
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
-
   local has_words_before = function()
     unpack = unpack or table.unpack
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -458,8 +457,6 @@ lua <<EOF
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
       { name = 'path' }
-    }, {
-      { name = 'cmdline' }
     })
   })
 
