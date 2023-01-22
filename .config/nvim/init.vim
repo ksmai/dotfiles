@@ -138,41 +138,6 @@ let g:expand_region_text_objects = {
 
 " NERDTree
 nnoremap <silent> <C-n> :NERDTreeToggle<CR>
-" NERDTrees File highlighting
-function! NERDTreeHighlightFile(extension, guifg)
-  exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg=none ctermfg=White guibg=#181818 guifg=#'. a:guifg
-  exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-let s:nerd_tree_code_color = g:base16_gui09
-call NERDTreeHighlightFile('js', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('jsx', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('ts', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('tsx', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('py', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('rs', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('jade', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('pug', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('html', s:nerd_tree_code_color)
-call NERDTreeHighlightFile('css', s:nerd_tree_code_color)
-
-let s:nerd_tree_config_color = g:base16_gui0B
-call NERDTreeHighlightFile('yml', s:nerd_tree_config_color)
-call NERDTreeHighlightFile('yaml', s:nerd_tree_config_color)
-call NERDTreeHighlightFile('json', s:nerd_tree_config_color)
-call NERDTreeHighlightFile('toml', s:nerd_tree_config_color)
-call NERDTreeHighlightFile('Dockerfile', s:nerd_tree_config_color)
-
-let s:nerd_tree_hidden_color = g:base16_gui03
-call NERDTreeHighlightFile('ds_store', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('gitconfig', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('gitignore', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('bashrc', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('bashprofile', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('lock', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('env', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('dockerignore', s:nerd_tree_hidden_color)
-call NERDTreeHighlightFile('pyc', s:nerd_tree_hidden_color)
 
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
