@@ -34,6 +34,7 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'SmiteshP/nvim-navic'
 " does not work with rust at this moment:
 " https://github.com/hrsh7th/cmp-nvim-lsp-signature-help/issues/9#issuecomment-1212862795
 " Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
@@ -223,8 +224,8 @@ let g:rustfmt_autosave = 1
 " https://github.com/kutsan/dotfiles/blob/24e22188ceec893be98ccf055d4d155d3ba512c6/.vim/autoload/kutsan/mappings/normal/terminal.vim
 " https://github.com/NicksIdeaEngine/dotfiles/blob/6373d11aa9b893e4812b58e15ecc62a0b0b07971/.config/nvim/functions.vim#L139
 " Toggle terminal buffer or create new one if there is none.
-nnoremap <silent> <leader>. :call nvim_open_win(bufnr('%'), v:true, {'relative': 'editor', 'anchor': 'NW', 'width': winwidth(0), 'height': 2*winheight(0)/5, 'row': 1, 'col': 0})<cr>:call TerminalToggle()<cr>
-tnoremap <silent> <leader>. <c-\><c-n>:call TerminalToggle()<cr>:q<cr>
+"nnoremap <silent> <leader>. :call nvim_open_win(bufnr('%'), v:true, {'relative': 'editor', 'anchor': 'NW', 'width': winwidth(0), 'height': 2*winheight(0)/5, 'row': 1, 'col': 0})<cr>:call TerminalToggle()<cr>
+"tnoremap <silent> <esc> <c-\><c-n>:call TerminalToggle()<cr>:q<cr>
 
 function! TerminalCreate() abort
   if !has('nvim')
@@ -348,19 +349,17 @@ command! Q :q
 command! W :w
 command! Wq :wq
 
-lua << EOF
--- fidget.vim
-require"fidget".setup{}
--- lsp.signature.nvim
-require "lsp_signature".setup{}
-EOF
-
-
+set winbar+=%{%v:lua.require'nvim-navic'.get_location()%}
 
 " lsp. nvim-lspconfig nvim-cmp
 set completeopt=menu,menuone,noselect
 
 lua <<EOF
+  -- fidget.vim
+  require"fidget".setup{}
+  -- lsp.signature.nvim
+  require "lsp_signature".setup{}
+
   vim.diagnostic.config({
     virtual_text = false,
   })
@@ -469,6 +468,39 @@ lua <<EOF
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
   vim.keymap.set('n', '<Leader>cq', vim.diagnostic.setloclist, opts)
 
+  local navic = require("nvim-navic")
+
+  navic.setup {
+    icons = {
+        File          = "",
+        Module        = "",
+        Namespace     = "",
+        Package       = "",
+        Class         = "",
+        Method        = "",
+        Property      = "",
+        Field         = "",
+        Constructor   = "",
+        Enum          = "",
+        Interface     = "",
+        Function      = "",
+        Variable      = "",
+        Constant      = "",
+        String        = "",
+        Number        = "",
+        Boolean       = "",
+        Array         = "",
+        Object        = "",
+        Key           = "",
+        Null          = "",
+        EnumMember    = "",
+        Struct        = "",
+        Event         = "",
+        Operator      = "",
+        TypeParameter = "",
+    },
+  }
+
   -- Use an on_attach function to only map the following keys
   -- after the language server attaches to the current buffer
   local on_attach = function(client, bufnr)
@@ -493,6 +525,10 @@ lua <<EOF
     vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', '<Leader>cf', function() vim.lsp.buf.format { async = true } end, bufopts)
+
+    if client.server_capabilities.documentSymbolProvider then
+      navic.attach(client, bufnr)
+    end
   end
 
   local lsp_flags = {
