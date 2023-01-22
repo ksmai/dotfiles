@@ -7,6 +7,7 @@
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
+export GLFW_IM_MODULE=ibus
 export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
