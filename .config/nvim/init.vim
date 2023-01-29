@@ -19,6 +19,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'mawkler/modicator.nvim'
 
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
