@@ -12,3 +12,5 @@ if status --is-interactive
     source "$BASE16_SHELL/profile_helper.fish"
     base16-default-dark
 end
+
+set PATH $HOME/.cargo/bin $PATH

@@ -40,7 +40,7 @@ Plug 'SmiteshP/nvim-navic'
 " https://github.com/hrsh7th/cmp-nvim-lsp-signature-help/issues/9#issuecomment-1212862795
 " Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'ray-x/lsp_signature.nvim'
-Plug 'j-hui/fidget.nvim'
+" Plug 'j-hui/fidget.nvim'
 
 Plug 'rust-lang/rust.vim'
 
@@ -322,7 +322,7 @@ set completeopt=menu,menuone,noselect
 
 lua <<EOF
   -- fidget.vim
-  require"fidget".setup{}
+  -- require"fidget".setup{}
   -- lsp.signature.nvim
   require "lsp_signature".setup{}
 
@@ -505,6 +505,7 @@ lua <<EOF
   -- Set up lspconfig.
   local lspconfig = require('lspconfig')
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = false
 
   -- rust-analyzer
   lspconfig.rust_analyzer.setup {
