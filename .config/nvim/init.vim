@@ -44,6 +44,14 @@ Plug 'ray-x/lsp_signature.nvim'
 
 Plug 'rust-lang/rust.vim'
 
+" svelte
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+
+" prettier
+Plug 'sbdchd/neoformat'
+
 call plug#end()
 
 syntax on
@@ -173,6 +181,10 @@ let g:strip_whitespace_on_save=1
 
 " eslint
 autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+
+" prettier
+let g:neoformat_try_node_exe = 1
+autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js,*.svelte,*.css Neoformat
 
 " fugitive
 nnoremap <silent> <Leader>gs :Git<CR><C-w>_
@@ -543,6 +555,15 @@ lua <<EOF
     flags = lsp_flags,
     capabilities = capabilities,
     eslint = {
+    },
+  }
+
+  --svelte
+  lspconfig.svelte.setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities,
+    svelte = {
     },
   }
 EOF
