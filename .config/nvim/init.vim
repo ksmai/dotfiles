@@ -15,7 +15,6 @@ Plug 'terryma/vim-expand-region'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
-Plug 'machakann/vim-highlightedyank'
 Plug 'mawkler/modicator.nvim'
 
 Plug 'tpope/vim-fugitive'
@@ -566,4 +565,6 @@ lua <<EOF
     svelte = {
     },
   }
+
+  require("autocmds")
 EOF
