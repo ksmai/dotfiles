@@ -233,10 +233,6 @@ lua <<EOF
   -- lsp.signature.nvim
   require "lsp_signature".setup{}
 
-  vim.diagnostic.config({
-    virtual_text = false,
-  })
-
   -- Set up nvim-cmp.
 
   -- Super-Tab like mapping

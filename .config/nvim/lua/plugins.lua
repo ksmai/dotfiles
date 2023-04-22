@@ -44,7 +44,7 @@ return {
         "tpope/vim-fugitive",
         event = "VeryLazy",
         dependencies = { { "tpope/vim-rhubarb" } },
-        config = function(_, opts)
+        config = function()
             vim.keymap.set("n", "<leader>gs", "<cmd>Git<cr><C-w>_", {
                 noremap = true,
                 silent = true,
@@ -179,12 +179,164 @@ return {
                     },
                 },
             },
-            context_commentstring = {
-                enable = true,
-            },
         },
         config = function(_, opts)
             require("nvim-treesitter.configs").setup(opts)
         end,
     },
+
+    {
+        "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+            "williamboman/mason.nvim",
+            { "williamboman/mason-lspconfig.nvim" },
+            { "hrsh7th/cmp-nvim-lsp" },
+        },
+        opts = {
+            diagnostics = {
+                underline = true,
+                update_in_insert = false,
+                virtual_text = {
+                    spacing = 4,
+                    source = "if_many",
+                    prefix = "●",
+                },
+                severity_sort = true,
+            },
+            capabilities = {},
+            autoformat = true,
+            servers = {
+                jsonls = {},
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            telemetry = {
+                                enable = false,
+                            },
+                            runtime = {
+                                version = "LuaJIT"
+                            },
+                            workspace = {
+                                checkThirdParty = false
+                            }
+                        },
+                    },
+                },
+                rust_analyzer = {
+                    settings = {
+                        ["rust-analyzer"] = {
+                            checkOnSave = {
+                                command = "clippy",
+                            },
+                        },
+                    },
+                },
+                pylsp = {
+                    pylsp = {
+                    },
+                },
+                tsserver = {
+                    tsserver = {
+                    },
+                },
+                eslint ={
+                    eslint = {
+                    },
+                },
+                svelte = {
+                    svelte = {
+                    },
+                },
+            },
+            setup = {
+                -- example to setup with typescript.nvim
+                -- tsserver = function(_, opts)
+                --   require("typescript").setup({ server = opts })
+                --   return true
+                -- end,
+                -- Specify * to use this function as a fallback for any server
+                -- ["*"] = function(server, opts) end,
+            },
+        },
+        config = function(_, opts)
+            vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+
+            local servers = opts.servers
+            local capabilities = vim.tbl_deep_extend(
+                "force",
+                {},
+                vim.lsp.protocol.make_client_capabilities(),
+                require("cmp_nvim_lsp").default_capabilities(),
+                opts.capabilities or {}
+            )
+
+            local function setup(server)
+                local server_opts = vim.tbl_deep_extend("force", {
+                    capabilities = vim.deepcopy(capabilities),
+                }, servers[server] or {})
+
+                if opts.setup[server] then
+                    if opts.setup[server](server, server_opts) then
+                        return
+                    end
+                elseif opts.setup["*"] then
+                    if opts.setup["*"](server, server_opts) then
+                        return
+                    end
+                end
+                require("lspconfig")[server].setup(server_opts)
+            end
+
+            local mlsp = require("mason-lspconfig")
+            local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+            local ensure_installed = {}
+
+            for server, server_opts in pairs(servers) do
+                if server_opts then
+                    server_opts = server_opts == true and {} or server_opts
+                    -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
+                    if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+                        setup(server)
+                    else
+                        ensure_installed[#ensure_installed + 1] = server
+                    end
+                end
+            end
+
+            mlsp.setup({ ensure_installed = ensure_installed })
+            mlsp.setup_handlers({ setup })
+        end,
+    },
+
+    -- formatters
+    {
+        "jose-elias-alvarez/null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = { "williamboman/mason.nvim", "nvim-lua/plenary.nvim"  },
+        opts = function()
+            local nls = require("null-ls")
+            return {
+                root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+                sources = {
+                    nls.builtins.formatting.fish_indent,
+                    nls.builtins.diagnostics.fish,
+                    nls.builtins.formatting.stylua,
+                    nls.builtins.formatting.shfmt,
+                    -- nls.builtins.diagnostics.flake8,
+                },
+            }
+        end,
+    },
+
+    {
+        "williamboman/mason.nvim",
+        build = ":MasonUpdate",
+        config = function()
+            require("mason").setup()
+        end,
+    },
+
+    { "nvim-lua/plenary.nvim", lazy = true },
 }
