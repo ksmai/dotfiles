@@ -1,29 +1,16 @@
-" Fish doesn't play all that well with others
-set shell=/bin/bash
-let mapleader = "\<Space>"
-
 " vim-plug has to be downloaded to ~/.local/share/nvim/site/autoload/plug.vim
 " https://github.com/junegunn/vim-plug
 call plug#begin()
 
-Plug 'chriskempson/base16-vim'
 Plug 'ciaranm/securemodelines'
 Plug 'itchyny/lightline.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'andymass/vim-matchup'
-Plug 'terryma/vim-expand-region'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'mawkler/modicator.nvim'
 
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-sleuth'
 
 Plug 'neovim/nvim-lspconfig'
@@ -54,43 +41,6 @@ Plug 'sbdchd/neoformat'
 call plug#end()
 
 syntax on
-set encoding=utf-8
-
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-" Give more space for displaying messages.
-set cmdheight=2
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" base16
-if exists('$BASE16_THEME') && (!exists('g:colors_name') || g:colors_name != 'base16-$BASE16_THEME')
-    let base16colorspace=256
-    colorscheme base16-$BASE16_THEME
-endif
-
-" modicator.vim
-set termguicolors
-set cursorline
 
 " vim-matchup
 let g:matchup_matchparen_offscreen = {'method': 'popup'}
@@ -178,12 +128,6 @@ autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 let g:neoformat_try_node_exe = 1
 autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js,*.svelte,*.css Neoformat
 
-" fugitive
-nnoremap <silent> <Leader>gs :Git<CR><C-w>_
-nnoremap <silent> <Leader>gd :Gvdiffsplit<CR>
-nnoremap <silent> <Leader>gl :0Gclog<CR>
-vnoremap <silent> <Leader>gl :Gclog<CR>
-
 " editorconfig-vim
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 au FileType gitcommit let b:EditorConfig_disable = 1
@@ -261,36 +205,6 @@ function! TerminalToggle()
   endif
 endfunction
 
-
-" miscellaneous
-set mouse=a
-set incsearch
-set ignorecase
-set smartcase
-set number
-set relativenumber
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-set smarttab
-set wrap
-set dir=/tmp/nvim/swap/
-" set scrolloff=2
-set noshowmode
-set nojoinspaces
-set splitright
-set splitbelow
-set undofile
-set undodir=/tmp/nvim/undo/
-" Make diffing better: https://vimways.org/2018/the-power-of-diff/
-set diffopt+=algorithm:patience
-set showcmd
-set laststatus=2
-set pumheight=9
-
-" https://neovim.io/doc/user/provider.html#provider-clipboard
-"set clipboard+=unnamedplus
 
 " quick fix window
 function! ToggleQuickFix()
@@ -474,7 +388,7 @@ lua <<EOF
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    vim.keymap.set('n', '<Leader>aw', vim.lsp.buf.add_workspace_folder, bufopts)
+    --vim.keymap.set('n', '<Leader>aw', vim.lsp.buf.add_workspace_folder, bufopts)
     vim.keymap.set('n', '<Leader>rw', vim.lsp.buf.remove_workspace_folder, bufopts)
     vim.keymap.set('n', '<Leader>lw', function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
@@ -548,6 +462,5 @@ lua <<EOF
     },
   }
 
-  require("autocmds")
-  require("keymaps")
+  require("tmp_init")
 EOF
