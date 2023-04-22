@@ -167,13 +167,6 @@ if executable('rg')
   set grepprg=rg\ --no-heading\ --vimgrep\ --hidden\ --iglob\ !.git/
 endif
 
-" spellchecking
-augroup setSpelling
-  autocmd!
-  autocmd FileType gitcommit setlocal spell spelllang=en_us
-  autocmd FileType markdown setlocal spell spelllang=en_us
-augroup END
-
 " vim-better-whitespace
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
