@@ -291,17 +291,6 @@ set pumheight=9
 
 " https://neovim.io/doc/user/provider.html#provider-clipboard
 "set clipboard+=unnamedplus
-vnoremap <Leader>y "+y
-vnoremap <Leader>Y "+Y
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+P
-nnoremap <Leader>y "+y
-nnoremap <Leader>Y "+Y
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-
-" quick save
-nnoremap <Leader>w :w<CR>
 
 " quick fix window
 function! ToggleQuickFix()
@@ -560,4 +549,5 @@ lua <<EOF
   }
 
   require("autocmds")
+  require("keymaps")
 EOF
