@@ -316,7 +316,14 @@ return {
                 })
             end
 
-            local function on_attach_keymaps(client, bufnr)
+            local function on_attach_copilot(client, _)
+                if client.name == "copilot" then
+                    local copilot_cmp = require("copilot_cmp")
+                    copilot_cmp._on_insert_enter()
+                end
+            end
+
+            local function on_attach_keymaps(_, bufnr)
                 -- Mappings.
                 -- See `:help vim.lsp.*` for documentation on any of the below functions
                 local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -349,6 +356,7 @@ return {
                     end
                     on_attach_fmt(client, bufnr)
                     on_attach_keymaps(client, bufnr)
+                    on_attach_copilot(client, bufnr)
                     if client.server_capabilities.documentSymbolProvider then
                         require("nvim-navic").attach(client, bufnr)
                     end
@@ -442,6 +450,7 @@ return {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "saadparwaiz1/cmp_luasnip",
+            "zbirenbaum/copilot-cmp",
         },
         keys = {
             -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
@@ -567,6 +576,7 @@ return {
                     }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
                 }),
                 sources = cmp.config.sources({
+                    { name = "copilot", group_index = 2 },
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
                     { name = "buffer" },
@@ -620,6 +630,24 @@ return {
                 experimental = {
                     ghost_text = {
                         hl_group = "LspCodeLens",
+                    },
+                },
+                sorting = {
+                    priority_weight = 2,
+                    comparators = {
+                        require("copilot_cmp.comparators").prioritize,
+
+                        -- Below is the default comparitor list and order for nvim-cmp
+                        cmp.config.compare.offset,
+                        -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+                        cmp.config.compare.exact,
+                        cmp.config.compare.score,
+                        cmp.config.compare.recently_used,
+                        cmp.config.compare.locality,
+                        cmp.config.compare.kind,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
                     },
                 },
             }
@@ -757,5 +785,21 @@ return {
         init = function()
             vim.g.neo_tree_remove_legacy_commands = 1
         end,
-    }
+    },
+
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        build = ":Copilot auth",
+        opts = {
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+        },
+    },
+
+    {
+        "zbirenbaum/copilot-cmp",
+        dependencies = { "zbirenbaum/copilot.lua" },
+        opts = {},
+    },
 }
