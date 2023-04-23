@@ -1,7 +1,7 @@
 return {
     {
         "chriskempson/base16-vim",
-        lazy = false, -- make sure we load this during startup if it is your main colorscheme
+        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
             -- load the colorscheme here
@@ -99,7 +99,7 @@ return {
             { 'JoosepAlviste/nvim-ts-context-commentstring' },
         },
         keys = {
-            { "v", desc = "Increment selection" },
+            { "v",    desc = "Increment selection" },
             { "<bs>", desc = "Decrement selection", mode = "x" },
         },
         opts = {
@@ -189,7 +189,7 @@ return {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+            { "folke/neodev.nvim",                opts = { experimental = { pathStrict = true } } },
             "williamboman/mason.nvim",
             { "williamboman/mason-lspconfig.nvim" },
             { "hrsh7th/cmp-nvim-lsp" },
@@ -234,20 +234,18 @@ return {
                     },
                 },
                 pylsp = {
-                    pylsp = {
-                    },
                 },
                 tsserver = {
-                    tsserver = {
-                    },
                 },
-                eslint ={
-                    eslint = {
-                    },
+                eslint = {
+                    on_attach = function(client, bufnr)
+                        vim.api.nvim_create_autocmd("BufWritePre", {
+                            buffer = bufnr,
+                            command = "EslintFixAll",
+                        })
+                    end
                 },
                 svelte = {
-                    svelte = {
-                    },
                 },
             },
             setup = {
@@ -272,10 +270,58 @@ return {
                 opts.capabilities or {}
             )
 
+            local function on_attach_fmt(client, bufnr)
+                if not opts.autoformat then
+                    return
+                end
+
+                if
+                    client.config
+                    and client.config.capabilities
+                    and client.config.capabilities.documentFormattingProvider == false
+                then
+                    return
+                end
+
+                if not client.supports_method("textDocument/formatting") then
+                    return
+                end
+
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    group = vim.api.nvim_create_augroup("ksmai_lsp_format." .. bufnr, {}),
+                    buffer = bufnr,
+                    callback = function()
+                        local buf = vim.api.nvim_get_current_buf()
+                        local ft = vim.bo[buf].filetype
+                        local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+
+                        vim.lsp.buf.format({
+                            bufnr = buf,
+                            filter = function(client2)
+                                if have_nls then
+                                    return client2.name == "null-ls"
+                                end
+                                return client2.name ~= "null-ls"
+                            end,
+                        })
+                    end,
+                })
+            end
+
             local function setup(server)
+                local server_config = servers[server] or {}
                 local server_opts = vim.tbl_deep_extend("force", {
                     capabilities = vim.deepcopy(capabilities),
-                }, servers[server] or {})
+                }, server_config)
+
+                local function on_attach(client, bufnr)
+                    if server_config.on_attach ~= nil then
+                        server_config.on_attach(client, bufnr)
+                    end
+                    on_attach_fmt(client, bufnr)
+                end
+
+                server_opts.on_attach = on_attach
 
                 if opts.setup[server] then
                     if opts.setup[server](server, server_opts) then
@@ -314,7 +360,7 @@ return {
     {
         "jose-elias-alvarez/null-ls.nvim",
         event = { "BufReadPre", "BufNewFile" },
-        dependencies = { "williamboman/mason.nvim", "nvim-lua/plenary.nvim"  },
+        dependencies = { "williamboman/mason.nvim", "nvim-lua/plenary.nvim" },
         opts = function()
             local nls = require("null-ls")
             return {

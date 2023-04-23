@@ -6,7 +6,6 @@ Plug 'ciaranm/securemodelines'
 Plug 'itchyny/lightline.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'andymass/vim-matchup'
-Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'mawkler/modicator.nvim'
@@ -27,8 +26,6 @@ Plug 'SmiteshP/nvim-navic'
 " Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'ray-x/lsp_signature.nvim'
 " Plug 'j-hui/fidget.nvim'
-
-Plug 'rust-lang/rust.vim'
 
 " svelte
 Plug 'othree/html5.vim'
@@ -117,10 +114,6 @@ if executable('rg')
   set grepprg=rg\ --no-heading\ --vimgrep\ --hidden\ --iglob\ !.git/
 endif
 
-" vim-better-whitespace
-let g:better_whitespace_enabled=1
-let g:strip_whitespace_on_save=1
-
 " eslint
 autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 
@@ -131,9 +124,6 @@ autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js,*.svelte,*.css Neoformat
 " editorconfig-vim
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 au FileType gitcommit let b:EditorConfig_disable = 1
-
-" rust.vim
-let g:rustfmt_autosave = 1
 
 " https://github.com/kutsan/dotfiles/blob/24e22188ceec893be98ccf055d4d155d3ba512c6/.vim/autoload/kutsan/mappings/normal/terminal.vim
 " https://github.com/NicksIdeaEngine/dotfiles/blob/6373d11aa9b893e4812b58e15ecc62a0b0b07971/.config/nvim/functions.vim#L139
@@ -399,64 +389,6 @@ lua <<EOF
       navic.attach(client, bufnr)
     end
   end
-
-  local lsp_flags = {
-    -- This is the default in Nvim 0.7+
-    debounce_text_changes = 150,
-  }
-
-  -- Set up lspconfig.
-  local lspconfig = require('lspconfig')
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = false
-
-  -- rust-analyzer
-  lspconfig.rust_analyzer.setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
-    ["rust-analyzer"] = {
-        checkOnSave = {
-            command = "clippy",
-        },
-    },
-  }
-
-  -- pylsp
-  lspconfig.pylsp.setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
-    pylsp = {
-    },
-  }
-
-  -- tsserver
-  lspconfig.tsserver.setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
-    tsserver = {
-    },
-  }
-
-  --eslint
-  lspconfig.eslint.setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
-    eslint = {
-    },
-  }
-
-  --svelte
-  lspconfig.svelte.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
-    svelte = {
-    },
-  }
 
   require("tmp_init")
 EOF
