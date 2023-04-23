@@ -26,10 +26,10 @@ vim.opt.shortmess:append("c")
 -- Always show the signcolumn, otherwise it would shift the text each time
 -- diagnostics appear/become resolved.
 if vim.fn.has("patch-8.1.1564") == 1 then
-  -- Recently vim can merge signcolumn and number column into one
-  vim.opt.signcolumn = "number"
+    -- Recently vim can merge signcolumn and number column into one
+    vim.opt.signcolumn = "number"
 else
-  vim.opt.signcolumn = "yes"
+    vim.opt.signcolumn = "yes"
 end
 
 -- modicator.vim
@@ -71,3 +71,7 @@ vim.opt.completeopt = "menu,menuone,noselect"
 
 -- https://neovim.io/doc/user/provider.html#provider-clipboard
 -- vim.opt.clipboard:append("unnamedplus")
+
+if vim.fn.executable('rg') then
+    vim.opt.grepprg = "rg --no-heading --vimgrep --hidden --iglob !.git/"
+end
