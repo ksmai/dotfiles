@@ -214,6 +214,7 @@ return {
             { "williamboman/mason-lspconfig.nvim" },
             { "hrsh7th/cmp-nvim-lsp" },
             "hrsh7th/nvim-cmp",
+            "SmiteshP/nvim-navic",
         },
         opts = {
             diagnostics = {
@@ -348,6 +349,9 @@ return {
                     end
                     on_attach_fmt(client, bufnr)
                     on_attach_keymaps(client, bufnr)
+                    if client.server_capabilities.documentSymbolProvider then
+                        require("nvim-navic").attach(client, bufnr)
+                    end
                 end
 
                 server_opts.on_attach = on_attach
@@ -705,6 +709,16 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         opts = {
+            winbar = {
+                lualine_c = {
+                    "navic",
+                    color_correction = nil,
+                    navic_opts = nil
+                },
+                lualine_x = {
+                    function() return " " end,
+                },
+            }
         },
     },
 
