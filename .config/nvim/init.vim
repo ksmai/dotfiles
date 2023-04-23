@@ -6,7 +6,6 @@ Plug 'ciaranm/securemodelines'
 Plug 'itchyny/lightline.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'andymass/vim-matchup'
-Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'mawkler/modicator.nvim'
 
@@ -65,11 +64,6 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 let g:NERDTreeShowHidden = 1
-
-" FZF
-let g:fzf_layout = { 'down': '25%' }
-let g:fzf_preview_window = ['hidden,right,50%', 'ctrl-/']
-nnoremap <silent> <C-p> :Files<CR>
 
 if executable('rg')
   nnoremap <silent> <Leader>rg :Rg<CR>

@@ -323,11 +323,11 @@ return {
                     return vim.tbl_extend("force", bufopts, { desc = d })
                 end
 
-                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, desc("Go definition"))
-                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, desc("Go declaration"))
-                vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, desc("Go t[y]pe definition"))
-                vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, desc("Go implementation"))
-                vim.keymap.set('n', 'gr', vim.lsp.buf.references, desc("Go references"))
+                vim.keymap.set('n', 'gd', "<cmd>Telescope lsp_definitions<cr>", desc("Go definitions"))
+                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, desc("Go declarations"))
+                vim.keymap.set('n', 'gy', "<cmd>Telescope lsp_type_definitions<cr>", desc("Go t[y]pe definitions"))
+                vim.keymap.set('n', 'gI', "<cmd>Telescope lsp_implementations<cr>", desc("Go implementations"))
+                vim.keymap.set('n', 'gr', "<cmd>Telescope lsp_references<cr>", desc("Go references"))
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, desc("Hover"))
                 vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help, desc("Signature help"))
                 vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, desc("Code rename"))
@@ -641,8 +641,86 @@ return {
                     { name = 'buffer' }
                 }
             })
+
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    {
+                        name = 'cmdline',
+                        option = {
+                            ignore_cmds = { 'Man', '!' }
+                        }
+                    }
+                })
+            })
         end,
     },
 
     { "nvim-lua/plenary.nvim", lazy = true },
+
+    {
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.1',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        opts = function()
+            local actions = require("telescope.actions")
+            return {
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<esc>"] = actions.close,
+                        },
+                    },
+                    vimgrep_arguments = {
+                        'rg',
+                        '--smart-case',
+                        '--no-heading',
+                        '--vimgrep',
+                        '--hidden',
+                        '--iglob',
+                        '!.git/',
+                    },
+                },
+            }
+        end,
+        config = function(_, opts)
+            require('telescope').setup(opts)
+            local builtin = require("telescope.builtin")
+            local utils = require("telescope.utils")
+            local find_command = { "rg", "--files", "--hidden", "--iglob", "!.git/" }
+            vim.keymap.set("n", "<C-p>", function() builtin.find_files({ find_command = find_command }) end, {
+                noremap = true,
+                silent = true,
+                desc = "Find files",
+            })
+            vim.keymap.set("n", "<leader>ff", function() builtin.find_files({ find_command = find_command }) end, {
+                noremap = true,
+                silent = true,
+                desc = "Find files",
+            })
+            vim.keymap.set("n", "<leader>fF",
+                function() builtin.find_files({ find_command = find_command, cwd = utils.buffer_dir() }) end, {
+                    noremap = true,
+                    silent = true,
+                    desc = "Find files (cwd)",
+                })
+            vim.keymap.set("n", "<leader>fg", function() builtin.live_grep() end, {
+                noremap = true,
+                silent = true,
+                desc = "Grep files",
+            })
+            vim.keymap.set("n", "<leader>fG", function() builtin.live_grep({ cwd = utils.buffer_dir() }) end, {
+                noremap = true,
+                silent = true,
+                desc = "Grep files (cwd)",
+            })
+            vim.keymap.set("n", "<leader>f*", function() builtin.grep_string() end, {
+                noremap = true,
+                silent = true,
+                desc = "Search selected string",
+            })
+        end
+    },
 }
