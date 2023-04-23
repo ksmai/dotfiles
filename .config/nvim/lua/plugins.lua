@@ -1,3 +1,20 @@
+local function codeFormat()
+    local buf = vim.api.nvim_get_current_buf()
+    local ft = vim.bo[buf].filetype
+    local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+
+    vim.lsp.buf.format({
+        bufnr = buf,
+        filter = function(client)
+            if have_nls then
+                return client.name == "null-ls"
+            end
+            return client.name ~= "null-ls"
+        end,
+    })
+end
+
+
 return {
     {
         "chriskempson/base16-vim",
@@ -196,6 +213,7 @@ return {
             "williamboman/mason.nvim",
             { "williamboman/mason-lspconfig.nvim" },
             { "hrsh7th/cmp-nvim-lsp" },
+            "hrsh7th/nvim-cmp",
         },
         opts = {
             diagnostics = {
@@ -293,22 +311,29 @@ return {
                 vim.api.nvim_create_autocmd("BufWritePre", {
                     group = vim.api.nvim_create_augroup("ksmai_lsp_format." .. bufnr, {}),
                     buffer = bufnr,
-                    callback = function()
-                        local buf = vim.api.nvim_get_current_buf()
-                        local ft = vim.bo[buf].filetype
-                        local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
-
-                        vim.lsp.buf.format({
-                            bufnr = buf,
-                            filter = function(client2)
-                                if have_nls then
-                                    return client2.name == "null-ls"
-                                end
-                                return client2.name ~= "null-ls"
-                            end,
-                        })
-                    end,
+                    callback = codeFormat,
                 })
+            end
+
+            local function on_attach_keymaps(client, bufnr)
+                -- Mappings.
+                -- See `:help vim.lsp.*` for documentation on any of the below functions
+                local bufopts = { noremap = true, silent = true, buffer = bufnr }
+                local function desc(d)
+                    return vim.tbl_extend("force", bufopts, { desc = d })
+                end
+
+                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, desc("Go definition"))
+                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, desc("Go declaration"))
+                vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, desc("Go t[y]pe definition"))
+                vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, desc("Go implementation"))
+                vim.keymap.set('n', 'gr', vim.lsp.buf.references, desc("Go references"))
+                vim.keymap.set('n', 'K', vim.lsp.buf.hover, desc("Hover"))
+                vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help, desc("Signature help"))
+                vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, desc("Code rename"))
+                vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, desc("Code action"))
+                vim.keymap.set('n', '<leader>cf', codeFormat, desc("Code format"))
+                vim.keymap.set('v', '<leader>cf', codeFormat, desc("Code format in range"))
             end
 
             local function setup(server)
@@ -322,6 +347,7 @@ return {
                         server_config.on_attach(client, bufnr)
                     end
                     on_attach_fmt(client, bufnr)
+                    on_attach_keymaps(client, bufnr)
                 end
 
                 server_opts.on_attach = on_attach
@@ -359,7 +385,6 @@ return {
         end,
     },
 
-    -- formatters
     {
         "jose-elias-alvarez/null-ls.nvim",
         event = { "BufReadPre", "BufNewFile" },
@@ -369,10 +394,10 @@ return {
             return {
                 root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
                 sources = {
-                    nls.builtins.formatting.fish_indent,
-                    nls.builtins.diagnostics.fish,
-                    nls.builtins.formatting.stylua,
-                    nls.builtins.formatting.shfmt,
+                    -- nls.builtins.formatting.fish_indent,
+                    -- nls.builtins.diagnostics.fish,
+                    -- nls.builtins.formatting.stylua,
+                    -- nls.builtins.formatting.shfmt,
                     -- nls.builtins.diagnostics.flake8,
                 },
             }
@@ -402,31 +427,63 @@ return {
             history = true,
             delete_check_events = "TextChanged",
         },
-        keys = {
-            {
-                "<tab>",
-                function()
-                    return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-                end,
-                expr = true,
-                silent = true,
-                mode = "i",
-            },
-            { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
-            { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-        },
     },
 
     {
         "hrsh7th/nvim-cmp",
         version = false, -- last release is way too old
-        event = "InsertEnter",
+        -- event = "InsertEnter",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             'hrsh7th/cmp-cmdline',
             "saadparwaiz1/cmp_luasnip",
+        },
+        keys = {
+            -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
+            -- Mappings.
+            -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+            {
+                '<leader>cd',
+                vim.diagnostic.open_float,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "Code diagnostic",
+            },
+            {
+                '<leader>cq',
+                vim.diagnostic.setqflist,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "Code quickfix list",
+            },
+            {
+                '<leader>cl',
+                vim.diagnostic.setloclist,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "Code location list",
+            },
+            {
+                '[d',
+                vim.diagnostic.goto_prev,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "Go to prev diagnostic",
+            },
+            {
+                ']d',
+                vim.diagnostic.goto_next,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "Go to next diagnostic",
+            },
         },
         opts = function()
             local has_words_before = function()
@@ -437,6 +494,7 @@ return {
             end
 
             local cmp = require("cmp")
+            local luasnip = require("luasnip")
 
             return {
                 completion = {
@@ -451,7 +509,7 @@ return {
                     -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
                     ["<C-n>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Replace })
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
                         elseif has_words_before() then
                             cmp.complete()
                         else
@@ -460,7 +518,7 @@ return {
                     end, { "i", "s" }),
                     ["<C-p>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Replace })
+                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                         elseif has_words_before() then
                             cmp.complete()
                         else
@@ -472,10 +530,34 @@ return {
                     -- ["<C-f>"] = cmp.mapping.scroll_docs(4),
                     -- ["<C-d>"] = cmp.mapping.scroll_docs(4),
                     -- ["<C-e>"] = cmp.mapping.abort(),
-                    ["<Tab>"] = cmp.mapping.confirm({
-                        behavior = cmp.ConfirmBehavior.Replace,
-                        select = true,
-                    }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                            cmp.confirm({
+                                behavior = cmp.ConfirmBehavior.Insert,
+                                select = true,
+                            })
+                        elseif luasnip.expand_or_locally_jumpable() then
+                            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+                            -- they way you will only jump inside the snippet region
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        elseif cmp.visible() then
+                            -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                            cmp.confirm({
+                                behavior = cmp.ConfirmBehavior.Insert,
+                                select = true,
+                            })
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                     ["<CR>"] = cmp.mapping.confirm({
                         behavior = cmp.ConfirmBehavior.Replace,
                         select = true,

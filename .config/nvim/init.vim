@@ -16,7 +16,7 @@ Plug 'SmiteshP/nvim-navic'
 " does not work with rust at this moment:
 " https://github.com/hrsh7th/cmp-nvim-lsp-signature-help/issues/9#issuecomment-1212862795
 " Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
-Plug 'ray-x/lsp_signature.nvim'
+" Plug 'ray-x/lsp_signature.nvim'
 " Plug 'j-hui/fidget.nvim'
 
 call plug#end()
@@ -173,16 +173,8 @@ lua <<EOF
   -- fidget.vim
   -- require"fidget".setup{}
   -- lsp.signature.nvim
-  require "lsp_signature".setup{}
+  -- require "lsp_signature".setup{}
 
-  -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
-  -- Mappings.
-  -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-  local opts = { noremap=true, silent=true }
-  vim.keymap.set('n', '<Leader>ce', vim.diagnostic.open_float, opts)
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-  vim.keymap.set('n', '<Leader>cq', vim.diagnostic.setloclist, opts)
 
   local navic = require("nvim-navic")
 
@@ -222,25 +214,6 @@ lua <<EOF
   local on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    -- Mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap=true, silent=true, buffer=bufnr }
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    --vim.keymap.set('n', '<Leader>aw', vim.lsp.buf.add_workspace_folder, bufopts)
-    vim.keymap.set('n', '<Leader>rw', vim.lsp.buf.remove_workspace_folder, bufopts)
-    vim.keymap.set('n', '<Leader>lw', function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, bufopts)
-    vim.keymap.set('n', '<Leader>td', vim.lsp.buf.type_definition, bufopts)
-    vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-    vim.keymap.set('n', '<Leader>cf', function() vim.lsp.buf.format { async = true } end, bufopts)
 
     if client.server_capabilities.documentSymbolProvider then
       navic.attach(client, bufnr)
