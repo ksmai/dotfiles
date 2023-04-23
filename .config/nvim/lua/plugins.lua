@@ -451,6 +451,7 @@ return {
             "hrsh7th/cmp-path",
             "saadparwaiz1/cmp_luasnip",
             "zbirenbaum/copilot-cmp",
+            "ray-x/lsp_signature.nvim",
         },
         keys = {
             -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
@@ -800,6 +801,11 @@ return {
     {
         "zbirenbaum/copilot-cmp",
         dependencies = { "zbirenbaum/copilot.lua" },
+        opts = {},
+    },
+
+    {
+        "ray-x/lsp_signature.nvim",
         opts = {},
     },
 }
