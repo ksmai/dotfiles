@@ -84,6 +84,11 @@ return {
                 silent = true,
                 desc = "Git log (selected lines)",
             })
+            vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", {
+                noremap = true,
+                silent = true,
+                desc = "Git blame",
+            })
         end,
     },
 
