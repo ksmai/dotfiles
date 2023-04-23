@@ -30,13 +30,15 @@ return {
 
     {
         "folke/which-key.nvim",
-        config = function()
+        config = function(_, opts)
             vim.opt.timeout = true
             vim.opt.timeoutlen = 500
-            require("which-key").setup({
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
+            local wk = require("which-key")
+            wk.setup(opts)
+            wk.register({
+                ["<leader>c"] = { name = "+code" },
+                ["<leader>f"] = { name = "+find" },
+                ["<leader>g"] = { name = "+git" },
             })
         end,
     },
@@ -65,18 +67,22 @@ return {
             vim.keymap.set("n", "<leader>gs", "<cmd>Git<cr><C-w>_", {
                 noremap = true,
                 silent = true,
+                desc = "Git status",
             })
             vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit<cr>", {
                 noremap = true,
                 silent = true,
+                desc = "Git diff",
             })
             vim.keymap.set("n", "<leader>gl", "<cmd>0Gclog<cr>", {
                 noremap = true,
                 silent = true,
+                desc = "Git log",
             })
             vim.keymap.set("v", "<leader>gl", ":Gclog<cr>", {
                 noremap = true,
                 silent = true,
+                desc = "Git log (selected lines)",
             })
         end,
     },
@@ -191,8 +197,8 @@ return {
                     border = 'none',
                     floating_preview_opts = {},
                     peek_definition_code = {
-                        ["<leader>df"] = "@function.outer",
-                        ["<leader>dc"] = "@class.outer",
+                        ["<leader>cF"] = "@function.outer",
+                        ["<leader>cC"] = "@class.outer",
                     },
                 },
             },
@@ -260,7 +266,7 @@ return {
                 tsserver = {
                 },
                 eslint = {
-                    on_attach = function(client, bufnr)
+                    on_attach = function(_, bufnr)
                         vim.api.nvim_create_autocmd("BufWritePre", {
                             buffer = bufnr,
                             command = "EslintFixAll",
@@ -774,7 +780,7 @@ return {
             "MunifTanjim/nui.nvim",
         },
         keys = {
-            { "<C-n>", "<cmd>Neotree toggle<cr>", mode = "n", noremap = true, silent = true },
+            { "<C-n>", "<cmd>Neotree toggle<cr>", mode = "n", noremap = true, silent = true, desc = "Toggle Neotree" },
         },
         opts = {
             filesystem = {

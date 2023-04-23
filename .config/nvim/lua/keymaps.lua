@@ -16,7 +16,7 @@ local function toggleQuickFix()
     end
 end
 
-vim.keymap.set("n", "<leader>q", toggleQuickFix, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>q", toggleQuickFix, { noremap = true, silent = true, desc = "Toggle quickfix list" })
 
 -- handle frequent typos
 vim.api.nvim_create_user_command("Q", "q", { bang = true })
