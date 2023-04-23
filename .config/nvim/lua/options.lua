@@ -66,6 +66,8 @@ vim.opt.laststatus = 2
 vim.opt.pumheight = 10
 vim.opt.pumblend = 10
 vim.opt.wildmode = "longest:full,full"
+-- lsp. nvim-lspconfig nvim-cmp
+vim.opt.completeopt = "menu,menuone,noselect"
 
 -- https://neovim.io/doc/user/provider.html#provider-clipboard
 -- vim.opt.clipboard:append("unnamedplus")
