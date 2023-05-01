@@ -53,14 +53,6 @@ return {
     },
 
     {
-        "echasnovski/mini.pairs",
-        event = "VeryLazy",
-        config = function(_, opts)
-            require("mini.pairs").setup(opts)
-        end,
-    },
-
-    {
         "tpope/vim-fugitive",
         event = "VeryLazy",
         dependencies = { { "tpope/vim-rhubarb" } },
@@ -697,7 +689,10 @@ return {
     {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.1',
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        },
         opts = function()
             local actions = require("telescope.actions")
             return {
@@ -720,7 +715,9 @@ return {
             }
         end,
         config = function(_, opts)
-            require('telescope').setup(opts)
+            local telescope = require('telescope')
+            telescope.setup(opts)
+            telescope.load_extension('fzf')
             local builtin = require("telescope.builtin")
             local utils = require("telescope.utils")
             local find_command = { "rg", "--files", "--hidden", "--iglob", "!.git/" }
