@@ -139,8 +139,8 @@ return {
             { 'JoosepAlviste/nvim-ts-context-commentstring' },
         },
         keys = {
-            { "v",     desc = "Increment selection" },
-            { "<C-v>", desc = "Decrement selection", mode = "x" },
+            { "v",    desc = "Increment selection" },
+            { "<bs>", desc = "Decrement selection", mode = "x" },
         },
         opts = {
             highlight = { enable = true },
@@ -152,7 +152,7 @@ return {
                     init_selection = false,
                     node_incremental = "v",
                     scope_incremental = false,
-                    node_decremental = "<C-v>",
+                    node_decremental = "<bs>",
                 },
             },
             textobjects = {
