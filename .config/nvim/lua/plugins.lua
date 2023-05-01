@@ -74,25 +74,15 @@ return {
                 silent = true,
                 desc = "Git diff against parent",
             })
-            vim.keymap.set("n", "<leader>gl", "<cmd>0Gclog<cr><cmd>Gvdiffsplit !^<cr><c-w>x", {
+            vim.keymap.set("n", "<leader>gl", "<cmd>0Gclog<cr>", {
                 noremap = true,
                 silent = true,
                 desc = "Git log",
             })
-            vim.keymap.set("v", "<leader>gl", ":Gclog<cr><cmd>Gvdiffsplit !^<cr><c-w>x", {
+            vim.keymap.set("v", "<leader>gl", ":Gclog<cr>", {
                 noremap = true,
                 silent = true,
                 desc = "Git log (selected lines)",
-            })
-            vim.keymap.set("n", "[g", "<c-w>c<cmd>cprevious<cr><cmd>Gvdiffsplit !^<cr><c-w>x", {
-                noremap = true,
-                silent = true,
-                desc = "Previous diff",
-            })
-            vim.keymap.set("n", "]g", "<c-w>c<cmd>cnext<cr><cmd>Gvdiffsplit !^<cr><c-w>x", {
-                noremap = true,
-                silent = true,
-                desc = "Next diff",
             })
             vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", {
                 noremap = true,
