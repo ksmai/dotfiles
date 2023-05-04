@@ -17,18 +17,6 @@ end
 
 return {
     {
-        "chriskempson/base16-vim",
-        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
-        priority = 1000, -- make sure to load this before all the other start plugins
-        config = function()
-            -- load the colorscheme here
-            if vim.fn.exists("$BASE16_THEME") then
-                vim.cmd("colorscheme base16-" .. os.getenv("BASE16_THEME"))
-            end
-        end,
-    },
-
-    {
         "folke/which-key.nvim",
         config = function(_, opts)
             vim.opt.timeout = true
@@ -760,7 +748,6 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies = {
             'nvim-tree/nvim-web-devicons',
-            { "RRethy/nvim-base16" },
         },
         opts = {
             sections = {
