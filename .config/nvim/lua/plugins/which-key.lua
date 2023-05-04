@@ -11,7 +11,6 @@ return {
             ["<leader>f"] = { name = "+find" },
             ["<leader>g"] = { name = "+git" },
             ["<leader>s"] = { name = "+treesj" },
-            ["<leader>x"] = { name = "+trouble" },
         })
     end,
 }
