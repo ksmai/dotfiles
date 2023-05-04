@@ -1,27 +1,5 @@
 return {
     {
-        "tpope/vim-commentary",
-        event = "VeryLazy",
-    },
-
-    {
-        "tpope/vim-unimpaired",
-        event = "VeryLazy",
-    },
-
-    {
-        "tpope/vim-repeat",
-        event = "VeryLazy",
-    },
-
-    {
-        "tpope/vim-rsi",
-        event = "VeryLazy",
-    },
-
-    { "nvim-lua/plenary.nvim", lazy = true },
-
-    {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.1',
         dependencies = {
@@ -128,17 +106,12 @@ return {
     },
 
     {
-        "MunifTanjim/nui.nvim",
-        lazy = true,
-    },
-
-    {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v2.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-            "MunifTanjim/nui.nvim",
+            { "MunifTanjim/nui.nvim" },
         },
         keys = {
             { "<C-n>", "<cmd>Neotree toggle<cr>", mode = "n", noremap = true, silent = true, desc = "Toggle Neotree" },
