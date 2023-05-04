@@ -1,50 +1,5 @@
 return {
     {
-        "tpope/vim-fugitive",
-        event = "VeryLazy",
-        dependencies = { { "tpope/vim-rhubarb" } },
-        config = function()
-            vim.keymap.set("n", "<leader>gs", "<cmd>Git<cr><C-w>_", {
-                noremap = true,
-                silent = true,
-                desc = "Git status",
-            })
-            vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit !^<cr>", {
-                noremap = true,
-                silent = true,
-                desc = "Git diff against parent",
-            })
-            vim.keymap.set("n", "<leader>gl", "<cmd>0Gclog<cr>", {
-                noremap = true,
-                silent = true,
-                desc = "Git log",
-            })
-            vim.keymap.set("v", "<leader>gl", ":Gclog<cr>", {
-                noremap = true,
-                silent = true,
-                desc = "Git log (selected lines)",
-            })
-            vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", {
-                noremap = true,
-                silent = true,
-                desc = "Git blame",
-            })
-            vim.keymap.set("n", "<leader>gp", "<cmd>Git log --patch -- %<cr>", {
-                noremap = true,
-                silent = true,
-                desc = "Git log with patch",
-            })
-            vim.keymap.set("v", "<leader>gp",
-                [[<esc><cmd>lua vim.cmd("Git log --patch -L" .. vim.api.nvim_buf_get_mark(0, "<")[1] .. "," .. vim.api.nvim_buf_get_mark(0, ">")[1] .. ":%")<cr>]],
-                {
-                    noremap = true,
-                    silent = true,
-                    desc = "Git log with patch",
-                })
-        end,
-    },
-
-    {
         "tpope/vim-commentary",
         event = "VeryLazy",
     },
