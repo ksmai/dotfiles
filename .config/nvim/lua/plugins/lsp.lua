@@ -41,6 +41,27 @@ return {
                 desc = "Code diagnostic",
             },
             {
+                '<leader>cD',
+                function()
+                    local virtual_text = vim.diagnostic.config().virtual_text
+                    if virtual_text then
+                        vim.diagnostic.config({ virtual_text = false })
+                    else
+                        vim.diagnostic.config({
+                            virtual_text = {
+                                spacing = 4,
+                                source = "if_many",
+                                prefix = "●",
+                            }
+                        })
+                    end
+                end,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "Toggle virtual text",
+            },
+            {
                 '<leader>cq',
                 vim.diagnostic.setqflist,
                 mode = "n",
