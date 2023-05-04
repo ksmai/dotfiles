@@ -680,12 +680,6 @@ return {
     },
 
     {
-        'nvim-tree/nvim-web-devicons',
-        opts = {
-        },
-    },
-
-    {
         "MunifTanjim/nui.nvim",
         lazy = true,
     },
