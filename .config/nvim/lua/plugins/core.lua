@@ -223,21 +223,4 @@ return {
             vim.g.neo_tree_remove_legacy_commands = 1
         end,
     },
-
-    {
-        'phaazon/hop.nvim',
-        branch = 'v2',
-        config = function(_, opts)
-            local hop = require('hop')
-            hop.setup(opts)
-
-            vim.keymap.set("n", "\\", function()
-                hop.hint_char2()
-            end, { silent = true, noremap = true, desc = "Hop" })
-
-            vim.keymap.set("n", "g\\", function()
-                hop.hint_char2({ multi_windows = true })
-            end, { silent = true, noremap = true, desc = "Hop multi-windows" })
-        end
-    },
 }
