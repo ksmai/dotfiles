@@ -22,6 +22,9 @@ vim.keymap.set("n", "<leader>q", toggleQuickFix, { noremap = true, silent = true
 vim.keymap.set("n", "<leader>dw", "<cmd>windo diffthis<cr>", { silent = true, noremap = true, desc = "Diff windows" })
 vim.keymap.set("n", "<leader>dq", "<cmd>diffoff!<cr>", { silent = true, noremap = true, desc = "Diff off" })
 
+-- terminal
+vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Esc" })
+
 -- handle frequent typos
 vim.api.nvim_create_user_command("Q", "q", { bang = true })
 vim.api.nvim_create_user_command("W", "w", { bang = true })

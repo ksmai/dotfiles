@@ -10,6 +10,7 @@ return {
             ["<leader>d"] = { name = "+diff" },
             ["<leader>f"] = { name = "+find" },
             ["<leader>g"] = { name = "+git" },
+            ["<leader>t"] = { name = "+term" },
         })
     end,
 }
