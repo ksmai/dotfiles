@@ -47,7 +47,7 @@ return {
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Grep files",
+            desc = "Find strings",
         },
         {
             "<leader>fG",
@@ -55,7 +55,7 @@ return {
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Grep files (cwd)",
+            desc = "Find strings (cwd)",
         },
         {
             "<leader>f*",
@@ -63,7 +63,7 @@ return {
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Search selected string",
+            desc = "Find string under cursor",
         },
     },
     opts = function()

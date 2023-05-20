@@ -1,7 +1,7 @@
 return {
     'Wansmer/treesj',
     keys = {
-        { "<leader>sj", "<cmd>TSJToggle<cr>", mode = "n", silent = true, noremap = true, desc = "Toggle treesj" },
+        { "<leader>cj", "<cmd>TSJToggle<cr>", mode = "n", silent = true, noremap = true, desc = "Toggle treesj" },
     },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()

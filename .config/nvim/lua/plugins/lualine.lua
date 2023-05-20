@@ -25,13 +25,13 @@ local function lsp_client_names()
     local buf_client_names = {}
     for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
         if client.name == "null-ls" then
-            local null_ls_sources = {}
+            local null_ls_clients = {}
             for _, type in ipairs { "FORMATTING", "DIAGNOSTICS" } do
-                for _, source in ipairs(M.utils.null_ls_sources(vim.bo.filetype, type)) do
-                    null_ls_sources[source] = true
+                for _, source in ipairs(null_ls_sources(vim.bo.filetype, type)) do
+                    null_ls_clients[source] = true
                 end
             end
-            vim.list_extend(buf_client_names, vim.tbl_keys(null_ls_sources))
+            vim.list_extend(buf_client_names, vim.tbl_keys(null_ls_clients))
         else
             table.insert(buf_client_names, client.name)
         end

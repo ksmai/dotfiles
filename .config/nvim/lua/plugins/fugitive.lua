@@ -72,7 +72,7 @@ return {
             mode = "v",
             noremap = true,
             silent = true,
-            desc = "Open line in Github",
+            desc = "Open in Github (selected lines)",
         },
     },
 }
