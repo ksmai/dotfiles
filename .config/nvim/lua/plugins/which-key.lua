@@ -7,7 +7,7 @@ return {
         wk.setup(opts)
         wk.register({
             ["<leader>c"] = { name = "+code" },
-            ["<leader>d"] = { name = "+diff" },
+            ["<leader>d"] = { name = "+diff/debug" },
             ["<leader>f"] = { name = "+find" },
             ["<leader>g"] = { name = "+git" },
             ["<leader>t"] = { name = "+term" },
