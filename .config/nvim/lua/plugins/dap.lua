@@ -5,8 +5,17 @@ return {
         {
             "rcarriga/nvim-dap-ui",
             keys = {
-                { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
-                { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
+                {
+                    "<leader>du",
+                    function() require("dapui").toggle({ reset = true }) end,
+                    desc = "Dap UI",
+                },
+                {
+                    "<leader>de",
+                    function() require("dapui").eval() end,
+                    desc = "Eval",
+                    mode = { "n", "v" },
+                },
             },
             opts = {},
             config = function(_, opts)
@@ -14,7 +23,7 @@ return {
                 local dapui = require("dapui")
                 dapui.setup(opts)
                 dap.listeners.after.event_initialized["dapui_config"] = function()
-                    dapui.open({})
+                    dapui.open({ reset = true })
                 end
                 dap.listeners.before.event_terminated["dapui_config"] = function()
                     dapui.close({})
@@ -48,50 +57,42 @@ return {
         {
             "<leader>dB",
             function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
-            desc =
-            "Breakpoint Condition"
+            desc = "Breakpoint Condition",
         },
         {
             "<leader>db",
             function() require("dap").toggle_breakpoint() end,
-            desc =
-            "Toggle Breakpoint"
+            desc = "Toggle Breakpoint",
         },
         {
             "<leader>dc",
             function() require("dap").continue() end,
-            desc =
-            "Continue"
+            desc = "Continue",
         },
         {
             "<f5>",
             function() require("dap").continue() end,
-            desc =
-            "Continue"
+            desc = "Continue",
         },
         {
             "<leader>dC",
             function() require("dap").run_to_cursor() end,
-            desc =
-            "Run to Cursor"
+            desc = "Run to Cursor",
         },
         {
             "<leader>dg",
             function() require("dap").goto_() end,
-            desc =
-            "Go to line (no execute)"
+            desc = "Go to line (no execute)",
         },
         {
             "<leader>di",
             function() require("dap").step_into() end,
-            desc =
-            "Step Into"
+            desc = "Step Into",
         },
         {
             "<f11>",
             function() require("dap").step_into() end,
-            desc =
-            "Step Into"
+            desc = "Step Into",
         },
         {
             "<leader>dj",
