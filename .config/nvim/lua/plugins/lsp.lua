@@ -9,7 +9,13 @@ local function codeFormat()
         bufnr = buf,
         filter = function(client)
             if have_nls then return client.name == "null-ls" end
-            return client.name ~= "null-ls"
+
+            local has_eslint = #vim.lsp.get_active_clients({
+                bufnr = 0,
+                name = "eslint"
+            }) > 0
+            return client.name ~= "null-ls" and
+                       (not has_eslint or client.name ~= "tsserver")
         end
     })
 end
