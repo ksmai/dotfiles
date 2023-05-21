@@ -93,6 +93,27 @@ return {
             noremap = true,
             silent = true,
             desc = "Find DAP commands"
+        }, {
+            "<leader>fc",
+            function() require("telescope.builtin").commands() end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Find commands"
+        }, {
+            "<leader>fC",
+            function() require("telescope.builtin").command_history() end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Find command history"
+        }, {
+            "<leader>fh",
+            function() require("telescope.builtin").help_tags() end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Find help tags"
         }
     },
     opts = function()
