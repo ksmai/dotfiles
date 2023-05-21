@@ -3,7 +3,8 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter",
         {"antoinemadec/FixCursorHold.nvim"}, "mfussenegger/nvim-dap",
-        "nvim-neotest/neotest-python", "rouge8/neotest-rust"
+        "nvim-neotest/neotest-python", "rouge8/neotest-rust",
+        "nvim-neotest/neotest-jest"
     },
     keys = {
         {
@@ -51,6 +52,11 @@ return {
         }
     },
     opts = function()
-        return {adapters = {require("neotest-python"), require("neotest-rust")}}
+        return {
+            adapters = {
+                require("neotest-python"), require("neotest-rust"),
+                require('neotest-jest')({})
+            }
+        }
     end
 }
