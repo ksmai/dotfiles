@@ -50,6 +50,7 @@ return {
                 ensure_installed = {
                     "chrome",
                     "codelldb",
+                    "firefox",
                     "node2",
                     "python",
                 },
