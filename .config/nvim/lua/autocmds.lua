@@ -19,9 +19,9 @@ vim.api.nvim_create_autocmd({"VimResized"}, {
 -- spell checking in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("spell_checking"),
-    pattern = {"gitcommit", "markdown"},
+    pattern = {"gitcommit", "markdown", "text"},
     callback = function()
         vim.opt_local.spell = true
-        vim.opt_local.spelllang = "en_us"
+        vim.opt_local.spelllang = "en_us,cjk"
     end
 })
