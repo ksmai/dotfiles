@@ -1,4 +1,1 @@
-return {
-    "tpope/vim-unimpaired",
-    event = "VeryLazy",
-}
+return {"tpope/vim-unimpaired", event = "VeryLazy"}

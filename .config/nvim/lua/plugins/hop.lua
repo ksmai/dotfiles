@@ -4,12 +4,14 @@ return {
     keys = {
         {
             "\\",
-            function() require('hop').hint_char2({ multi_windows = true }) end,
+            function()
+                require('hop').hint_char2({multi_windows = true})
+            end,
             mode = "n",
             silent = true,
             noremap = true,
             desc = "Hop multi-windows"
-        },
+        }
     },
     config = function()
         local hop = require('hop')

@@ -8,24 +8,22 @@ return {
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Toggle term",
-        },
-        {
+            desc = "Toggle term"
+        }, {
             "<leader>tT",
             "<cmd>ToggleTermToggleAll<cr>",
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Toggle all terms",
-        },
-        {
+            desc = "Toggle all terms"
+        }, {
             "<leader>tx",
             "<esc><cmd>ToggleTermSendVisualSelection<cr>",
             mode = "v",
             noremap = true,
             silent = true,
-            desc = "Send selection to term",
-        },
+            desc = "Send selection to term"
+        }
     },
     opts = {
         size = 8,
@@ -35,6 +33,6 @@ return {
         persist_size = true,
         direction = "horizontal",
         shell = "/bin/fish",
-        auto_scroll = true,
-    },
+        auto_scroll = true
+    }
 }

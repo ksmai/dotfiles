@@ -18,15 +18,16 @@ end
 
 local function null_ls_sources(filetype, method)
     local methods_avail, methods = pcall(require, "null-ls.methods")
-    return methods_avail and null_ls_providers(filetype)[methods.internal[method]] or {}
+    return methods_avail and
+               null_ls_providers(filetype)[methods.internal[method]] or {}
 end
 
 local function lsp_client_names()
     local buf_client_names = {}
-    for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
+    for _, client in pairs(vim.lsp.get_active_clients({bufnr = 0})) do
         if client.name == "null-ls" then
             local null_ls_clients = {}
-            for _, type in ipairs { "FORMATTING", "DIAGNOSTICS" } do
+            for _, type in ipairs {"FORMATTING", "DIAGNOSTICS"} do
                 for _, source in ipairs(null_ls_sources(vim.bo.filetype, type)) do
                     null_ls_clients[source] = true
                 end
@@ -41,23 +42,14 @@ end
 
 return {
     'nvim-lualine/lualine.nvim',
-    dependencies = {
-        'nvim-tree/nvim-web-devicons',
-        "tpope/vim-fugitive",
-    },
+    dependencies = {'nvim-tree/nvim-web-devicons', "tpope/vim-fugitive"},
     opts = {
-        sections = {
-            lualine_b = { "FugitiveStatusline", 'diff', 'diagnostics' },
-        },
+        sections = {lualine_b = {"FugitiveStatusline", 'diff', 'diagnostics'}},
         winbar = {
-            lualine_c = {
-                "navic",
-                color_correction = nil,
-                navic_opts = nil
-            },
+            lualine_c = {"navic", color_correction = nil, navic_opts = nil},
             lualine_y = {
                 function()
-                    if #vim.lsp.get_active_clients({ bufnr = 0 }) == 0 then
+                    if #vim.lsp.get_active_clients({bufnr = 0}) == 0 then
                         return ""
                     end
 
@@ -67,12 +59,13 @@ return {
                         local msg = lsp.message or ""
                         local percentage = lsp.percentage or 0
                         local title = lsp.title or ""
-                        return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
+                        return string.format(" %%<%s: %s %s (%s%%%%) ", name,
+                                             title, msg, percentage)
                     end
 
                     return lsp_client_names()
-                end,
-            },
+                end
+            }
         }
-    },
+    }
 }

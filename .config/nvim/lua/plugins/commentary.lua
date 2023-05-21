@@ -1,4 +1,1 @@
-return {
-    "tpope/vim-commentary",
-    event = "VeryLazy",
-}
+return {"tpope/vim-commentary", event = "VeryLazy"}
