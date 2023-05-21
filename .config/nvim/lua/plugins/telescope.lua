@@ -3,8 +3,7 @@ return {
     tag = "0.1.1",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        {"nvim-telescope/telescope-fzf-native.nvim", build = "make"},
-        {"nvim-telescope/telescope-dap.nvim"}
+        {"nvim-telescope/telescope-fzf-native.nvim", build = "make"}
     },
     keys = {
         {
@@ -80,20 +79,6 @@ return {
             silent = true,
             desc = "Find string under cursor"
         }, {
-            "<leader>fb",
-            "<cmd>Telescope dap list_breakpoints<cr>",
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Find breakpoints"
-        }, {
-            "<leader>fd",
-            "<cmd>Telescope dap commands<cr>",
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Find DAP commands"
-        }, {
             "<leader>fc",
             function() require("telescope.builtin").commands() end,
             mode = "n",
@@ -132,6 +117,5 @@ return {
         local telescope = require("telescope")
         telescope.setup(opts)
         telescope.load_extension("fzf")
-        telescope.load_extension("dap")
     end
 }

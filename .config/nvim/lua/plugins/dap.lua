@@ -19,6 +19,20 @@ return {
                         end,
                         desc = "Eval",
                         mode = {"n", "v"}
+                    }, {
+                        "<leader>fb",
+                        "<cmd>Telescope dap list_breakpoints<cr>",
+                        mode = "n",
+                        noremap = true,
+                        silent = true,
+                        desc = "Find breakpoints"
+                    }, {
+                        "<leader>fd",
+                        "<cmd>Telescope dap commands<cr>",
+                        mode = "n",
+                        noremap = true,
+                        silent = true,
+                        desc = "Find DAP commands"
                     }
                 },
                 opts = {},
@@ -48,7 +62,8 @@ return {
                     handlers = {},
                     ensure_installed = {"codelldb", "python"}
                 }
-            }
+            }, "nvim-telescope/telescope.nvim",
+            {"nvim-telescope/telescope-dap.nvim"}
         },
         keys = {
             {
@@ -166,6 +181,7 @@ return {
                 linehl = "",
                 numhl = ""
             })
+            require("telescope").load_extension("dap")
         end
     }, {
         "mxsdev/nvim-dap-vscode-js",
