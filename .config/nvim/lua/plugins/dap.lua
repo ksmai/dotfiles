@@ -49,6 +49,7 @@ return {
                 handlers = {},
                 ensure_installed = {
                     "codelldb",
+                    "python",
                 },
             },
         },

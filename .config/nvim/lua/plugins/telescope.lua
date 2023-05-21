@@ -1,9 +1,10 @@
 return {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.1",
     dependencies = {
-        'nvim-lua/plenary.nvim',
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        "nvim-lua/plenary.nvim",
+        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+        { "nvim-telescope/telescope-dap.nvim" },
     },
     keys = {
         {
@@ -33,7 +34,7 @@ return {
             function()
                 require("telescope.builtin").find_files({
                     find_command = { "rg", "--files", "--hidden", "--iglob", "!.git/" },
-                    cwd = require('telescope.utils').buffer_dir()
+                    cwd = require("telescope.utils").buffer_dir()
                 })
             end,
             mode = "n",
@@ -51,7 +52,7 @@ return {
         },
         {
             "<leader>fG",
-            function() require("telescope.builtin").live_grep({ cwd = require('telescope.utils').buffer_dir() }) end,
+            function() require("telescope.builtin").live_grep({ cwd = require("telescope.utils").buffer_dir() }) end,
             mode = "n",
             noremap = true,
             silent = true,
@@ -65,6 +66,22 @@ return {
             silent = true,
             desc = "Find string under cursor",
         },
+        {
+            "<leader>fb",
+            "<cmd>Telescope dap list_breakpoints<cr>",
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Find breakpoints",
+        },
+        {
+            "<leader>fd",
+            "<cmd>Telescope dap commands<cr>",
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Find DAP commands",
+        },
     },
     opts = function()
         local actions = require("telescope.actions")
@@ -76,20 +93,21 @@ return {
                     },
                 },
                 vimgrep_arguments = {
-                    'rg',
-                    '--smart-case',
-                    '--no-heading',
-                    '--vimgrep',
-                    '--hidden',
-                    '--iglob',
-                    '!.git/',
+                    "rg",
+                    "--smart-case",
+                    "--no-heading",
+                    "--vimgrep",
+                    "--hidden",
+                    "--iglob",
+                    "!.git/",
                 },
             },
         }
     end,
     config = function(_, opts)
-        local telescope = require('telescope')
+        local telescope = require("telescope")
         telescope.setup(opts)
-        telescope.load_extension('fzf')
+        telescope.load_extension("fzf")
+        telescope.load_extension("dap")
     end
 }
