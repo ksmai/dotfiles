@@ -6,11 +6,12 @@ return {
         local wk = require("which-key")
         wk.setup(opts)
         wk.register({
-            ["<leader>c"] = {name = "+code"},
-            ["<leader>d"] = {name = "+diff/debug"},
-            ["<leader>f"] = {name = "+find"},
-            ["<leader>g"] = {name = "+git"},
-            ["<leader>t"] = {name = "+term"}
+            ["<leader>c"] = {name = "+Code"},
+            ["<leader>d"] = {name = "+Diff / Debug"},
+            ["<leader>f"] = {name = "+Find"},
+            ["<leader>g"] = {name = "+Git"},
+            ["<leader>r"] = {name = "+Run tests"},
+            ["<leader>t"] = {name = "+Term"}
         })
     end
 }

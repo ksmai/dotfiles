@@ -108,13 +108,9 @@ return {
             desc = "Toggle REPL"
         },
         {
-            "<leader>dt",
+            "<leader>dT",
             function() require("dap").terminate() end,
             desc = "Terminate"
-        }, {
-            "<leader>dh",
-            function() require("dap.ui.widgets").hover() end,
-            desc = "Widgets"
         }
     },
     config = function()

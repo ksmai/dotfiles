@@ -73,6 +73,13 @@ return {
             silent = true,
             desc = "Find string under cursor"
         }, {
+            "<leader>f*",
+            [["ty<cmd>exec 'Telescope grep_string default_text=' . escape(@t, ' ')<cr>]],
+            mode = "v",
+            noremap = true,
+            silent = true,
+            desc = "Find string under cursor"
+        }, {
             "<leader>fb",
             "<cmd>Telescope dap list_breakpoints<cr>",
             mode = "n",

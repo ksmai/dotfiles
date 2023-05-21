@@ -21,7 +21,8 @@ return {
         dependencies = {
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
             "williamboman/mason.nvim", {"williamboman/mason-lspconfig.nvim"},
-            "SmiteshP/nvim-navic", "hrsh7th/nvim-cmp"
+            "SmiteshP/nvim-navic", "hrsh7th/nvim-cmp",
+            "nvim-telescope/telescope.nvim"
         },
         keys = {
             -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
