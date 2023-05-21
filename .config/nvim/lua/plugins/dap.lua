@@ -48,6 +48,7 @@ return {
                 automatic_installation = false,
                 handlers = {},
                 ensure_installed = {
+                    "chrome",
                     "codelldb",
                     "node2",
                     "python",
