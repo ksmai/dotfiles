@@ -1,6 +1,6 @@
 return {
-    'phaazon/hop.nvim',
-    branch = 'v2',
+    "phaazon/hop.nvim",
+    branch = "v2",
     keys = {
         {
             "\\",
@@ -14,7 +14,7 @@ return {
         }
     },
     config = function()
-        local hop = require('hop')
+        local hop = require("hop")
         hop.setup()
     end
 }
