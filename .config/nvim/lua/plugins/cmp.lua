@@ -126,6 +126,7 @@ return {
                             copilot = "[Copilot]",
                             path = "[Path]"
                         }),
+                        symbol_map = {Copilot = ""},
                         maxwidth = 50,
                         ellipsis_char = '...'
                     })
@@ -158,6 +159,8 @@ return {
                     {name = 'cmp_git'} -- You can specify the `cmp_git` source if you were installed it.
                 }, {{name = 'buffer'}})
             })
+
+            vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg = "#6CC644"})
         end
     }, {
         "zbirenbaum/copilot-cmp",
