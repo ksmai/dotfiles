@@ -281,11 +281,15 @@ return {
             "nvim-lua/plenary.nvim", "williamboman/mason.nvim",
             "jay-babu/mason-null-ls.nvim"
         },
-        opts = {
-            sources = {
-                -- Anything not supported by mason.
+        opts = function()
+            local null_ls = require("null-ls")
+            return {
+                sources = {
+                    -- Anything not supported by mason.
+                    null_ls.builtins.formatting.prettier
+                }
             }
-        }
+        end
     }, {
         "williamboman/mason.nvim",
         build = ":MasonUpdate",

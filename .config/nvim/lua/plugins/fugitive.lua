@@ -11,7 +11,7 @@ return {
             desc = "Git status"
         }, {
             "<leader>gd",
-            "<cmd>Gvdiffsplit !^<cr>",
+            "<cmd>Gvdiffsplit !^<cr><C-w>R",
             mode = "n",
             noremap = true,
             silent = true,
