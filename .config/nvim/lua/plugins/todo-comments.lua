@@ -4,11 +4,11 @@ return {
     keys = {
         {
             "<leader>ft",
-            "<cmd>TodoQuickFix<cr>",
+            "<cmd>TodoTelescope theme=dropdown<cr>",
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Toggle TODO quickfix"
+            desc = "Find TODOs"
         }
     },
     dependencies = {"nvim-lua/plenary.nvim"},

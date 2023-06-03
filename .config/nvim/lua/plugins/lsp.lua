@@ -182,17 +182,19 @@ return {
                     return vim.tbl_extend("force", bufopts, {desc = d})
                 end
 
-                vim.keymap.set('n', 'gd', "<cmd>Telescope lsp_definitions<cr>",
+                vim.keymap.set('n', 'gd',
+                               "<cmd>Telescope lsp_definitions theme=dropdown<cr>",
                                desc("Go definitions"))
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
                                desc("Go declarations"))
                 vim.keymap.set('n', 'gy',
-                               "<cmd>Telescope lsp_type_definitions<cr>",
+                               "<cmd>Telescope lsp_type_definitions theme=dropdown<cr>",
                                desc("Go t[y]pe definitions"))
                 vim.keymap.set('n', 'gI',
-                               "<cmd>Telescope lsp_implementations<cr>",
+                               "<cmd>Telescope lsp_implementations theme=dropdown<cr>",
                                desc("Go implementations"))
-                vim.keymap.set('n', 'gr', "<cmd>Telescope lsp_references<cr>",
+                vim.keymap.set('n', 'gr',
+                               "<cmd>Telescope lsp_references theme=dropdown<cr>",
                                desc("Go references"))
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, desc("Hover"))
                 vim.keymap.set({'n', 'i'}, '<C-k>', vim.lsp.buf.signature_help,

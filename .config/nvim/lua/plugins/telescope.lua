@@ -1,3 +1,7 @@
+local function dropdown(opts)
+    return require('telescope.themes').get_dropdown(opts)
+end
+
 return {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.1",
@@ -9,96 +13,131 @@ return {
         {
             "<C-p>",
             function()
-                require("telescope.builtin").find_files({
+                require("telescope.builtin").find_files(dropdown({
                     find_command = {
                         "rg", "--files", "--hidden", "--iglob", "!.git/"
                     }
-                })
+                }))
             end,
             mode = "n",
             noremap = true,
             silent = true,
             desc = "Find files"
-        }, {
-            "<leader>ff",
-            function()
-                require("telescope.builtin").find_files({
-                    find_command = {
-                        "rg", "--files", "--hidden", "--iglob", "!.git/"
-                    }
-                })
-            end,
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Find files"
-        }, {
-            "<leader>fF",
-            function()
-                require("telescope.builtin").find_files({
-                    find_command = {
-                        "rg", "--files", "--hidden", "--iglob", "!.git/"
-                    },
-                    cwd = require("telescope.utils").buffer_dir()
-                })
-            end,
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Find files (cwd)"
         }, {
             "<leader>fg",
-            function() require("telescope.builtin").live_grep() end,
+            function()
+                require("telescope.builtin").grep_string(dropdown({search = ""}))
+            end,
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Find strings"
+            desc = "Fuzzy search"
         }, {
             "<leader>fG",
             function()
-                require("telescope.builtin").live_grep({
-                    cwd = require("telescope.utils").buffer_dir()
-                })
+                require("telescope.builtin").live_grep(dropdown({}))
             end,
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Find strings (cwd)"
+            desc = "Live grep"
         }, {
-            "<leader>f*",
-            function() require("telescope.builtin").grep_string() end,
+            "<leader>fw",
+            function()
+                require("telescope.builtin").live_grep(dropdown({
+                    default_text = vim.fn.expand("<cword>")
+                }))
+            end,
             mode = "n",
             noremap = true,
             silent = true,
-            desc = "Find string under cursor"
+            desc = "Find word under cursor"
         }, {
-            "<leader>f*",
-            [["ty<cmd>exec 'Telescope grep_string default_text=' . escape(@t, ' ')<cr>]],
+            "<leader>fW",
+            function()
+                require("telescope.builtin").live_grep(dropdown({
+                    default_text = vim.fn.expand("<cWORD>")
+                }))
+            end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Find WORD under cursor"
+        }, {
+            "<leader>fw",
+            function()
+                local start_col = vim.fn.col("v")
+                local end_col = vim.fn.col(".")
+                if end_col < start_col then
+                    start_col, end_col = end_col, start_col
+                end
+                local start = start_col - 1
+                local length = end_col - start_col + 1
+                local line = vim.fn.getline(".")
+                local default_text = vim.fn.strpart(line, start, length)
+                require("telescope.builtin").live_grep(dropdown({
+                    default_text = default_text
+                }))
+            end,
             mode = "v",
             noremap = true,
             silent = true,
-            desc = "Find string under cursor"
+            desc = "Find selected word"
         }, {
             "<leader>fc",
-            function() require("telescope.builtin").commands() end,
+            function()
+                require("telescope.builtin").commands(dropdown({}))
+            end,
             mode = "n",
             noremap = true,
             silent = true,
             desc = "Find commands"
         }, {
             "<leader>fC",
-            function() require("telescope.builtin").command_history() end,
+            function()
+                require("telescope.builtin").command_history(dropdown({}))
+            end,
             mode = "n",
             noremap = true,
             silent = true,
             desc = "Find command history"
         }, {
             "<leader>fh",
-            function() require("telescope.builtin").help_tags() end,
+            function()
+                require("telescope.builtin").help_tags(dropdown({}))
+            end,
             mode = "n",
             noremap = true,
             silent = true,
             desc = "Find help tags"
+        }, {
+            "<leader>fr",
+            function()
+                require("telescope.builtin").resume(dropdown({}))
+            end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Resume previous picker"
+        }, {
+            "<leader>fR",
+            function()
+                require("telescope.builtin").pickers(dropdown({}))
+            end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Resume previous pickers"
+        }, {
+            "<leader>fz",
+            function()
+                local opts = dropdown({})
+                require("telescope.builtin").current_buffer_fuzzy_find(opts)
+            end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Fuzzy search (current file)"
         }
     },
     opts = function()
@@ -109,7 +148,8 @@ return {
                 vimgrep_arguments = {
                     "rg", "--smart-case", "--no-heading", "--vimgrep",
                     "--hidden", "--iglob", "!.git/"
-                }
+                },
+                cache_picker = {num_pickers = 5}
             },
             extensions = {
                 ["ui-select"] = {require("telescope.themes").get_dropdown({})}
