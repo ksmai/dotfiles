@@ -3,7 +3,7 @@ return {
     version = "*",
     keys = {
         {
-            "<leader>tt",
+            "<c-t>",
             "<cmd>ToggleTerm<cr>",
             mode = "n",
             noremap = true,
@@ -26,13 +26,15 @@ return {
         }
     },
     opts = {
-        size = 8,
-        hide_numbers = false,
-        insert_mappings = false,
-        terminal_mappings = false,
+        open_mapping = [[<c-t>]],
+        size = 20,
+        hide_numbers = true,
+        insert_mappings = true,
+        terminal_mappings = true,
         persist_size = true,
-        direction = "horizontal",
+        direction = "float",
         shell = "/bin/fish",
-        auto_scroll = true
+        auto_scroll = true,
+        float_opts = {border = 'single'}
     }
 }
