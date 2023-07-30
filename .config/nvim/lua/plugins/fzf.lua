@@ -20,6 +20,13 @@ return {
             silent = true,
             desc = "Live grep"
         }, {
+            "<leader>fG",
+            function() require("fzf-lua").live_grep_glob() end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Live grep with glob"
+        }, {
             "<leader>fw",
             function() require("fzf-lua").grep_cword() end,
             mode = "n",
