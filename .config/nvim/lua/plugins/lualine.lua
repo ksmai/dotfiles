@@ -56,12 +56,14 @@ local function lsp_status()
     return lsp_client_names()
 end
 
+local function shortenedGitHead() return vim.fn.FugitiveHead():sub(1, 15) end
+
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = {'nvim-tree/nvim-web-devicons', "tpope/vim-fugitive"},
     opts = {
         options = {theme = 'gruvbox'},
-        sections = {lualine_b = {"FugitiveStatusline", 'diff', 'diagnostics'}},
+        sections = {lualine_b = {shortenedGitHead, 'diff', 'diagnostics'}},
         winbar = {
             lualine_c = {"navic", color_correction = nil, navic_opts = nil},
             lualine_y = {lsp_status}
