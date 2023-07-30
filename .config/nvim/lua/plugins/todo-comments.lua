@@ -4,7 +4,7 @@ return {
     keys = {
         {
             "<leader>ft",
-            "<cmd>TodoTelescope theme=dropdown<cr>",
+            "<cmd>TodoQuickFix<cr>",
             mode = "n",
             noremap = true,
             silent = true,

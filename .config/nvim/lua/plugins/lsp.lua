@@ -27,8 +27,7 @@ return {
         dependencies = {
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
             "williamboman/mason.nvim", {"williamboman/mason-lspconfig.nvim"},
-            "SmiteshP/nvim-navic", "hrsh7th/nvim-cmp",
-            "nvim-telescope/telescope.nvim"
+            "SmiteshP/nvim-navic", "hrsh7th/nvim-cmp", "ibhagwan/fzf-lua"
         },
         keys = {
             -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
@@ -182,26 +181,26 @@ return {
                     return vim.tbl_extend("force", bufopts, {desc = d})
                 end
 
-                vim.keymap.set('n', 'gd',
-                               "<cmd>Telescope lsp_definitions theme=dropdown<cr>",
-                               desc("Go definitions"))
-                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
+                vim.keymap.set('n', 'gd', function()
+                    require("fzf-lua").lsp_definitions({
+                        jump_to_single_result = true
+                    })
+                end, desc("Go definitions"))
+                vim.keymap.set('n', 'gD', "<cmd>FzfLua lsp_declarations<cr>",
                                desc("Go declarations"))
-                vim.keymap.set('n', 'gy',
-                               "<cmd>Telescope lsp_type_definitions theme=dropdown<cr>",
+                vim.keymap.set('n', 'gy', "<cmd>FzfLua lsp_typedefs<cr>",
                                desc("Go t[y]pe definitions"))
-                vim.keymap.set('n', 'gI',
-                               "<cmd>Telescope lsp_implementations theme=dropdown<cr>",
+                vim.keymap.set('n', 'gI', "<cmd>FzfLua lsp_implementations<cr>",
                                desc("Go implementations"))
-                vim.keymap.set('n', 'gr',
-                               "<cmd>Telescope lsp_references theme=dropdown<cr>",
+                vim.keymap.set('n', 'gr', "<cmd>FzfLua lsp_references<cr>",
                                desc("Go references"))
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, desc("Hover"))
                 vim.keymap.set({'n', 'i'}, '<C-k>', vim.lsp.buf.signature_help,
                                desc("Signature help"))
                 vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename,
                                desc("Code rename"))
-                vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action,
+                vim.keymap.set('n', '<leader>ca',
+                               "<cmd>FzfLua lsp_code_actions<cr>",
                                desc("Code action"))
                 vim.keymap.set('n', '<leader>cf', codeFormat,
                                desc("Code format"))

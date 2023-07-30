@@ -21,14 +21,14 @@ return {
                         mode = {"n", "v"}
                     }, {
                         "<leader>fb",
-                        "<cmd>Telescope dap list_breakpoints<cr>",
+                        "<cmd>FzfLua dap_breakpoints<cr>",
                         mode = "n",
                         noremap = true,
                         silent = true,
                         desc = "Find breakpoints"
                     }, {
                         "<leader>fd",
-                        "<cmd>Telescope dap commands<cr>",
+                        "<cmd>FzfLua dap_commands<cr>",
                         mode = "n",
                         noremap = true,
                         silent = true,
@@ -62,8 +62,7 @@ return {
                     handlers = {},
                     ensure_installed = {"codelldb", "python"}
                 }
-            }, "nvim-telescope/telescope.nvim",
-            {"nvim-telescope/telescope-dap.nvim"}
+            }, "ibhagwan/fzf-lua"
         },
         keys = {
             {
@@ -181,7 +180,6 @@ return {
                 linehl = "",
                 numhl = ""
             })
-            require("telescope").load_extension("dap")
         end
     }, {
         "mxsdev/nvim-dap-vscode-js",
