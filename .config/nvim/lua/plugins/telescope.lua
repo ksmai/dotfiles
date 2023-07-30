@@ -2,7 +2,7 @@ return {
     "nvim-telescope/telescope.nvim",
     branch = '0.1.x',
     dependencies = {
-        "nvim-lua/plenary.nvim", {"nvim-telescope/telescope-ui-select.nvim"},
+        "nvim-lua/plenary.nvim",
         {"nvim-telescope/telescope-fzf-native.nvim", build = "make"}
     },
     opts = function()
@@ -15,9 +15,6 @@ return {
                     "--hidden", "--iglob", "!.git/"
                 },
                 cache_picker = {num_pickers = 5}
-            },
-            extensions = {
-                ["ui-select"] = {require("telescope.themes").get_dropdown({})}
             }
         }
     end,
@@ -25,6 +22,5 @@ return {
         local telescope = require("telescope")
         telescope.setup(opts)
         telescope.load_extension("fzf")
-        telescope.load_extension("ui-select")
     end
 }
