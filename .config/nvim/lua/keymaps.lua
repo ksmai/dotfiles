@@ -42,6 +42,26 @@ vim.keymap.set("n", "<leader>dq", "<cmd>diffoff!<cr>",
 vim.keymap.set("t", "<esc>", [[<C-\><C-n>]],
                {noremap = true, silent = true, desc = "Esc"})
 
+-- tabs
+vim.keymap.set("n", "<leader>1", "1gt",
+               {noremap = true, silent = true, desc = "1st tab"})
+vim.keymap.set("n", "<leader>2", "2gt",
+               {noremap = true, silent = true, desc = "2nd tab"})
+vim.keymap.set("n", "<leader>3", "3gt",
+               {noremap = true, silent = true, desc = "3rd tab"})
+vim.keymap.set("n", "<leader>4", "4gt",
+               {noremap = true, silent = true, desc = "4th tab"})
+vim.keymap.set("n", "<leader>5", "5gt",
+               {noremap = true, silent = true, desc = "5th tab"})
+vim.keymap.set("n", "<leader>6", "6gt",
+               {noremap = true, silent = true, desc = "6th tab"})
+vim.keymap.set("n", "<leader>7", "7gt",
+               {noremap = true, silent = true, desc = "7th tab"})
+vim.keymap.set("n", "<leader>8", "8gt",
+               {noremap = true, silent = true, desc = "8th tab"})
+vim.keymap.set("n", "<leader>9", "9gt",
+               {noremap = true, silent = true, desc = "9th tab"})
+
 -- handle frequent typos
 vim.api.nvim_create_user_command("Q", "q", {bang = true})
 vim.api.nvim_create_user_command("W", "w", {bang = true})

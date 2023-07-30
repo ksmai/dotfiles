@@ -28,13 +28,12 @@ return {
     opts = {
         open_mapping = [[<c-t>]],
         size = 20,
-        hide_numbers = true,
+        hide_numbers = false,
         insert_mappings = true,
         terminal_mappings = true,
         persist_size = true,
-        direction = "float",
+        direction = "tab",
         shell = "/bin/fish",
-        auto_scroll = true,
-        float_opts = {border = 'single'}
+        auto_scroll = true
     }
 }

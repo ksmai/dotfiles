@@ -4,7 +4,7 @@ return {
     keys = {
         {
             "<leader>gs",
-            "<cmd>Git<cr><C-w>_",
+            "<cmd>tabnew<cr><cmd>Git<cr><c-w>o",
             mode = "n",
             noremap = true,
             silent = true,
