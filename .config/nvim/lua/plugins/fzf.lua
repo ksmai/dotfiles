@@ -7,7 +7,12 @@ return {
     keys = {
         {
             "<C-p>",
-            function() require("fzf-lua").files() end,
+            function()
+                require("fzf-lua").files({
+                    cwd_prompt = false,
+                    prompt = 'Files❯ '
+                })
+            end,
             mode = "n",
             noremap = true,
             silent = true,
