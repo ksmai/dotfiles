@@ -5,7 +5,7 @@ return {
         {
             "\\",
             function()
-                require('hop').hint_char1({multi_windows = true})
+                require('hop').hint_char2({multi_windows = true})
             end,
             mode = "n",
             silent = true,

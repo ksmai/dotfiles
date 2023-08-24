@@ -5,6 +5,7 @@ return {
     event = {"BufReadPost", "BufNewFile"},
     dependencies = {
         {"nvim-treesitter/nvim-treesitter-textobjects"},
+        {"RRethy/nvim-treesitter-textsubjects"},
         {'JoosepAlviste/nvim-ts-context-commentstring'}
     },
     keys = {
@@ -26,8 +27,8 @@ return {
         incremental_selection = {
             enable = true,
             keymaps = {
-                init_selection = "<leader>v",
-                node_incremental = "v",
+                init_selection = "<cr>",
+                node_incremental = "<cr>",
                 scope_incremental = false,
                 node_decremental = "<bs>"
             }
@@ -90,6 +91,14 @@ return {
                     ["<leader>cF"] = "@function.outer",
                     ["<leader>cC"] = "@class.outer"
                 }
+            }
+        },
+        textsubjects = {
+            enable = true,
+            keymaps = {
+                ['<cr>'] = 'textsubjects-smart',
+                ['a<cr>'] = 'textsubjects-container-outer',
+                ['i<cr>'] = 'textsubjects-container-inner'
             }
         }
     },
