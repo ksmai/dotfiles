@@ -48,7 +48,10 @@ return {
                 StaticMethod = {icon = '󰠄 ', hl = 'Function'}
             }
         },
-        filesystem = {filtered_items = {hide_dotfiles = false}}
+        filesystem = {
+            filtered_items = {hide_dotfiles = false},
+            follow_current_file = {enabled = true, leave_dirs_open = false}
+        }
     },
     init = function() vim.g.neo_tree_remove_legacy_commands = 1 end
 }
