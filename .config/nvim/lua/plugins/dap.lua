@@ -66,39 +66,27 @@ return {
         },
         keys = {
             {
-                "<leader>dB",
+                -- same as <c-f4> in kitty
+                "<f28>",
                 function()
                     require("dap").set_breakpoint(vim.fn.input(
                                                       'Breakpoint condition: '))
                 end,
                 desc = "Breakpoint Condition"
             }, {
-                "<leader>db",
+                "<f4>",
                 function() require("dap").toggle_breakpoint() end,
                 desc = "Toggle Breakpoint"
-            },
-            {
-                "<leader>dc",
-                function() require("dap").continue() end,
-                desc = "Continue"
             },
             {
                 "<f5>",
                 function() require("dap").continue() end,
                 desc = "Continue"
             }, {
-                "<leader>dC",
+                -- same as <c-f10> in kitty
+                "<f34>",
                 function() require("dap").run_to_cursor() end,
                 desc = "Run to Cursor"
-            }, {
-                "<leader>dg",
-                function() require("dap").goto_() end,
-                desc = "Go to line (no execute)"
-            },
-            {
-                "<leader>di",
-                function() require("dap").step_into() end,
-                desc = "Step Into"
             },
             {
                 "<f11>",
@@ -113,19 +101,9 @@ return {
                 desc = "Run Last"
             },
             {
-                "<leader>do",
-                function() require("dap").step_out() end,
-                desc = "Step Out"
-            },
-            {
                 "<f12>",
                 function() require("dap").step_out() end,
                 desc = "Step Out"
-            },
-            {
-                "<leader>ds",
-                function() require("dap").step_over() end,
-                desc = "Step Over"
             },
             {
                 "<f10>",
@@ -140,9 +118,9 @@ return {
                 "<leader>dr",
                 function() require("dap").repl.toggle() end,
                 desc = "Toggle REPL"
-            },
-            {
-                "<leader>dT",
+            }, {
+                -- same as <c-f5> in kitty
+                "<f29>",
                 function() require("dap").terminate() end,
                 desc = "Terminate"
             }
