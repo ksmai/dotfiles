@@ -10,7 +10,16 @@ return {
                 require("luasnip.loaders.from_vscode").lazy_load()
             end
         },
-        opts = {history = true, delete_check_events = "TextChanged"}
+        opts = {history = true, delete_check_events = "TextChanged"},
+        config = function(_, opts)
+            local ls = require("luasnip")
+            ls.setup(opts)
+
+            local snippets = require("snippets")
+            for lang, snips in pairs(snippets) do
+                ls.add_snippets(lang, snips)
+            end
+        end
     }, {
         "hrsh7th/nvim-cmp",
         version = false, -- last release is way too old
