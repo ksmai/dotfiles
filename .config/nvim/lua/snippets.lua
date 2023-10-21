@@ -7,6 +7,7 @@ local i = ls.insert_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 local cptemplate = s("cptemplate", fmt([[
+#[allow(unused_imports)]
 use std::{
     io::{BufRead, Write},
     str::FromStr,
@@ -15,6 +16,7 @@ use std::{
 fn main() {
     let mut reader = Reader::new();
     let mut stdout = std::io::BufWriter::new(std::io::stdout().lock());
+
     @$
 }
 
@@ -22,6 +24,7 @@ struct Reader {
     lines: std::io::Lines<std::io::StdinLock<'static>>,
 }
 
+#[allow(dead_code)]
 impl Reader {
     fn new() -> Self {
         Self {
@@ -102,6 +105,10 @@ impl Reader {
             .split_whitespace()
             .map(|x| x.parse::<T>().unwrap())
             .collect()
+    }
+
+    fn read_string(&mut self) -> String {
+        self.lines.next().unwrap().unwrap()
     }
 }
 
