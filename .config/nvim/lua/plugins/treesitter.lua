@@ -19,7 +19,8 @@ return {
             "git_config", "git_rebase", "gitattributes", "gitcommit",
             "gitignore", "glsl", "html", "javascript", "json", "lua", "make",
             "markdown", "markdown_inline", "mermaid", "pug", "python", "regex",
-            "rust", "scss", "sql", "svelte", "tsx", "typescript", "vue", "yaml"
+            "rust", "scss", "sql", "svelte", "tsx", "typescript", "vue", "yaml",
+            "c_sharp"
         },
         highlight = {enable = true},
         indent = {enable = true},

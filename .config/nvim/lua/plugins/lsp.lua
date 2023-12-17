@@ -125,7 +125,10 @@ return {
                         })
                     end
                 },
-                svelte = {}
+                svelte = {},
+                omnisharp = {
+                    cmd = {"/home/ksmai/.local/share/nvim/mason/bin/omnisharp"}
+                }
             },
             setup = {
                 -- example to setup with typescript.nvim
