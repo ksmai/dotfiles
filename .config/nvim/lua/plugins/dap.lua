@@ -60,7 +60,7 @@ return {
                 opts = {
                     automatic_installation = false,
                     handlers = {},
-                    ensure_installed = {"codelldb", "python"}
+                    ensure_installed = {"codelldb", "python", "coreclr"}
                 }
             }, "ibhagwan/fzf-lua"
         },
