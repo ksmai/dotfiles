@@ -27,7 +27,8 @@ return {
         dependencies = {
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
             "williamboman/mason.nvim", {"williamboman/mason-lspconfig.nvim"},
-            "SmiteshP/nvim-navic", "hrsh7th/nvim-cmp", "ibhagwan/fzf-lua"
+            "SmiteshP/nvim-navic", "hrsh7th/nvim-cmp", "ibhagwan/fzf-lua",
+            {"Hoffs/omnisharp-extended-lsp.nvim"}
         },
         keys = {
             -- https://github.com/neovim/nvim-lspconfig#suggested-configuration
@@ -185,9 +186,13 @@ return {
                 end
 
                 vim.keymap.set('n', 'gd', function()
-                    require("fzf-lua").lsp_definitions({
-                        jump_to_single_result = true
-                    })
+                    if vim.bo.filetype == "cs" then
+                        require('omnisharp_extended').lsp_definitions()
+                    else
+                        require("fzf-lua").lsp_definitions({
+                            jump_to_single_result = true
+                        })
+                    end
                 end, desc("Go definitions"))
                 vim.keymap.set('n', 'gD', "<cmd>FzfLua lsp_declarations<cr>",
                                desc("Go declarations"))
