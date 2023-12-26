@@ -62,6 +62,54 @@ vim.keymap.set("n", "<leader>8", "8gt",
 vim.keymap.set("n", "<leader>9", "9gt",
                {noremap = true, silent = true, desc = "9th tab"})
 
+local function move_current_buf(target_tabpage_number)
+    local tabpages = vim.api.nvim_list_tabpages()
+    local target_tabpage = nil
+    for _, tabpage in ipairs(tabpages) do
+        local tabpage_number = vim.api.nvim_tabpage_get_number(tabpage)
+        if tabpage_number == target_tabpage_number then
+            target_tabpage = tabpage
+        end
+    end
+
+    if target_tabpage == nil then return end
+
+    local current_tabpage = vim.api.nvim_get_current_tabpage()
+    if target_tabpage == current_tabpage then return end
+
+    local buf = vim.api.nvim_get_current_buf()
+    local win = vim.api.nvim_get_current_win()
+    vim.api.nvim_win_close(win, false)
+    vim.api.nvim_set_current_tabpage(target_tabpage)
+    vim.cmd("vsplit")
+    vim.api.nvim_set_current_buf(buf)
+end
+
+vim.keymap.set("n", "<leader>!", function() move_current_buf(1) end,
+               {noremap = true, silent = true, desc = "move window to 1st tab"})
+vim.keymap.set("n", "<leader>@", function() move_current_buf(2) end,
+               {noremap = true, silent = true, desc = "move window to 2nd tab"})
+vim.keymap.set("n", "<leader>#", function() move_current_buf(3) end,
+               {noremap = true, silent = true, desc = "move window to 3rd tab"})
+
+vim.keymap.set("n", "<leader>$", function() move_current_buf(4) end,
+               {noremap = true, silent = true, desc = "move window to 4th tab"})
+
+vim.keymap.set("n", "<leader>%", function() move_current_buf(5) end,
+               {noremap = true, silent = true, desc = "move window to 5th tab"})
+
+vim.keymap.set("n", "<leader>^", function() move_current_buf(6) end,
+               {noremap = true, silent = true, desc = "move window to 6th tab"})
+
+vim.keymap.set("n", "<leader>&", function() move_current_buf(7) end,
+               {noremap = true, silent = true, desc = "move window to 7th tab"})
+
+vim.keymap.set("n", "<leader>*", function() move_current_buf(8) end,
+               {noremap = true, silent = true, desc = "move window to 8th tab"})
+
+vim.keymap.set("n", "<leader>(", function() move_current_buf(9) end,
+               {noremap = true, silent = true, desc = "move window to 9th tab"})
+
 -- handle frequent typos
 vim.api.nvim_create_user_command("Q", "q", {bang = true})
 vim.api.nvim_create_user_command("W", "w", {bang = true})

@@ -33,7 +33,7 @@ return {
         terminal_mappings = true,
         persist_size = true,
         direction = "tab",
-        shell = "/bin/bash",
+        shell = "/bin/fish",
         auto_scroll = true
     }
 }
