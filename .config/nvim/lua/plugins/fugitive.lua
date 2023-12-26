@@ -6,18 +6,21 @@ return {
             "<C-s>",
             function()
                 local wins = vim.api.nvim_list_wins()
-                local cur = vim.api.nvim_get_current_win()
+                local current_tabpage = vim.api.nvim_get_current_tabpage()
+
                 for _, win in ipairs(wins) do
-                    local success, status =
-                        pcall(vim.api.nvim_win_get_var, win, 'fugitive_status')
-                    if success then
-                        if status ~= nil and status ~= "" then
+                    local buf = vim.api.nvim_win_get_buf(win)
+                    local filetype = vim.api
+                                         .nvim_buf_get_option(buf, "filetype")
+
+                    if filetype == "fugitive" then
+                        local win_tabpage = vim.api.nvim_win_get_tabpage(win)
+                        if win_tabpage == current_tabpage then
                             vim.api.nvim_win_close(win, false)
-                            if vim.api.nvim_win_is_valid(cur) then
-                                vim.api.nvim_set_current_win(cur)
-                            end
-                            return
+                        else
+                            vim.api.nvim_set_current_tabpage(win_tabpage)
                         end
+                        return
                     end
                 end
                 vim.cmd('tab Git')
