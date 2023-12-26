@@ -1,26 +1,10 @@
 return {
     "nvim-neo-tree/neo-tree.nvim",
+    enabled = false,
     branch = "v2.x",
     dependencies = {
         "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
         "MunifTanjim/nui.nvim"
-    },
-    keys = {
-        {
-            "<C-n>",
-            "<cmd>Neotree toggle reveal_force_cwd<cr>",
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Toggle Neotree"
-        }, {
-            "<leader>fe",
-            "<cmd>Neotree toggle reveal_force_cwd<cr>",
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Toggle Neotree"
-        }
     },
     opts = {
         -- https://github.com/nvim-neo-tree/neo-tree.nvim#configuration-for-nerd-fonts-v3-users
