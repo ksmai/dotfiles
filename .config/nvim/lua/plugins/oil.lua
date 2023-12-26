@@ -10,7 +10,11 @@ return {
     keys = {
         {
             "<C-n>",
-            "<cmd>Oil<cr>",
+            function()
+                if vim.bo.filetype == "oil" then return end
+
+                vim.cmd("Oil")
+            end,
             mode = "n",
             noremap = true,
             silent = true,
