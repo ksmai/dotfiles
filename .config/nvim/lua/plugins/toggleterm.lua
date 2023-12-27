@@ -3,21 +3,14 @@ return {
     version = "*",
     keys = {
         {
-            "<c-t>",
+            "<leader>t",
             "<cmd>ToggleTerm<cr>",
             mode = "n",
             noremap = true,
             silent = true,
             desc = "Toggle term"
         }, {
-            "<leader>tT",
-            "<cmd>ToggleTermToggleAll<cr>",
-            mode = "n",
-            noremap = true,
-            silent = true,
-            desc = "Toggle all terms"
-        }, {
-            "<leader>tx",
+            "<leader>x",
             "<esc><cmd>ToggleTermSendVisualSelection<cr>",
             mode = "v",
             noremap = true,
@@ -26,7 +19,7 @@ return {
         }
     },
     opts = {
-        open_mapping = [[<c-t>]],
+        open_mapping = [[<leader>t]],
         size = 20,
         hide_numbers = false,
         insert_mappings = true,

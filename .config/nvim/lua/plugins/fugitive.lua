@@ -3,7 +3,7 @@ return {
     dependencies = {{"tpope/vim-rhubarb"}},
     keys = {
         {
-            "<C-s>",
+            "<leader>s",
             function()
                 local wins = vim.api.nvim_list_wins()
                 local current_tabpage = vim.api.nvim_get_current_tabpage()
