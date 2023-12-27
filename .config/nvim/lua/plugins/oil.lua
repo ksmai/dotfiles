@@ -9,7 +9,7 @@ return {
     },
     keys = {
         {
-            "<C-n>",
+            "<leader>n",
             function()
                 if vim.bo.filetype == "oil" then return end
 
