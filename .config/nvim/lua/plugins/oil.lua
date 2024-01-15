@@ -7,6 +7,11 @@ return {
         use_default_keymaps = false,
         keymaps = {["<CR>"] = "actions.select"}
     },
+    config = function(_, opts)
+        require("oil").setup(opts)
+        vim.cmd(
+            [[command! -nargs=1 Browse silent execute '!xdg-open' shellescape(<q-args>,1)]])
+    end,
     keys = {
         {
             "<leader>n",
