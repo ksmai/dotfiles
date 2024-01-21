@@ -36,7 +36,38 @@ return {
             silent = true,
             desc = "Run current file"
         }, {
+            "<leader>rw",
+            function() require("neotest").watch.toggle() end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Toggle watch nearest test"
+        }, {
+            "<leader>rW",
+            function()
+                require("neotest").watch.toggle(vim.fn.expand("%"))
+            end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Toggle watch current file"
+        }, {
+            "<leader>rq",
+            function() require("neotest").watch.stop() end,
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Stop watching"
+        }, {
             "<leader>ro",
+            function() require("neotest").output.open({enter = true}) end,
+
+            mode = "n",
+            noremap = true,
+            silent = true,
+            desc = "Open test result"
+        }, {
+            "<leader>rO",
             function() require("neotest").output_panel.toggle() end,
             mode = "n",
             noremap = true,
