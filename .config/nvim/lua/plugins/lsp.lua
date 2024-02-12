@@ -289,11 +289,6 @@ return {
 					-- ...additional logic...
 					return { timeout_ms = 500, lsp_fallback = true }
 				end,
-				formatters = {
-					prettier = {
-						prepend_args = { "--plugin", "prettier-plugin-tailwindcss" },
-					},
-				},
 			})
 
 			vim.api.nvim_create_user_command("Format", function(args)
