@@ -1,1 +1,1 @@
-return {"tpope/vim-repeat", event = {"BufReadPost", "BufNewFile"}}
+return { "tpope/vim-repeat", event = { "BufReadPost", "BufNewFile" } }

@@ -1,1 +1,1 @@
-return {"tpope/vim-unimpaired", event = {"BufReadPost", "BufNewFile"}}
+return { "tpope/vim-unimpaired", event = { "BufReadPost", "BufNewFile" } }

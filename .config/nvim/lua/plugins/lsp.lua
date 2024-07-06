@@ -158,13 +158,6 @@ return {
 				end
 			end
 
-			local function on_attach_copilot(client, _)
-				if client.name == "copilot" then
-					local copilot_cmp = require("copilot_cmp")
-					copilot_cmp._on_insert_enter()
-				end
-			end
-
 			local function on_attach_keymaps(_, bufnr)
 				-- Mappings.
 				-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -210,7 +203,6 @@ return {
 					end
 					on_attach_fmt(client, bufnr)
 					on_attach_keymaps(client, bufnr)
-					on_attach_copilot(client, bufnr)
 					if client.server_capabilities.documentSymbolProvider then
 						require("nvim-navic").attach(client, bufnr)
 					end

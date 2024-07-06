@@ -6,7 +6,10 @@ local s = ls.snippet
 local i = ls.insert_node
 local fmt = require("luasnip.extras.fmt").fmt
 
-local cptemplate = s("cptemplate", fmt([[
+local cptemplate = s(
+	"cptemplate",
+	fmt(
+		[[
 #[allow(unused_imports)]
 use std::{
     io::{BufRead, Write},
@@ -112,7 +115,11 @@ impl Reader {
     }
 }
 
-]], {i(1)}, {delimiters = "@$"}))
+]],
+		{ i(1) },
+		{ delimiters = "@$" }
+	)
+)
 table.insert(M.rust, cptemplate)
 
 return M
