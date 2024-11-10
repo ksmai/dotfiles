@@ -5,13 +5,13 @@ return {
 		vim.opt.timeoutlen = 500
 		local wk = require("which-key")
 		wk.setup(opts)
-		wk.register({
-			["<leader>c"] = { name = "+Code" },
-			["<leader>d"] = { name = "+Diff / Debug" },
-			["<leader>f"] = { name = "+Find" },
-			["<leader>g"] = { name = "+Git" },
-			["<leader>r"] = { name = "+Run tests" },
-			["<leader>t"] = { name = "+Term" },
+		wk.add({
+			{ "<leader>c", group = "+Code" },
+			{ "<leader>d", group = "+Diff / Debug" },
+			{ "<leader>f", group = "+Find" },
+			{ "<leader>g", group = "+Git" },
+			{ "<leader>r", group = "+Run tests" },
+			{ "<leader>t", group = "+Term" },
 		})
 	end,
 }

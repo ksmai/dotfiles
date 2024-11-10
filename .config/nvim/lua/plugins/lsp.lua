@@ -103,7 +103,7 @@ return {
 					},
 				},
 				pylsp = {},
-				tsserver = {},
+				ts_ls = {},
 				eslint = {
 					on_attach = function(_, bufnr)
 						vim.api.nvim_create_autocmd("BufWritePre", {
@@ -120,7 +120,7 @@ return {
 			},
 			setup = {
 				-- example to setup with typescript.nvim
-				-- tsserver = function(_, opts)
+				-- ts_ls = function(_, opts)
 				--   require("typescript").setup({ server = opts })
 				--   return true
 				-- end,
@@ -261,6 +261,7 @@ return {
 				formatters_by_ft = {
 					lua = { "stylua" },
 					javascript = { { "prettierd", "prettier" } },
+					typescript = { { "prettierd", "prettier" } },
 					html = { { "prettierd", "prettier" } },
 					htmldjango = { { "prettierd", "prettier" } },
 				},
