@@ -6,8 +6,8 @@ return {
 		{ "antoinemadec/FixCursorHold.nvim" },
 		"mfussenegger/nvim-dap",
 		"nvim-neotest/neotest-python",
-		"rouge8/neotest-rust",
 		"nvim-neotest/neotest-jest",
+		"mrcjkb/rustaceanvim",
 	},
 	keys = {
 		{
@@ -116,8 +116,8 @@ return {
 		return {
 			adapters = {
 				require("neotest-python"),
-				require("neotest-rust"),
 				require("neotest-jest")({}),
+				require("rustaceanvim.neotest"),
 			},
 		}
 	end,

@@ -76,6 +76,106 @@ return {
 				silent = true,
 				desc = "Go to next diagnostic",
 			},
+			{
+				"gd",
+				function()
+					if vim.bo.filetype == "cs" then
+						require("omnisharp_extended").lsp_definitions()
+					else
+						require("fzf-lua").lsp_definitions({
+							jump_to_single_result = true,
+						})
+					end
+				end,
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go definitions",
+			},
+			{
+				"gD",
+				"<cmd>FzfLua lsp_declarations<cr>",
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go declarations",
+			},
+			{
+				"gy",
+				"<cmd>FzfLua lsp_typedefs<cr>",
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go t[y]pe definitions",
+			},
+			{
+				"gI",
+				"<cmd>FzfLua lsp_implementations<cr>",
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go implementations",
+			},
+			{
+				"gr",
+				"<cmd>FzfLua lsp_references<cr>",
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go references",
+			},
+			{
+				"K",
+				vim.lsp.buf.hover,
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Hover",
+			},
+			{
+				"<C-k>",
+				vim.lsp.buf.signature_help,
+				mode = { "n", "i" },
+				noremap = true,
+				silent = true,
+				desc = "Signature help",
+			},
+			{
+				"<leader>cr",
+				vim.lsp.buf.rename,
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Code rename",
+			},
+			{
+				"<leader>ca",
+				"<cmd>FzfLua lsp_code_actions<cr>",
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Code action",
+			},
+			{
+				"<leader>cf",
+				function()
+					vim.cmd("Format")
+				end,
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Code format",
+			},
+			{
+				"<leader>cf",
+				function()
+					vim.cmd("Format")
+				end,
+				mode = "v",
+				noremap = true,
+				silent = true,
+				desc = "Code format in range",
+			},
 		},
 		opts = {
 			diagnostics = {
@@ -95,11 +195,6 @@ return {
 							runtime = { version = "LuaJIT" },
 							workspace = { checkThirdParty = false },
 						},
-					},
-				},
-				rust_analyzer = {
-					settings = {
-						["rust-analyzer"] = { checkOnSave = { command = "clippy" } },
 					},
 				},
 				pylsp = {},
@@ -158,39 +253,6 @@ return {
 				end
 			end
 
-			local function on_attach_keymaps(_, bufnr)
-				-- Mappings.
-				-- See `:help vim.lsp.*` for documentation on any of the below functions
-				local bufopts = { noremap = true, silent = true, buffer = bufnr }
-				local function desc(d)
-					return vim.tbl_extend("force", bufopts, { desc = d })
-				end
-
-				vim.keymap.set("n", "gd", function()
-					if vim.bo.filetype == "cs" then
-						require("omnisharp_extended").lsp_definitions()
-					else
-						require("fzf-lua").lsp_definitions({
-							jump_to_single_result = true,
-						})
-					end
-				end, desc("Go definitions"))
-				vim.keymap.set("n", "gD", "<cmd>FzfLua lsp_declarations<cr>", desc("Go declarations"))
-				vim.keymap.set("n", "gy", "<cmd>FzfLua lsp_typedefs<cr>", desc("Go t[y]pe definitions"))
-				vim.keymap.set("n", "gI", "<cmd>FzfLua lsp_implementations<cr>", desc("Go implementations"))
-				vim.keymap.set("n", "gr", "<cmd>FzfLua lsp_references<cr>", desc("Go references"))
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, desc("Hover"))
-				vim.keymap.set({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, desc("Signature help"))
-				vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, desc("Code rename"))
-				vim.keymap.set("n", "<leader>ca", "<cmd>FzfLua lsp_code_actions<cr>", desc("Code action"))
-				vim.keymap.set("n", "<leader>cf", function()
-					vim.cmd("Format")
-				end, desc("Code format"))
-				vim.keymap.set("v", "<leader>cf", function()
-					vim.cmd("Format")
-				end, desc("Code format in range"))
-			end
-
 			local function setup(server)
 				local server_config = servers[server] or {}
 				local server_opts = vim.tbl_deep_extend("force", {
@@ -202,7 +264,6 @@ return {
 						server_config.on_attach(client, bufnr)
 					end
 					on_attach_fmt(client, bufnr)
-					on_attach_keymaps(client, bufnr)
 					if client.server_capabilities.documentSymbolProvider then
 						require("nvim-navic").attach(client, bufnr)
 					end
