@@ -325,6 +325,7 @@ return {
 					typescript = { { "prettierd", "prettier" } },
 					html = { { "prettierd", "prettier" } },
 					htmldjango = { { "prettierd", "prettier" } },
+					css = { { "prettierd", "prettier" } },
 				},
 				format_on_save = function(bufnr)
 					-- Disable autoformat on certain filetypes
