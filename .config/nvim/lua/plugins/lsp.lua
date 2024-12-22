@@ -188,6 +188,37 @@ return {
 			autoformat = true,
 			servers = {
 				jsonls = {},
+				yamlls = {
+					on_attach = function(client, _)
+						-- https://github.com/redhat-developer/yaml-language-server/issues/486
+						client.server_capabilities.document_formatting = true
+					end,
+					settings = {
+						yaml = {
+							format = {
+								enable = true,
+							},
+							schemaStore = {
+								enable = true,
+							},
+						},
+					},
+				},
+				html = {
+					capabilities = {
+						textDocument = {
+							completion = { completionItem = { snippetSupport = true } },
+						},
+					},
+					filetypes = { "html", "htmldjango" },
+				},
+				cssls = {
+					capabilities = {
+						textDocument = {
+							completion = { completionItem = { snippetSupport = true } },
+						},
+					},
+				},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -211,7 +242,6 @@ return {
 				omnisharp = {
 					cmd = { "/home/ksmai/.local/share/nvim/mason/bin/omnisharp" },
 				},
-				tailwindcss = {},
 			},
 			setup = {
 				-- example to setup with typescript.nvim
@@ -235,24 +265,6 @@ return {
 				opts.capabilities or {}
 			)
 
-			local function on_attach_fmt(client, bufnr)
-				if not opts.autoformat then
-					return
-				end
-
-				if
-					client.config
-					and client.config.capabilities
-					and client.config.capabilities.documentFormattingProvider == false
-				then
-					return
-				end
-
-				if not client.supports_method("textDocument/formatting") then
-					return
-				end
-			end
-
 			local function setup(server)
 				local server_config = servers[server] or {}
 				local server_opts = vim.tbl_deep_extend("force", {
@@ -263,7 +275,6 @@ return {
 					if server_config.on_attach ~= nil then
 						server_config.on_attach(client, bufnr)
 					end
-					on_attach_fmt(client, bufnr)
 					if client.server_capabilities.documentSymbolProvider then
 						require("nvim-navic").attach(client, bufnr)
 					end
@@ -323,9 +334,6 @@ return {
 					lua = { "stylua" },
 					javascript = { { "prettierd", "prettier" } },
 					typescript = { { "prettierd", "prettier" } },
-					html = { { "prettierd", "prettier" } },
-					htmldjango = { { "prettierd", "prettier" } },
-					css = { { "prettierd", "prettier" } },
 				},
 				format_on_save = function(bufnr)
 					-- Disable autoformat on certain filetypes
