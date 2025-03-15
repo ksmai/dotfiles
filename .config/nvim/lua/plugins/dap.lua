@@ -15,7 +15,7 @@ return {
 						desc = "Dap UI",
 					},
 					{
-						"<leader>de",
+						"<C-\\>",
 						function()
 							require("dapui").eval()
 						end,
@@ -58,7 +58,15 @@ return {
 			{
 				"theHamsta/nvim-dap-virtual-text",
 				dependencies = { "nvim-treesitter/nvim-treesitter" },
-				opts = {},
+				opts = {
+					display_callback = function(variable)
+						local limit = 25
+						if #variable.value > limit then
+							return " " .. variable.value:sub(1, limit) .. "..."
+						end
+						return " " .. variable.value
+					end,
+				},
 			},
 			{
 				"jay-babu/mason-nvim-dap.nvim",

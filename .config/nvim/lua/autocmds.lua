@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "html",
-	command = "setlocal shiftwidth=2 tabstop=2 softtabstop=2",
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "html",
+-- 	command = "setlocal shiftwidth=2 tabstop=2 softtabstop=2",
+-- })

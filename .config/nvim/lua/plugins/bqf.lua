@@ -3,6 +3,6 @@ return {
 	ft = "qf",
 	dependencies = { "nvim-treesitter/nvim-treesitter" },
 	config = function()
-		require("bqf").setup({})
+		require("bqf").setup()
 	end,
 }
