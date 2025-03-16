@@ -31,6 +31,16 @@ return {
 			desc = "Debug nearest test",
 		},
 		{
+			"<leader>rl",
+			function()
+				require("neotest").run.run_last()
+			end,
+			mode = "n",
+			noremap = true,
+			silent = true,
+			desc = "Run last test",
+		},
+		{
 			"<leader>rT",
 			function()
 				require("neotest").run.stop()
