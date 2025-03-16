@@ -7,7 +7,6 @@ return {
 			"williamboman/mason.nvim",
 			{ "williamboman/mason-lspconfig.nvim" },
 			"SmiteshP/nvim-navic",
-			"hrsh7th/nvim-cmp",
 			"ibhagwan/fzf-lua",
 			{ "Hoffs/omnisharp-extended-lsp.nvim" },
 		},
@@ -257,13 +256,9 @@ return {
 			vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
 			local servers = opts.servers
-			local capabilities = vim.tbl_deep_extend(
-				"force",
-				{},
-				vim.lsp.protocol.make_client_capabilities(),
-				require("cmp_nvim_lsp").default_capabilities(),
-				opts.capabilities or {}
-			)
+			local capabilities =
+				vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
+			capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
 			local function setup(server)
 				local server_config = servers[server] or {}

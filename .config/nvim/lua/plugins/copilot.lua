@@ -19,7 +19,6 @@ return {
 			},
 		},
 		config = function(_, opts)
-			local cmp = require("cmp")
 			local copilot = require("copilot.suggestion")
 			local luasnip = require("luasnip")
 
@@ -31,17 +30,24 @@ return {
 			end
 
 			-- Hide suggestions when the completion menu is open.
-			cmp.event:on("menu_opened", function()
-				if copilot.is_visible() then
-					copilot.dismiss()
-				end
-				set_trigger(false)
-			end)
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "BlinkCmpMenuOpen",
+				callback = function()
+					if copilot.is_visible() then
+						copilot.dismiss()
+					end
+					set_trigger(false)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "BlinkCmpMenuClose",
+				callback = function()
+					set_trigger(not luasnip.expand_or_locally_jumpable())
+				end,
+			})
 
 			-- Disable suggestions when inside a snippet.
-			cmp.event:on("menu_closed", function()
-				set_trigger(not luasnip.expand_or_locally_jumpable())
-			end)
 			vim.api.nvim_create_autocmd("User", {
 				pattern = { "LuasnipInsertNodeEnter", "LuasnipInsertNodeLeave" },
 				callback = function()
