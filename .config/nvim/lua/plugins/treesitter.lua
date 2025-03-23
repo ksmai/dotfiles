@@ -4,12 +4,11 @@ return {
 	build = ":TSUpdate",
 	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
-		{ "nvim-treesitter/nvim-treesitter-textobjects" },
+		"nvim-treesitter/nvim-treesitter-textobjects",
 		{ "RRethy/nvim-treesitter-textsubjects" },
 	},
 	keys = {
-		{ "<leader>v", desc = "Increment selection" },
-		{ "v", desc = "Increment selection" },
+		{ "<cr>", desc = "Increment selection" },
 		{ "<bs>", desc = "Decrement selection", mode = "x" },
 	},
 	opts = {
@@ -59,39 +58,6 @@ return {
 			},
 		},
 		textobjects = {
-			select = {
-				enable = true,
-				-- Automatically jump forward to textobj, similar to targets.vim
-				lookahead = true,
-				keymaps = {
-					["af"] = "@function.outer",
-					["if"] = "@function.inner",
-					["ac"] = "@class.outer",
-					["ic"] = "@class.inner",
-					["ai"] = "@conditional.outer",
-					["ii"] = "@conditional.inner",
-					["al"] = "@loop.outer",
-					["il"] = "@loop.inner",
-					["am"] = "@comment.outer",
-				},
-				selection_modes = {
-					["@function.outer"] = "V",
-					["@function.inner"] = "V",
-					["@class.outer"] = "V",
-					["@class.inner"] = "V",
-					["@conditional.outer"] = "V",
-					["@conditional.inner"] = "V",
-					["@loop.outer"] = "V",
-					["@loop.inner"] = "V",
-					["@comment.outer"] = "v",
-				},
-				include_surrounding_whitespace = false,
-			},
-			swap = {
-				enable = true,
-				swap_next = { ["<leader>>"] = "@parameter.inner" },
-				swap_previous = { ["<leader><"] = "@parameter.inner" },
-			},
 			move = {
 				enable = true,
 				set_jumps = true,

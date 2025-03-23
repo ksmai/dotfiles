@@ -69,6 +69,20 @@ return {
 			},
 
 			snippets = { preset = "luasnip" },
+
+			cmdline = {
+				enabled = true,
+				keymap = { preset = "inherit" },
+				completion = {
+					list = {
+						selection = {
+							auto_insert = true,
+						},
+					},
+					menu = { auto_show = true },
+					ghost_text = { enabled = true },
+				},
+			},
 		},
 		opts_extend = { "sources.default" },
 	},

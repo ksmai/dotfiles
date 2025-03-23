@@ -1,0 +1,20 @@
+return {
+	"echasnovski/mini.bracketed",
+	version = "*",
+	opts = {
+		buffer = { suffix = "b", options = {} },
+		comment = { suffix = "c", options = {} },
+		conflict = { suffix = "x", options = {} },
+		diagnostic = { suffix = "d", options = {} },
+		file = { suffix = "f", options = {} },
+		indent = { suffix = "", options = {} },
+		jump = { suffix = "", options = {} },
+		location = { suffix = "l", options = {} },
+		oldfile = { suffix = "o", options = {} },
+		quickfix = { suffix = "q", options = {} },
+		treesitter = { suffix = "", options = {} },
+		undo = { suffix = "", options = {} },
+		window = { suffix = "", options = {} },
+		yank = { suffix = "", options = {} },
+	},
+}

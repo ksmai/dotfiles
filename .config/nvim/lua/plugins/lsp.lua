@@ -60,29 +60,13 @@ return {
 				desc = "Code location list",
 			},
 			{
-				"[d",
-				vim.diagnostic.goto_prev,
-				mode = "n",
-				noremap = true,
-				silent = true,
-				desc = "Go to prev diagnostic",
-			},
-			{
-				"]d",
-				vim.diagnostic.goto_next,
-				mode = "n",
-				noremap = true,
-				silent = true,
-				desc = "Go to next diagnostic",
-			},
-			{
 				"gd",
 				function()
 					if vim.bo.filetype == "cs" then
 						require("omnisharp_extended").lsp_definitions()
 					else
 						require("fzf-lua").lsp_definitions({
-							jump_to_single_result = true,
+							jump1 = true,
 						})
 					end
 				end,
@@ -116,7 +100,7 @@ return {
 				desc = "Go implementations",
 			},
 			{
-				"gr",
+				"gR",
 				"<cmd>FzfLua lsp_references<cr>",
 				mode = "n",
 				noremap = true,
@@ -134,7 +118,7 @@ return {
 			{
 				"<C-k>",
 				vim.lsp.buf.signature_help,
-				mode = { "n", "i" },
+				mode = "i",
 				noremap = true,
 				silent = true,
 				desc = "Signature help",
@@ -327,8 +311,8 @@ return {
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
-					javascript = { { "prettierd", "prettier" } },
-					typescript = { { "prettierd", "prettier" } },
+					javascript = { "prettierd", "prettier", stop_after_first = true },
+					typescript = { "prettierd", "prettier", stop_after_first = true },
 				},
 				format_on_save = function(bufnr)
 					-- Disable autoformat on certain filetypes
