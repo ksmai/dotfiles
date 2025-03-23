@@ -21,6 +21,8 @@ vim.keymap.set({ "v", "n" }, "<leader>[P", "<cmd>put! +<cr>", { noremap = true, 
 -- quick save
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { silent = true, noremap = true, desc = "Save" })
 
+vim.keymap.set("n", "<BS>", "<cmd>nohlsearch<cr>", { silent = true, noremap = true, desc = "Clear highlights" })
+
 -- quick fix window
 local function toggleQuickFix()
 	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
