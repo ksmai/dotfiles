@@ -3,6 +3,8 @@ vim.keymap.set({ "v", "n" }, "<leader>y", '"+y', { noremap = true, desc = "Yank 
 vim.keymap.set({ "v", "n" }, "<leader>Y", '"+Y', { noremap = true, desc = "Yank into clipboard" })
 vim.keymap.set({ "v", "n" }, "<leader>p", '"+p', { noremap = true, desc = "Put text from clipboard" })
 vim.keymap.set({ "v", "n" }, "<leader>P", '"+P', { noremap = true, desc = "Put text from clipboard" })
+vim.keymap.set({ "v", "n" }, "]p", "<esc><cmd>put<cr>", { noremap = true, desc = "Put linewise" })
+vim.keymap.set({ "v", "n" }, "]P", "<esc><cmd>put<cr>", { noremap = true, desc = "Put linewise" })
 vim.keymap.set(
 	{ "v", "n" },
 	"<leader>]p",
@@ -15,6 +17,8 @@ vim.keymap.set(
 	"<esc><cmd>put +<cr>",
 	{ noremap = true, desc = "Put linewise from clipboard" }
 )
+vim.keymap.set({ "v", "n" }, "[p", "<cmd>put!<cr>", { noremap = true, desc = "Put linewise" })
+vim.keymap.set({ "v", "n" }, "[P", "<cmd>put!<cr>", { noremap = true, desc = "Put linewise" })
 vim.keymap.set({ "v", "n" }, "<leader>[p", "<cmd>put! +<cr>", { noremap = true, desc = "Put linewise from clipboard" })
 vim.keymap.set({ "v", "n" }, "<leader>[P", "<cmd>put! +<cr>", { noremap = true, desc = "Put linewise from clipboard" })
 
