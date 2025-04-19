@@ -289,16 +289,22 @@ return {
 			mlsp.setup({ ensure_installed = ensure_installed })
 			mlsp.setup_handlers({ setup })
 
-			local icons = {
-				Error = "󰅚 ", -- x000f015a
-				Warn = "󰀪 ", -- x000f002a
-				Info = "󰋽 ", -- x000f02fd
-				Hint = "󰌶 ", -- x000f0336
-			}
-			for name, icon in pairs(icons) do
-				name = "DiagnosticSign" .. name
-				vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-			end
+			vim.diagnostic.config({
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "󰅚 ",
+						[vim.diagnostic.severity.WARN] = "󰀪 ",
+						[vim.diagnostic.severity.INFO] = "󰋽 ",
+						[vim.diagnostic.severity.HINT] = "󰌶 ",
+					},
+					numhl = {
+						[vim.diagnostic.severity.ERROR] = "",
+						[vim.diagnostic.severity.WARN] = "",
+						[vim.diagnostic.severity.HINT] = "",
+						[vim.diagnostic.severity.INFO] = "",
+					},
+				},
+			})
 		end,
 	},
 	{
