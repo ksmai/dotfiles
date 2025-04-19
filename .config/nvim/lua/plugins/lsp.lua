@@ -58,6 +58,27 @@ return {
 				silent = true,
 				desc = "Code location list",
 			},
+
+			{
+				"[d",
+				function()
+					vim.diagnostic.jump({ count = -1, float = true })
+				end,
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go to prev diagnostic",
+			},
+			{
+				"]d",
+				function()
+					vim.diagnostic.jump({ count = 1, float = true })
+				end,
+				mode = "n",
+				noremap = true,
+				silent = true,
+				desc = "Go to next diagnostic",
+			},
 			{
 				"gd",
 				function()
