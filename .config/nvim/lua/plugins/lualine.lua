@@ -48,7 +48,7 @@ local sections = {
 }
 
 local winbar = {
-	lualine_c = { "navic", color_correction = nil, navic_opts = nil },
+	lualine_c = { "aerial" },
 	lualine_y = { "lsp_status" },
 }
 
@@ -56,7 +56,7 @@ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
-		"SmiteshP/nvim-navic",
+		"stevearc/aerial.nvim",
 	},
 	opts = {
 		options = { theme = "gruvbox" },
