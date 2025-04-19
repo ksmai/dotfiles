@@ -67,4 +67,7 @@ return {
 			desc = "Swap the node under the cursor with its next neighbor",
 		},
 	},
+	opts = {
+		highlight = false,
+	},
 }
