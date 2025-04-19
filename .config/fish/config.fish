@@ -4,8 +4,6 @@ end
 
 # bind \t accept-autosuggestion
 
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
 # Base16 Shell
 # if status --is-interactive
 #     set BASE16_SHELL "$HOME/.config/base16-shell/"
@@ -14,3 +12,5 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 # end
 
 set PATH $HOME/.cargo/bin $PATH
+
+direnv hook fish | source
