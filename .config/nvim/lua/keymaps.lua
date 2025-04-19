@@ -117,6 +117,9 @@ vim.keymap.set("n", "<leader>(", function()
 	move_current_buf(9)
 end, { noremap = true, silent = true, desc = "move window to 9th tab" })
 
+vim.keymap.set("c", "<C-a>", "<Home>")
+vim.keymap.set("c", "<C-e>", "<End>")
+
 -- handle frequent typos
 vim.api.nvim_create_user_command("Q", "q", { bang = true })
 vim.api.nvim_create_user_command("W", "w", { bang = true })
