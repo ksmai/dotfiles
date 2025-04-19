@@ -6,7 +6,6 @@ return {
 			{ "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
 			"williamboman/mason.nvim",
 			{ "williamboman/mason-lspconfig.nvim" },
-			"SmiteshP/nvim-navic",
 			"ibhagwan/fzf-lua",
 			{ "Hoffs/omnisharp-extended-lsp.nvim" },
 		},
@@ -254,9 +253,6 @@ return {
 				local function on_attach(client, bufnr)
 					if server_config.on_attach ~= nil then
 						server_config.on_attach(client, bufnr)
-					end
-					if client.server_capabilities.documentSymbolProvider then
-						require("nvim-navic").attach(client, bufnr)
 					end
 				end
 
