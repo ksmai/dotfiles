@@ -11,7 +11,6 @@ return {
 			{ "<leader>f", group = "+Find" },
 			{ "<leader>g", group = "+Git" },
 			{ "<leader>r", group = "+Run tests" },
-			{ "<leader>t", group = "+Term" },
 		})
 	end,
 }
