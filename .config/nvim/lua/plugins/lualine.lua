@@ -49,7 +49,12 @@ local sections = {
 
 local winbar = {
 	lualine_c = { "aerial" },
-	lualine_y = { "lsp_status" },
+	lualine_y = {
+		{
+			"lsp_status",
+			draw_empty = true,
+		},
+	},
 }
 
 return {

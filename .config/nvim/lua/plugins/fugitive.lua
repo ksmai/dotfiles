@@ -32,14 +32,6 @@ return {
 			desc = "Toggle git status",
 		},
 		{
-			"<leader>gs",
-			"<cmd>tab Git<cr>",
-			mode = "n",
-			noremap = true,
-			silent = true,
-			desc = "Git status",
-		},
-		{
 			"<leader>gd",
 			"<cmd>Gvdiffsplit !^<cr><C-w>R",
 			mode = "n",
