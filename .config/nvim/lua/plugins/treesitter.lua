@@ -46,7 +46,16 @@ return {
 			"yaml",
 			"c_sharp",
 		},
-		highlight = { enable = true },
+		highlight = {
+			enable = true,
+
+			-- disable highlight in minified files
+			disable = function(lang, buf)
+				local line_count = vim.api.nvim_buf_line_count(buf)
+				local file_size = vim.api.nvim_buf_get_offset(buf, line_count)
+				return file_size / line_count > 10000
+			end,
+		},
 		indent = { enable = true },
 		incremental_selection = {
 			enable = true,
