@@ -58,7 +58,6 @@ return {
 				silent = true,
 				desc = "Code location list",
 			},
-
 			{
 				"[d",
 				function()

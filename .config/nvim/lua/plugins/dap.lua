@@ -23,14 +23,6 @@ return {
 						mode = { "n", "v" },
 					},
 					{
-						"<leader>fb",
-						"<cmd>FzfLua dap_breakpoints<cr>",
-						mode = "n",
-						noremap = true,
-						silent = true,
-						desc = "Find breakpoints",
-					},
-					{
 						"<leader>fd",
 						"<cmd>FzfLua dap_commands<cr>",
 						mode = "n",

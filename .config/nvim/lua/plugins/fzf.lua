@@ -36,7 +36,7 @@ return {
 			mode = "n",
 			noremap = true,
 			silent = true,
-			desc = "Live grep with glob",
+			desc = "Live grep glob",
 		},
 		{
 			"<leader>fw",
@@ -79,16 +79,6 @@ return {
 			desc = "Find commands",
 		},
 		{
-			"<leader>fC",
-			function()
-				require("fzf-lua").command_history()
-			end,
-			mode = "n",
-			noremap = true,
-			silent = true,
-			desc = "Find command history",
-		},
-		{
 			"<leader>fh",
 			function()
 				require("fzf-lua").help_tags()
@@ -117,6 +107,26 @@ return {
 			noremap = true,
 			silent = true,
 			desc = "Fuzzy search (current file)",
+		},
+		{
+			"<leader>fb",
+			function()
+				require("fzf-lua").buffers()
+			end,
+			mode = "n",
+			noremap = true,
+			silent = true,
+			desc = "Find buffers",
+		},
+		{
+			"<leader>fo",
+			function()
+				require("fzf-lua").oldfiles()
+			end,
+			mode = "n",
+			noremap = true,
+			silent = true,
+			desc = "Find oldfiles",
 		},
 	},
 	config = function()

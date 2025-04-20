@@ -117,6 +117,7 @@ vim.keymap.set("n", "<leader>(", function()
 	move_current_buf(9)
 end, { noremap = true, silent = true, desc = "move window to 9th tab" })
 
+-- command mode
 vim.keymap.set("c", "<C-a>", "<Home>")
 vim.keymap.set("c", "<C-e>", "<End>")
 

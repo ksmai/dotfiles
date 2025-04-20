@@ -32,11 +32,8 @@ else
 	vim.opt.signcolumn = "yes"
 end
 
--- modicator.vim
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
-
--- miscellaneous
 vim.opt.mouse = "a"
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
