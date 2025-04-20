@@ -23,6 +23,8 @@ return {
 				-- hide completion when using copilot
 				["<C-Up>"] = { "hide", "fallback" },
 				["<C-Down>"] = { "hide", "fallback" },
+				["<C-Left>"] = { "hide", "fallback" },
+				["<C-Right>"] = { "hide", "fallback" },
 			},
 
 			appearance = {

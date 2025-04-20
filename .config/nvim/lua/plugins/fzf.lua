@@ -21,22 +21,12 @@ return {
 		{
 			"<leader>fg",
 			function()
-				require("fzf-lua").live_grep_native()
-			end,
-			mode = "n",
-			noremap = true,
-			silent = true,
-			desc = "Live grep",
-		},
-		{
-			"<leader>fG",
-			function()
 				require("fzf-lua").live_grep_glob()
 			end,
 			mode = "n",
 			noremap = true,
 			silent = true,
-			desc = "Live grep glob",
+			desc = "Live grep",
 		},
 		{
 			"<leader>fw",
