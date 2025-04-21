@@ -32,6 +32,15 @@ return {
 				["q"] = "actions.close",
 				["<esc>"] = "actions.close",
 			},
+
+			-- kitty relies on the space following a double-width icon to
+			-- properly render it, but if the window is not opaque, sometimes
+			-- another character from behind might take up the space, causing
+			-- the icon to be randomly smaller or truncated. See:
+			-- https://github.com/kovidgoyal/kitty/issues/6210
+			win_opts = {
+				winblend = 0,
+			},
 		},
 	},
 }
