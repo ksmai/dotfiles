@@ -34,7 +34,7 @@ return {
 				else
 					gitsigns.nav_hunk("next")
 				end
-			end)
+			end, { desc = "Next hunk" })
 
 			map("n", "[c", function()
 				if vim.wo.diff then
@@ -42,13 +42,14 @@ return {
 				else
 					gitsigns.nav_hunk("prev")
 				end
-			end)
+			end, { desc = "Prev hunk" })
 
 			-- float window is less noisy as opposed to
 			-- gitsigns.preview_hunk_inline
-			map("n", "<leader>dp", gitsigns.preview_hunk)
+			map("n", "<leader>dp", gitsigns.preview_hunk, { desc = "Preview hunk" })
 
-			map({ "o", "x" }, "ih", gitsigns.select_hunk)
+			map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "Select hunk" })
+			map({ "o", "x" }, "ah", gitsigns.select_hunk, { desc = "Select hunk" })
 		end,
 	},
 
