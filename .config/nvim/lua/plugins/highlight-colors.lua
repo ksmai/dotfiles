@@ -1,8 +1,23 @@
 return {
 	"brenoprata10/nvim-highlight-colors",
+
 	event = { "BufReadPost", "BufNewFile" },
+
+	keys = {
+		{
+			"<leader>cH",
+			"<cmd>HighlightColors Toggle<cr>",
+			mode = "n",
+			silent = true,
+			noremap = true,
+			desc = "Toggle highlight colors",
+		},
+	},
+
 	config = function()
 		require("nvim-highlight-colors").setup({
+			render = "virtual",
+
 			-- disable highlight in minified files
 			exclude_buffer = function(buf)
 				local line_count = vim.api.nvim_buf_line_count(buf)

@@ -1,9 +1,11 @@
 return {
 	"sindrets/diffview.nvim",
+
 	cmd = {
 		"DiffviewFileHistory",
 		"DiffviewOpen",
 	},
+
 	keys = {
 		{
 			"<leader>db",
@@ -30,11 +32,18 @@ return {
 			desc = "Close Diffview",
 		},
 	},
+
 	opts = {
+		enhanced_diff_hl = true,
+
 		view = {
 			default = {
 				disable_diagnostics = true,
 			},
 		},
 	},
+
+	init = function()
+		vim.opt.fillchars:append("diff:╱")
+	end,
 }

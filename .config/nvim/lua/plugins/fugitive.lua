@@ -1,8 +1,27 @@
 return {
 	"tpope/vim-fugitive",
+
 	dependencies = {
 		{ "tpope/vim-rhubarb" },
 	},
+
+	cmd = {
+		"G",
+		"Git",
+		"Gedit",
+		"Gsplit",
+		"Gdiffsplit",
+		"Gvdiffsplit",
+		"Gread",
+		"Gwrite",
+		"Ggrep",
+		"GMove",
+		"GRename",
+		"GDelete",
+		"GRemove",
+		"GBrowse",
+	},
+
 	keys = {
 		{
 			"<leader>s",
@@ -96,4 +115,14 @@ return {
 			desc = "Open in Github (selected lines)",
 		},
 	},
+
+	init = function()
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "fugitive",
+			callback = function(event)
+				vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = event.buf, remap = true })
+				vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = event.buf, remap = true })
+			end,
+		})
+	end,
 }
