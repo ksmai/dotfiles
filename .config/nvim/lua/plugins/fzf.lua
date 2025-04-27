@@ -8,10 +8,15 @@ return {
 		{
 			"<C-p>",
 			function()
-				require("fzf-lua").files({
-					cwd_prompt = false,
-					prompt = "Files❯ ",
-				})
+				if vim.bo.filetype == "aerial-nav" then
+					local key = vim.api.nvim_replace_termcodes("<C-p>", true, false, true)
+					vim.api.nvim_feedkeys(key, "n", false)
+				else
+					require("fzf-lua").files({
+						cwd_prompt = false,
+						prompt = "Files❯ ",
+					})
+				end
 			end,
 			mode = "n",
 			noremap = true,
@@ -117,6 +122,16 @@ return {
 			noremap = true,
 			silent = true,
 			desc = "Find oldfiles",
+		},
+		{
+			"<leader>fs",
+			function()
+				require("fzf-lua").lsp_document_symbols()
+			end,
+			mode = "n",
+			noremap = true,
+			silent = true,
+			desc = "Find symbols",
 		},
 	},
 	config = function()
