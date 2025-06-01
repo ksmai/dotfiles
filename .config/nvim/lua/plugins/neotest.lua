@@ -1,3 +1,13 @@
+local function ensure_saved()
+	if not vim.bo.modified then
+		return
+	end
+
+	require("conform").format({ async = false, lsp_fallback = true, range = nil })
+
+	vim.cmd("noautocmd write")
+end
+
 return {
 	"nvim-neotest/neotest",
 	dependencies = {
@@ -13,6 +23,7 @@ return {
 		{
 			"<leader>rt",
 			function()
+				ensure_saved()
 				require("neotest").run.run()
 			end,
 			mode = "n",
@@ -23,6 +34,7 @@ return {
 		{
 			"<leader>rd",
 			function()
+				ensure_saved()
 				require("neotest").run.run({ strategy = "dap" })
 			end,
 			mode = "n",
@@ -33,6 +45,7 @@ return {
 		{
 			"<leader>rl",
 			function()
+				ensure_saved()
 				require("neotest").run.run_last()
 			end,
 			mode = "n",
@@ -43,6 +56,7 @@ return {
 		{
 			"<leader>rT",
 			function()
+				ensure_saved()
 				require("neotest").run.stop()
 			end,
 			mode = "n",
@@ -53,6 +67,7 @@ return {
 		{
 			"<leader>rf",
 			function()
+				ensure_saved()
 				require("neotest").run.run(vim.fn.expand("%"))
 			end,
 			mode = "n",
@@ -63,6 +78,7 @@ return {
 		{
 			"<leader>rw",
 			function()
+				ensure_saved()
 				require("neotest").watch.toggle()
 			end,
 			mode = "n",
@@ -73,6 +89,7 @@ return {
 		{
 			"<leader>rW",
 			function()
+				ensure_saved()
 				require("neotest").watch.toggle(vim.fn.expand("%"))
 			end,
 			mode = "n",
@@ -83,6 +100,7 @@ return {
 		{
 			"<leader>rq",
 			function()
+				ensure_saved()
 				require("neotest").watch.stop()
 			end,
 			mode = "n",
