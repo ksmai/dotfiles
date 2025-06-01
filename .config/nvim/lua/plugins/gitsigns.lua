@@ -15,6 +15,8 @@ return {
 	},
 
 	opts = {
+		signcolumn = false,
+
 		current_line_blame_opts = {
 			delay = 100,
 		},
