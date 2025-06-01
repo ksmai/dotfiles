@@ -25,7 +25,5 @@ return {
 				return file_size / line_count > 10000
 			end,
 		})
-
-		-- TODO: check integration with blink-cmp and lspkind
 	end,
 }

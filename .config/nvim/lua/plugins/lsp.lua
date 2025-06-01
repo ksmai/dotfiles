@@ -244,7 +244,6 @@ return {
 				omnisharp = {
 					cmd = { "/home/ksmai/.local/share/nvim/mason/bin/omnisharp" },
 				},
-				harper_ls = {},
 			},
 			setup = {
 				-- example to setup with typescript.nvim
