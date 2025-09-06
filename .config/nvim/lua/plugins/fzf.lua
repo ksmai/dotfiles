@@ -26,7 +26,7 @@ return {
 		{
 			"<leader>fg",
 			function()
-				require("fzf-lua").live_grep_glob()
+				require("fzf-lua").live_grep()
 			end,
 			mode = "n",
 			noremap = true,

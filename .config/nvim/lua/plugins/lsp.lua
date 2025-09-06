@@ -1,3 +1,24 @@
+local diagnostic_config = {
+	underline = true,
+	update_in_insert = false,
+	virtual_text = { spacing = 4, source = "if_many", prefix = "●" },
+	severity_sort = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "󰅚 ",
+			[vim.diagnostic.severity.WARN] = "󰀪 ",
+			[vim.diagnostic.severity.INFO] = "󰋽 ",
+			[vim.diagnostic.severity.HINT] = "󰌶 ",
+		},
+		numhl = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "",
+			[vim.diagnostic.severity.HINT] = "",
+			[vim.diagnostic.severity.INFO] = "",
+		},
+	},
+}
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -5,7 +26,6 @@ return {
 		dependencies = {
 			{ "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
 			"williamboman/mason.nvim",
-			{ "williamboman/mason-lspconfig.nvim" },
 			"ibhagwan/fzf-lua",
 			{ "Hoffs/omnisharp-extended-lsp.nvim" },
 		},
@@ -29,11 +49,7 @@ return {
 						vim.diagnostic.config({ virtual_text = false })
 					else
 						vim.diagnostic.config({
-							virtual_text = {
-								spacing = 4,
-								source = "if_many",
-								prefix = "●",
-							},
+							virtual_text = diagnostic_config.virtual_text,
 						})
 					end
 				end,
@@ -49,14 +65,6 @@ return {
 				noremap = true,
 				silent = true,
 				desc = "Code quickfix list",
-			},
-			{
-				"<leader>cl",
-				vim.diagnostic.setloclist,
-				mode = "n",
-				noremap = true,
-				silent = true,
-				desc = "Code location list",
 			},
 			{
 				"[d",
@@ -179,182 +187,107 @@ return {
 				desc = "Code format in range",
 			},
 		},
-		opts = {
-			diagnostics = {
-				underline = true,
-				update_in_insert = false,
-				virtual_text = { spacing = 4, source = "if_many", prefix = "●" },
-				severity_sort = true,
-			},
-			capabilities = {},
-			autoformat = true,
-			servers = {
-				jsonls = {},
-				yamlls = {
-					on_attach = function(client, _)
-						-- https://github.com/redhat-developer/yaml-language-server/issues/486
-						client.server_capabilities.document_formatting = true
-					end,
-					settings = {
-						yaml = {
-							format = {
-								enable = true,
+		config = function()
+			vim.diagnostic.config(diagnostic_config)
+
+			vim.lsp.config("lua_ls", {
+				on_init = function(client)
+					if client.workspace_folders then
+						local path = client.workspace_folders[1].name
+						if
+							path ~= vim.fn.stdpath("config")
+							and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
+						then
+							return
+						end
+					end
+
+					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+						runtime = {
+							-- Tell the language server which version of Lua you're using (most
+							-- likely LuaJIT in the case of Neovim)
+							version = "LuaJIT",
+							-- Tell the language server how to find Lua modules same way as Neovim
+							-- (see `:h lua-module-load`)
+							path = {
+								"lua/?.lua",
+								"lua/?/init.lua",
 							},
-							schemaStore = {
-								enable = true,
+						},
+						-- Make the server aware of Neovim runtime files
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								vim.env.VIMRUNTIME,
+								-- Depending on the usage, you might want to add additional paths
+								-- here.
+								-- '${3rd}/luv/library'
+								-- '${3rd}/busted/library'
 							},
+							-- Or pull in all of 'runtimepath'.
+							-- NOTE: this is a lot slower and will cause issues when working on
+							-- your own configuration.
+							-- See https://github.com/neovim/nvim-lspconfig/issues/3189
+							-- library = {
+							--   vim.api.nvim_get_runtime_file('', true),
+							-- }
 						},
+					})
+				end,
+				settings = {
+					Lua = {
+						telemetry = { enable = false },
 					},
 				},
-				html = {
-					capabilities = {
-						textDocument = {
-							completion = { completionItem = { snippetSupport = true } },
-						},
-					},
-					filetypes = { "html", "htmldjango" },
-				},
-				cssls = {
-					capabilities = {
-						textDocument = {
-							completion = { completionItem = { snippetSupport = true } },
-						},
-					},
-				},
-				lua_ls = {
-					settings = {
-						Lua = {
-							telemetry = { enable = false },
-							runtime = { version = "LuaJIT" },
-							workspace = { checkThirdParty = false },
-						},
-					},
-				},
-				pylsp = {},
-				ts_ls = {},
-				eslint = {
-					on_attach = function(_, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							command = "EslintFixAll",
-						})
-					end,
-				},
-				svelte = {},
-				omnisharp = {
-					cmd = { "/home/ksmai/.local/share/nvim/mason/bin/omnisharp" },
-				},
-			},
-			setup = {
-				-- example to setup with typescript.nvim
-				-- ts_ls = function(_, opts)
-				--   require("typescript").setup({ server = opts })
-				--   return true
-				-- end,
-				-- Specify * to use this function as a fallback for any server
-				-- ["*"] = function(server, opts) end,
-			},
-		},
-		config = function(_, opts)
-			vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+			})
 
-			local servers = opts.servers
-			local capabilities =
-				vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
-			capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-
-			local function setup(server)
-				local server_config = servers[server] or {}
-				local server_opts = vim.tbl_deep_extend("force", {
-					capabilities = vim.deepcopy(capabilities),
-				}, server_config)
-
-				local function on_attach(client, bufnr)
-					if server_config.on_attach ~= nil then
-						server_config.on_attach(client, bufnr)
-					end
-				end
-
-				server_opts.on_attach = on_attach
-
-				if opts.setup[server] then
-					if opts.setup[server](server, server_opts) then
-						return
-					end
-				elseif opts.setup["*"] then
-					if opts.setup["*"](server, server_opts) then
-						return
-					end
-				end
-				require("lspconfig")[server].setup(server_opts)
-			end
-
-			local mlsp = require("mason-lspconfig")
-			local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-			local ensure_installed = {}
-
-			for server, server_opts in pairs(servers) do
-				if server_opts then
-					server_opts = server_opts == true and {} or server_opts
-					-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-					if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-						setup(server)
-					else
-						ensure_installed[#ensure_installed + 1] = server
-					end
-				end
-			end
-
-			mlsp.setup({ ensure_installed = ensure_installed })
-			mlsp.setup_handlers({ setup })
-
-			vim.diagnostic.config({
-				signs = {
-					text = {
-						[vim.diagnostic.severity.ERROR] = "󰅚 ",
-						[vim.diagnostic.severity.WARN] = "󰀪 ",
-						[vim.diagnostic.severity.INFO] = "󰋽 ",
-						[vim.diagnostic.severity.HINT] = "󰌶 ",
-					},
-					numhl = {
-						[vim.diagnostic.severity.ERROR] = "",
-						[vim.diagnostic.severity.WARN] = "",
-						[vim.diagnostic.severity.HINT] = "",
-						[vim.diagnostic.severity.INFO] = "",
-					},
-				},
+			vim.lsp.enable({
+				"jsonls",
+				"yamlls",
+				"html",
+				"cssls",
+				"lua_ls",
+				"pylsp",
+				"ts_ls",
+				"eslint",
+				"svelte",
+				"omnisharp",
 			})
 		end,
 	},
+
 	{
 		"stevearc/conform.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			require("conform").setup({
-				formatters_by_ft = {
-					lua = { "stylua" },
-					javascript = { "prettierd", "prettier", stop_after_first = true },
-					typescript = { "prettierd", "prettier", stop_after_first = true },
-				},
-				format_on_save = function(bufnr)
-					-- Disable autoformat on certain filetypes
-					local ignore_filetypes = {}
-					if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-						return
-					end
-					-- Disable with a global or buffer-local variable
-					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-						return
-					end
-					-- Disable autoformat for files in a certain path
-					local bufname = vim.api.nvim_buf_get_name(bufnr)
-					if bufname:match("/node_modules/") then
-						return
-					end
-					-- ...additional logic...
-					return { timeout_ms = 500, lsp_fallback = true }
-				end,
-			})
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo", "Format", "FormatDisable", "FormatEnable" },
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+			},
+
+			format_on_save = function(bufnr)
+				-- Disable autoformat on certain filetypes
+				local ignore_filetypes = {}
+				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+					return
+				end
+				-- Disable with a global or buffer-local variable
+				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+					return
+				end
+				-- Disable autoformat for files in a certain path
+				local bufname = vim.api.nvim_buf_get_name(bufnr)
+				if bufname:match("/node_modules/") then
+					return
+				end
+				-- ...additional logic...
+				return { timeout_ms = 500, lsp_format = "fallback" }
+			end,
+		},
+		config = function(_, opts)
+			require("conform").setup(opts)
 
 			vim.api.nvim_create_user_command("Format", function(args)
 				local range = nil
@@ -365,7 +298,7 @@ return {
 						["end"] = { args.line2, end_line:len() },
 					}
 				end
-				require("conform").format({ async = true, lsp_fallback = true, range = range })
+				require("conform").format({ async = true, lsp_format = "fallback", range = range })
 			end, { range = true })
 
 			vim.api.nvim_create_user_command("FormatDisable", function(args)
@@ -379,6 +312,7 @@ return {
 				desc = "Disable autoformat-on-save",
 				bang = true,
 			})
+
 			vim.api.nvim_create_user_command("FormatEnable", function()
 				vim.b.disable_autoformat = false
 				vim.g.disable_autoformat = false
@@ -387,6 +321,7 @@ return {
 			})
 		end,
 	},
+
 	{
 		"williamboman/mason.nvim",
 		build = ":MasonUpdate",

@@ -3,7 +3,7 @@ local function ensure_saved()
 		return
 	end
 
-	require("conform").format({ async = false, lsp_fallback = true, range = nil })
+	require("conform").format({ async = false, lsp_format = "fallback", range = nil })
 
 	vim.cmd("noautocmd write")
 end
