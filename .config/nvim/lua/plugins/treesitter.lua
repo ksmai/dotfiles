@@ -104,5 +104,7 @@ return {
 	},
 	config = function(_, opts)
 		require("nvim-treesitter.configs").setup(opts)
+
+		vim.hl.priorities.semantic_tokens = 95
 	end,
 }
