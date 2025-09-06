@@ -156,6 +156,7 @@ return {
 				-- Set to 1 if experiencing lag.
 				concurrent = 1,
 			},
+			quickfix = { enabled = false },
 			running = {
 				-- Run tests concurrently when an adapter provides multiple commands to run.
 				concurrent = true,
