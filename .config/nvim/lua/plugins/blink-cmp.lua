@@ -44,7 +44,10 @@ return {
 						module = "blink-copilot",
 						score_offset = 100,
 						async = true,
-						kind_hl = "GrovboxGreen",
+
+						opts = {
+							kind_hl = "GrovboxGreen",
+						},
 					},
 				},
 			},
