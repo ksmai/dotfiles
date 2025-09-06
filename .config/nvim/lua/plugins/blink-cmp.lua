@@ -46,7 +46,7 @@ return {
 						async = true,
 
 						opts = {
-							kind_hl = "GrovboxGreen",
+							kind_hl = "GruvboxGreen",
 						},
 					},
 				},
