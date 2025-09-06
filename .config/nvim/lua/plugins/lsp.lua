@@ -166,26 +166,6 @@ return {
 				silent = true,
 				desc = "Code action",
 			},
-			{
-				"<leader>cf",
-				function()
-					vim.cmd("Format")
-				end,
-				mode = "n",
-				noremap = true,
-				silent = true,
-				desc = "Code format",
-			},
-			{
-				"<leader>cf",
-				function()
-					vim.cmd("Format")
-				end,
-				mode = "v",
-				noremap = true,
-				silent = true,
-				desc = "Code format in range",
-			},
 		},
 		config = function()
 			vim.diagnostic.config(diagnostic_config)
@@ -247,7 +227,8 @@ return {
 				"html",
 				"cssls",
 				"lua_ls",
-				"pylsp",
+				"ruff",
+				"ty",
 				"ts_ls",
 				"eslint",
 				"svelte",
@@ -261,10 +242,17 @@ return {
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo", "Format", "FormatDisable", "FormatEnable" },
 		opts = {
+			formatters = {
+				ruff_fix = {
+					append_args = { "--unsafe-fixes" },
+				},
+			},
+
 			formatters_by_ft = {
 				lua = { "stylua" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 				typescript = { "prettierd", "prettier", stop_after_first = true },
+				python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 			},
 
 			format_on_save = function(bufnr)
