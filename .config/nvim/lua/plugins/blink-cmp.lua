@@ -6,6 +6,7 @@ return {
 			"onsails/lspkind.nvim",
 			"nvim-tree/nvim-web-devicons",
 			"brenoprata10/nvim-highlight-colors",
+			"fang2hou/blink-copilot",
 		},
 
 		-- use a release tag to download pre-built binaries
@@ -20,12 +21,6 @@ return {
 				["<C-space>"] = {},
 				["<C-p>"] = { "show", "select_prev", "fallback_to_mappings" },
 				["<C-n>"] = { "show", "select_next", "fallback_to_mappings" },
-
-				-- hide completion when using copilot
-				["<C-Up>"] = { "hide", "fallback" },
-				["<C-Down>"] = { "hide", "fallback" },
-				["<C-Left>"] = { "hide", "fallback" },
-				["<C-Right>"] = { "hide", "fallback" },
 			},
 
 			appearance = {
@@ -41,7 +36,16 @@ return {
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer" },
+				default = { "lsp", "path", "copilot", "snippets", "buffer" },
+
+				providers = {
+					copilot = {
+						name = "copilot",
+						module = "blink-copilot",
+						score_offset = 100,
+						async = true,
+					},
+				},
 			},
 
 			-- Blink.cmp uses a Rust fuzzy matcher by default for typo resistance and significantly better performance
