@@ -2,7 +2,6 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		dependencies = {
-
 			{
 				"rcarriga/nvim-dap-ui",
 				dependencies = { "nvim-neotest/nvim-nio" },
@@ -81,27 +80,6 @@ return {
 				desc = "Toggle Breakpoint",
 			},
 			{
-				"<C-/>",
-				function()
-					require("dap").continue()
-				end,
-				desc = "Continue",
-			},
-			{
-				"<C-S-'>",
-				function()
-					require("dap").run_to_cursor()
-				end,
-				desc = "Run to Cursor",
-			},
-			{
-				"<C-;>",
-				function()
-					require("dap").step_into()
-				end,
-				desc = "Step Into",
-			},
-			{
 				"<C-.>",
 				function()
 					require("dap").down()
@@ -116,6 +94,13 @@ return {
 				desc = "Up",
 			},
 			{
+				"<C-;>",
+				function()
+					require("dap").step_into()
+				end,
+				desc = "Step Into",
+			},
+			{
 				"<C-S-;>",
 				function()
 					require("dap").step_out()
@@ -128,6 +113,20 @@ return {
 					require("dap").step_over()
 				end,
 				desc = "Step Over",
+			},
+			{
+				"<C-S-'>",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "Run to Cursor",
+			},
+			{
+				"<C-/>",
+				function()
+					require("dap").continue()
+				end,
+				desc = "Continue",
 			},
 			{
 				"<C-S-/>",
