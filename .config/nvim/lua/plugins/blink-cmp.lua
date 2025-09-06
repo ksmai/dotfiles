@@ -44,6 +44,7 @@ return {
 						module = "blink-copilot",
 						score_offset = 100,
 						async = true,
+						kind_hl = "GrovboxGreen",
 					},
 				},
 			},
@@ -89,6 +90,7 @@ return {
 										if dev_icon then
 											icon = dev_icon
 										end
+									elseif vim.tbl_contains({ "copilot" }, ctx.source_name) then
 									else
 										icon = require("lspkind").symbolic(ctx.kind, {
 											mode = "symbol",
