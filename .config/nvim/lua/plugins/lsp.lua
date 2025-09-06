@@ -228,7 +228,7 @@ return {
 				"cssls",
 				"lua_ls",
 				"ruff",
-				"ty",
+				"pyrefly",
 				"ts_ls",
 				"eslint",
 				"svelte",
