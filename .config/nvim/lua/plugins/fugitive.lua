@@ -31,7 +31,7 @@ return {
 
 				for _, win in ipairs(wins) do
 					local buf = vim.api.nvim_win_get_buf(win)
-					local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
+					local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
 					if filetype == "fugitive" then
 						local win_tabpage = vim.api.nvim_win_get_tabpage(win)
