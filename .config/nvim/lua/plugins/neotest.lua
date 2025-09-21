@@ -1,11 +1,12 @@
-local function ensure_saved()
+local function after_saved(fn)
 	if not vim.bo.modified then
+		fn()
 		return
 	end
 
-	require("conform").format({ async = false, lsp_format = "fallback", range = nil })
+	vim.cmd("write")
 
-	vim.cmd("noautocmd write")
+	vim.defer_fn(fn, 300)
 end
 
 return {
@@ -23,8 +24,9 @@ return {
 		{
 			"<leader>rt",
 			function()
-				ensure_saved()
-				require("neotest").run.run()
+				after_saved(function()
+					require("neotest").run.run()
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -34,8 +36,9 @@ return {
 		{
 			"<leader>rd",
 			function()
-				ensure_saved()
-				require("neotest").run.run({ strategy = "dap" })
+				after_saved(function()
+					require("neotest").run.run({ strategy = "dap" })
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -45,8 +48,9 @@ return {
 		{
 			"<leader>rl",
 			function()
-				ensure_saved()
-				require("neotest").run.run_last()
+				after_saved(function()
+					require("neotest").run.run_last()
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -56,8 +60,9 @@ return {
 		{
 			"<leader>rT",
 			function()
-				ensure_saved()
-				require("neotest").run.stop()
+				after_saved(function()
+					require("neotest").run.stop()
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -67,8 +72,9 @@ return {
 		{
 			"<leader>rf",
 			function()
-				ensure_saved()
-				require("neotest").run.run(vim.fn.expand("%"))
+				after_saved(function()
+					require("neotest").run.run(vim.fn.expand("%"))
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -78,8 +84,9 @@ return {
 		{
 			"<leader>rw",
 			function()
-				ensure_saved()
-				require("neotest").watch.toggle()
+				after_saved(function()
+					require("neotest").watch.toggle()
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -89,8 +96,9 @@ return {
 		{
 			"<leader>rW",
 			function()
-				ensure_saved()
-				require("neotest").watch.toggle(vim.fn.expand("%"))
+				after_saved(function()
+					require("neotest").watch.toggle(vim.fn.expand("%"))
+				end)
 			end,
 			mode = "n",
 			noremap = true,
@@ -100,8 +108,9 @@ return {
 		{
 			"<leader>rq",
 			function()
-				ensure_saved()
-				require("neotest").watch.stop()
+				after_saved(function()
+					require("neotest").watch.stop()
+				end)
 			end,
 			mode = "n",
 			noremap = true,
