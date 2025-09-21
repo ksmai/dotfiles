@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		{ "junegunn/fzf", build = "./install --bin" },
+		{ "stevearc/aerial.nvim", opts = {} },
 	},
 	keys = {
 		{
@@ -126,7 +127,7 @@ return {
 		{
 			"<leader>fs",
 			function()
-				require("fzf-lua").lsp_document_symbols()
+				require("aerial").fzf_lua_picker()
 			end,
 			mode = "n",
 			noremap = true,
