@@ -6,7 +6,7 @@ return {
 	},
 	keys = {
 		{
-			"<C-p>",
+			"<leader>ff",
 			function()
 				if vim.bo.filetype == "aerial-nav" then
 					local key = vim.api.nvim_replace_termcodes("<C-p>", true, false, true)
