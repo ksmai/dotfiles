@@ -71,9 +71,3 @@ vim.opt.diffopt:append("followwrap")
 if vim.fn.executable("rg") then
 	vim.opt.grepprg = "rg --no-heading --vimgrep --hidden --iglob !.git/"
 end
-
-vim.filetype.add({
-	extension = {
-		["http"] = "http",
-	},
-})

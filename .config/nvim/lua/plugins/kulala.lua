@@ -123,4 +123,12 @@ return {
 			return true
 		end,
 	},
+
+	init = function()
+		vim.filetype.add({
+			extension = {
+				["http"] = "http",
+			},
+		})
+	end,
 }
