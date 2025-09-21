@@ -3,7 +3,7 @@ return {
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		{ "junegunn/fzf", build = "./install --bin" },
-		{ "stevearc/aerial.nvim", opts = {} },
+		"stevearc/aerial.nvim",
 	},
 	keys = {
 		{
