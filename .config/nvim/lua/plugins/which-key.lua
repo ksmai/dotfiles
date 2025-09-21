@@ -10,6 +10,7 @@ return {
 			{ "<leader>d", group = "+Diff / Debug" },
 			{ "<leader>f", group = "+Find" },
 			{ "<leader>g", group = "+Git" },
+			{ "<leader>k", group = "+Kulala" },
 			{ "<leader>r", group = "+Run tests" },
 		})
 	end,
