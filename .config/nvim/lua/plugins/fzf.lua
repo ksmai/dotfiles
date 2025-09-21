@@ -136,5 +136,6 @@ return {
 	},
 	config = function()
 		require("fzf-lua").setup({ "telescope" })
+		vim.cmd("FzfLua register_ui_select")
 	end,
 }

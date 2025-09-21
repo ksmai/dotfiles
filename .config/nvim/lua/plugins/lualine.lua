@@ -64,7 +64,13 @@ return {
 		"stevearc/aerial.nvim",
 	},
 	opts = {
-		options = { theme = "gruvbox" },
+		options = {
+			theme = "gruvbox",
+			disabled_filetypes = {
+				statusline = {},
+				winbar = { "kulala_ui" },
+			},
+		},
 		sections = sections,
 		inactive_sections = sections,
 		winbar = winbar,
