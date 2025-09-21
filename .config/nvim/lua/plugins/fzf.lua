@@ -85,14 +85,14 @@ return {
 			desc = "Find help tags",
 		},
 		{
-			"<leader>fr",
+			"<leader>fl",
 			function()
 				require("fzf-lua").resume()
 			end,
 			mode = "n",
 			noremap = true,
 			silent = true,
-			desc = "Resume previous picker",
+			desc = "Resume last picker",
 		},
 		{
 			"<leader>fz",

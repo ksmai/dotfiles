@@ -47,7 +47,7 @@ return {
 			},
 
 			["Replay the last request"] = {
-				"<leader>kr",
+				"<leader>kl",
 				function()
 					require("kulala").replay()
 				end,
