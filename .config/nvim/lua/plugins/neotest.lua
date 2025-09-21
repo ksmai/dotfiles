@@ -140,24 +140,24 @@ return {
 			desc = "Toggle summary window",
 		},
 		{
-			"[t",
+			"[x",
 			function()
 				require("neotest").jump.prev({ status = "failed" })
 			end,
 			mode = "n",
 			noremap = true,
 			silent = true,
-			desc = "Jump to previous failed test",
+			desc = "Jump to previous test failure",
 		},
 		{
-			"]t",
+			"]x",
 			function()
 				require("neotest").jump.next({ status = "failed" })
 			end,
 			mode = "n",
 			noremap = true,
 			silent = true,
-			desc = "Jump to next failed test",
+			desc = "Jump to next test failure",
 		},
 	},
 	opts = function()
