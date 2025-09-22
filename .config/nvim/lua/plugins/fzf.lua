@@ -4,18 +4,19 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		{ "junegunn/fzf", build = "./install --bin" },
 		"stevearc/aerial.nvim",
+		{ "elanmed/fzf-lua-frecency.nvim" },
 	},
 	keys = {
 		{
-			"<leader>ff",
+			"<C-p>",
 			function()
 				if vim.bo.filetype == "aerial-nav" then
 					local key = vim.api.nvim_replace_termcodes("<C-p>", true, false, true)
 					vim.api.nvim_feedkeys(key, "n", false)
 				else
-					require("fzf-lua").files({
-						cwd_prompt = false,
-						prompt = "Files❯ ",
+					require("fzf-lua-frecency").frecency({
+						cwd_only = true,
+						display_score = false,
 					})
 				end
 			end,
