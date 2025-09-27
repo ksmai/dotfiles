@@ -31,7 +31,11 @@ return {
 		{
 			"<leader>fg",
 			function()
-				require("fzf-lua").live_grep()
+				require("fzf-lua").live_grep({
+					fzf_opts = {
+						["--no-sort"] = true,
+					},
+				})
 			end,
 			mode = "n",
 			noremap = true,
@@ -41,7 +45,11 @@ return {
 		{
 			"<leader>fw",
 			function()
-				require("fzf-lua").grep_cword()
+				require("fzf-lua").grep_cword({
+					fzf_opts = {
+						["--no-sort"] = true,
+					},
+				})
 			end,
 			mode = "n",
 			noremap = true,
@@ -51,7 +59,11 @@ return {
 		{
 			"<leader>fW",
 			function()
-				require("fzf-lua").grep_cWORD()
+				require("fzf-lua").grep_cWORD({
+					fzf_opts = {
+						["--no-sort"] = true,
+					},
+				})
 			end,
 			mode = "n",
 			noremap = true,
@@ -61,7 +73,11 @@ return {
 		{
 			"<leader>fw",
 			function()
-				require("fzf-lua").grep_visual()
+				require("fzf-lua").grep_visual({
+					fzf_opts = {
+						["--no-sort"] = true,
+					},
+				})
 			end,
 			mode = "v",
 			noremap = true,
