@@ -19,6 +19,7 @@ return {
 						display_score = false,
 						fzf_opts = {
 							["--no-sort"] = false,
+							["--tiebreak"] = "index",
 						},
 					})
 				end
