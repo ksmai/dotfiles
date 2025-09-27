@@ -17,6 +17,9 @@ return {
 					require("fzf-lua-frecency").frecency({
 						cwd_only = true,
 						display_score = false,
+						fzf_opts = {
+							["--no-sort"] = false,
+						},
 					})
 				end
 			end,
@@ -128,7 +131,11 @@ return {
 		{
 			"<leader>fs",
 			function()
-				require("aerial").fzf_lua_picker()
+				require("aerial").fzf_lua_picker({
+					fzf_opts = {
+						["--no-sort"] = true,
+					},
+				})
 			end,
 			mode = "n",
 			noremap = true,
