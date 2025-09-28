@@ -2,9 +2,9 @@ return {
 	"ibhagwan/fzf-lua",
 	dependencies = {
 		{ "junegunn/fzf", build = "./install --bin" },
-		"stevearc/aerial.nvim",
 		{ "elanmed/fzf-lua-frecency.nvim" },
 	},
+	cmd = { "FzfLua" },
 	keys = {
 		{
 			"<C-p>",

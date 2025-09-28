@@ -1,8 +1,6 @@
 return {
 	"brenoprata10/nvim-highlight-colors",
 
-	event = { "BufReadPost", "BufNewFile" },
-
 	keys = {
 		{
 			"<leader>cH",
@@ -27,5 +25,7 @@ return {
 				return file_size / line_count > 10000
 			end,
 		})
+
+		vim.cmd([[HighlightColors off]])
 	end,
 }
