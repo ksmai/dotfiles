@@ -69,7 +69,6 @@ return {
 					ensure_installed = { "codelldb", "python", "coreclr" },
 				},
 			},
-			"ibhagwan/fzf-lua",
 		},
 		keys = {
 			{
@@ -172,6 +171,12 @@ return {
 	},
 	{
 		"mxsdev/nvim-dap-vscode-js",
+		ft = {
+			"typescript",
+			"javascript",
+			"typescriptreact",
+			"javascriptreact",
+		},
 		dependencies = { "mfussenegger/nvim-dap", "microsoft/vscode-js-debug" },
 		config = function()
 			require("dap-vscode-js").setup({
@@ -230,6 +235,12 @@ return {
 	},
 	{
 		"microsoft/vscode-js-debug",
+		ft = {
+			"typescript",
+			"javascript",
+			"typescriptreact",
+			"javascriptreact",
+		},
 		build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
 	},
 }

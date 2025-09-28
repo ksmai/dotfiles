@@ -25,7 +25,6 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			{ "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
-			"williamboman/mason.nvim",
 			"ibhagwan/fzf-lua",
 			{ "Hoffs/omnisharp-extended-lsp.nvim" },
 		},
@@ -312,6 +311,7 @@ return {
 
 	{
 		"williamboman/mason.nvim",
+		cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonLog", "MasonUninstall", "MasonUninstallAll" },
 		build = ":MasonUpdate",
 		config = function()
 			require("mason").setup()

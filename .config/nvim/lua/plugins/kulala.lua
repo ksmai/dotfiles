@@ -1,9 +1,6 @@
 return {
 	"mistweaverco/kulala.nvim",
 	ft = { "http", "rest" },
-	dependencies = {
-		"ibhagwan/fzf-lua",
-	},
 	opts = {
 		global_keymaps = {
 			["Open scratchpad"] = {

@@ -60,7 +60,6 @@ local winbar = {
 return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = {
-		"nvim-tree/nvim-web-devicons",
 		"stevearc/aerial.nvim",
 	},
 	opts = {

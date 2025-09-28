@@ -1,7 +1,6 @@
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = {
-		"nvim-tree/nvim-web-devicons",
 		{ "junegunn/fzf", build = "./install --bin" },
 		"stevearc/aerial.nvim",
 		{ "elanmed/fzf-lua-frecency.nvim" },

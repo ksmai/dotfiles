@@ -4,8 +4,6 @@ return {
 		dependencies = {
 			"L3MON4D3/LuaSnip",
 			"onsails/lspkind.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"brenoprata10/nvim-highlight-colors",
 			"fang2hou/blink-copilot",
 		},
 

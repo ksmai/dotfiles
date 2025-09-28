@@ -14,6 +14,8 @@ return {
 		},
 	},
 
+	cmd = { "HighlightColors" },
+
 	config = function()
 		require("nvim-highlight-colors").setup({
 			render = "virtual",
