@@ -10,6 +10,7 @@ return {
 			filetypes = {
 				markdown = true,
 				help = true,
+				["dap-repl"] = false,
 			},
 		},
 	},
