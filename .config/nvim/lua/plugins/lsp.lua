@@ -248,9 +248,83 @@ return {
 
 			formatters_by_ft = {
 				lua = { "stylua" },
-				javascript = { "prettierd", "prettier", stop_after_first = true },
-				typescript = { "prettierd", "prettier", stop_after_first = true },
+				javascript = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				javascriptreact = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				typescript = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				typescriptreact = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				markdown = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				html = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				css = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
+				json = {
+					"prettierd",
+					"prettier",
+					stop_after_first = true,
+					lsp_format = "first",
+					filter = function(client)
+						return client.name == "eslint"
+					end,
+				},
 				python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+			},
+
+			default_format_opts = {
+				lsp_format = "fallback",
 			},
 
 			format_on_save = function(bufnr)
@@ -269,7 +343,7 @@ return {
 					return
 				end
 				-- ...additional logic...
-				return { timeout_ms = 500, lsp_format = "fallback" }
+				return { timeout_ms = 500 }
 			end,
 		},
 		config = function(_, opts)
@@ -284,7 +358,7 @@ return {
 						["end"] = { args.line2, end_line:len() },
 					}
 				end
-				require("conform").format({ async = true, lsp_format = "fallback", range = range })
+				require("conform").format({ async = true, range = range })
 			end, { range = true })
 
 			vim.api.nvim_create_user_command("FormatDisable", function(args)
