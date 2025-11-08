@@ -219,6 +219,17 @@ return {
 				},
 			})
 
+			vim.lsp.config("ty", {
+				settings = {
+					ty = {
+						experimental = {
+							rename = true,
+							autoImport = true,
+						},
+					},
+				},
+			})
+
 			vim.lsp.enable({
 				"jsonls",
 				"yamlls",
@@ -226,7 +237,7 @@ return {
 				"cssls",
 				"lua_ls",
 				"ruff",
-				"pyrefly",
+				"ty",
 				"ts_ls",
 				"eslint",
 				"svelte",
