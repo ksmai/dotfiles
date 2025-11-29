@@ -190,6 +190,12 @@ return {
 				-- Run tests concurrently when an adapter provides multiple commands to run.
 				concurrent = true,
 			},
+			output = {
+				open_on_run = false,
+			},
+			output_panel = {
+				enabled = false,
+			},
 		}
 	end,
 }
