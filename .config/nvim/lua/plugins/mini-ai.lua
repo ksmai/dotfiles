@@ -5,6 +5,8 @@ return {
 	-- time if there are function decorators in the code, so we temporarily
 	-- switch to the stable branch until it is resolved. If the stable branch
 	-- later also has this issue, please switch to tag v0.16.0.
+	-- e.g. using vaf on a decorated function will select both the decorated function and the next function
+	-- TODO: try using treesitter main branch?
 	-- version = false,
 	branch = "stable",
 	dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
