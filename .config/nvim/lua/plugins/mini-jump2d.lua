@@ -24,19 +24,33 @@ return {
 						return
 					end
 
-					local case = "\\c"
-					if string.match(char, "%u") then
-						case = "\\C"
-					end
+					local edge_only = string.match(char, "[%l%d]")
+					char = vim.fn.escape(char, "\\")
 
-					local boundary = ""
+					local pat = {
+						[[\V\C\(]],
+					}
+
 					if string.match(char, "%l") then
-						boundary = "\\<"
+						local upper = string.upper(char)
+						table.insert(pat, upper)
+						table.insert(pat, "\\|")
+						char = "\\[" .. char .. upper .. "]"
 					end
 
-					local pat = "\\V" .. case .. boundary .. vim.fn.escape(char, "\\")
+					if edge_only then
+						table.insert(pat, [[\(\<\|_\+\)\zs]])
+						table.insert(pat, char)
+						table.insert(pat, [[\|]])
+						table.insert(pat, char)
+						table.insert(pat, [[\ze_\*\>]])
+					else
+						table.insert(pat, char)
+					end
 
-					opts.spotter = jump2d.gen_spotter.vimpattern(pat)
+					table.insert(pat, [[\)]])
+
+					opts.spotter = jump2d.gen_spotter.vimpattern(table.concat(pat))
 				end
 				opts.hooks = { before_start = before_start }
 
