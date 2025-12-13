@@ -3,7 +3,6 @@ return {
 
 	dependencies = {
 		{ "tpope/vim-rhubarb" },
-		{ "farhanmustar/fugitive-delta.nvim" },
 	},
 
 	cmd = {
