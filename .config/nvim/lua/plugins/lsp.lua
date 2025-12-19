@@ -242,6 +242,8 @@ return {
 				"eslint",
 				"svelte",
 				"omnisharp",
+				"codebook",
+				"gopls",
 			})
 		end,
 	},
@@ -332,6 +334,7 @@ return {
 					end,
 				},
 				python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+				go = { "goimports", "gofmt" },
 			},
 
 			default_format_opts = {
