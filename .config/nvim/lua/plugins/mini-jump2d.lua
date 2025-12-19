@@ -62,5 +62,9 @@ return {
 			desc = "Jump 2D",
 		},
 	},
-	opts = {},
+	opts = {
+		mappings = {
+			start_jumping = "",
+		},
+	},
 }
