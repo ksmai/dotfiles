@@ -26,6 +26,7 @@ return {
 				"glsl",
 				"go",
 				"html",
+				"http",
 				"javascript",
 				"javascriptreact",
 				"json",
