@@ -43,9 +43,12 @@ exec --no-startup-id dunst
 
 exec --no-startup-id redshift -P -O 3500
 
-exec --no-startup-id xscreensaver
-bindsym $mod+Shift+z exec --no-startup-id xscreensaver-command --suspend
-bindsym Prior exec --no-startup-id xscreensaver-command --suspend
+# Disable xscreensaver temporarily until this issue is resolved:
+# https://bbs.archlinux.org/viewtopic.php?id=307400
+# https://gitlab.archlinux.org/archlinux/packaging/packages/xscreensaver/-/issues/5
+# exec --no-startup-id xscreensaver
+# bindsym $mod+Shift+z exec --no-startup-id xscreensaver-command --suspend
+# bindsym Prior exec --no-startup-id xscreensaver-command --suspend
 
 exec --no-startup-id ibus-daemon -drxR
 
