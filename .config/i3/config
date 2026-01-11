@@ -49,6 +49,8 @@ exec --no-startup-id redshift -P -O 3500
 # exec --no-startup-id xscreensaver
 # bindsym $mod+Shift+z exec --no-startup-id xscreensaver-command --suspend
 # bindsym Prior exec --no-startup-id xscreensaver-command --suspend
+exec --no-startup-id xset s off
+exec --no-startup-id xset -dpms
 
 exec --no-startup-id ibus-daemon -drxR
 
