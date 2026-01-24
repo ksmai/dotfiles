@@ -12,7 +12,7 @@ echo ""
 dobackup() {
     while read repo; do
         if ! restic --repo "$repo" cat config >/dev/null 2>&1; then
-            info "Repo does not exist: $repo"
+            info "Repo does not exist: $repo. Skipping..."
             continue
         fi
 

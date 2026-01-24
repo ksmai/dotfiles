@@ -12,15 +12,15 @@ echo ""
 docheck() {
     while read repo; do
         if ! restic --repo "$repo" cat config >/dev/null 2>&1; then
-            info "Repo does not exist: $repo"
+            info "Repo does not exist: $repo. Skipping..."
             continue
         fi
 
         info "Checking repo: $repo"
 
         restic check \
-            --repo "$repo" \
-            --read-data
+            --read-data \
+            --repo "$repo"
 
         TEST_DIR=`mktemp -d`
 
@@ -48,6 +48,8 @@ docheck() {
             fi
 
         done <"$2"
+
+        rm -rf "$TEST_DIR"
 
     done <"$1"
 }
