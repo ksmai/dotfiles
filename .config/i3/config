@@ -54,7 +54,6 @@ exec --no-startup-id xset -dpms
 
 exec --no-startup-id ibus-daemon -drxR
 
-exec --no-startup-id mailnag
 exec --no-startup-id Telegram -startintray
 exec --no-startup-id signal-desktop --start-in-tray
 
