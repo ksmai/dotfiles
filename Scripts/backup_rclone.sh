@@ -5,6 +5,11 @@ info() { printf "[%s] %s\n" "$(date)" "$*" >&2; }
 
 trap 'echo [$(date)] Interrupted >&2; exit 2' INT TERM
 
+read -p "Enter password: " -s RCLONE_CONFIG_PASS
+echo ""
+export RCLONE_CONFIG_PASS
+
+
 while read dest; do
     while read file; do
         dest_file="$dest/$(basename "$file")"

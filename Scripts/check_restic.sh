@@ -6,8 +6,9 @@ info() { printf "[%s] %s\n" "$(date)" "$*" >&2; }
 trap 'echo [$(date)] Interrupted >&2; exit 2' INT TERM
 
 read -p "Enter password: " -s RESTIC_PASSWORD
-export RESTIC_PASSWORD
 echo ""
+export RESTIC_PASSWORD
+export RCLONE_CONFIG_PASS="$RESTIC_PASSWORD"
 
 docheck() {
     while read repo; do
