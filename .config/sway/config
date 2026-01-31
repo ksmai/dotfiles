@@ -32,7 +32,7 @@ client.focused_inactive $bg $bg $border $bg $bg
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
     timeout 600 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"' \
+    resume 'swaymsg "output * power on"; killall -q gammastep; gammastep -P -O 3500 &; /home/ksmai/Scripts/fix_audio.sh' \
     before-sleep 'swaylock'
 
 exec --no-startup-id gammastep -P -O 3500
