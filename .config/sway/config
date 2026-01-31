@@ -1,32 +1,33 @@
-set $mod Mod4
-set $left h
-set $down j
-set $up k
+set $mod   Mod4
+set $left  h
+set $down  j
+set $up    k
 set $right l
 
-set $dark #1d2021
-set $light #ebdbb2
-set $red #fb4934
-set $green #b8bb26
-set $yellow #fabd2f
-set $blue #83a598
-set $purple #d3869b
-set $aqua #8ec07c
-set $orange #fe8019
-set $gray #928374
+set $gruvbox-dark-bg0-hard     #1d2021
+set $gruvbox-dark-bg0          #282828
+set $gruvbox-dark-bg2          #504945
+set $gruvbox-dark-fg0          #fbf1c7
+set $gruvbox-dark-fg1          #ebdbb2
+set $gruvbox-dark-red-dark     #cc241d
+set $gruvbox-dark-red-light    #fb4934
+set $gruvbox-dark-yellow-dark  #d79921
+set $gruvbox-dark-yellow-light #fabd2f
+set $gruvbox-dark-gray         #a89984
 
-set $bg $dark
-set $fg $light
-set $focused $blue
-set $unfocused $gray
+set $bg          $gruvbox-dark-bg0-hard
+set $fg          $gruvbox-dark-fg1
+set $bg-selected $gruvbox-dark-bg2
+set $fg-selected $gruvbox-dark-fg0
+set $border      $gruvbox-dark-gray
 
-font pango:monospace 14
+font pango:monospace 12
 titlebar_border_thickness 2
 default_border normal 2
 hide_edge_borders smart
-client.focused $focused $bg $focused $focused $focused
-client.unfocused $bg $bg $unfocused $bg $bg
-client.focused_inactive $bg $bg $unfocused $bg $bg
+client.focused $border $bg-selected $fg-selected $border $border
+client.unfocused $bg $bg $border $bg $bg
+client.focused_inactive $bg $bg $border $bg $bg
 
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
@@ -47,7 +48,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 bindsym $mod+Return exec kitty
-bindsym $mod+d exec rofi -show combi
+bindsym $mod+d exec rofi -show drun
 
 bindsym --locked Delete exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
 bindsym --locked End exec pactl set-sink-volume \@DEFAULT_SINK@ -10%
