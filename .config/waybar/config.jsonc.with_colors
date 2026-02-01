@@ -58,10 +58,10 @@
             "weeks-pos": "",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='$GRUVBOX_DARK_LIGHT1'><b>{}</b></span>",
-                "days": "<span color='$GRUVBOX_DARK_LIGHT1'><b>{}</b></span>",
-                "weekdays": "<span color='$GRUVBOX_DARK_BRIGHT_YELLOW'><b>{}</b></span>",
-                "today": "<span color='$GRUVBOX_DARK_BRIGHT_RED'><b><u>{}</u></b></span>"
+                "months": "<span color='#$GRUVBOX_DARK_LIGHT1'><b>{}</b></span>",
+                "days": "<span color='#$GRUVBOX_DARK_LIGHT1'><b>{}</b></span>",
+                "weekdays": "<span color='#$GRUVBOX_DARK_BRIGHT_YELLOW'><b>{}</b></span>",
+                "today": "<span color='#$GRUVBOX_DARK_BRIGHT_RED'><b><u>{}</u></b></span>"
             }
         },
         "actions": {

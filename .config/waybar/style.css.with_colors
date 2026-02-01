@@ -7,8 +7,8 @@
 }
 
 window#waybar {
-  background: $GRUVBOX_DARK_DARK0_HARD;
-  color: $GRUVBOX_DARK_LIGHT1;
+  background: #$GRUVBOX_DARK_DARK0_HARD;
+  color: #$GRUVBOX_DARK_LIGHT1;
 }
 
 #disk,
@@ -20,50 +20,51 @@ window#waybar {
 #idle_inhibitor,
 #privacy,
 #tray {
+  padding-top: 4px;
   padding-left: 20px;
 }
 
 #workspaces button {
-  color: $GRUVBOX_DARK_LIGHT4;
+  color: #$GRUVBOX_DARK_LIGHT4;
 }
 
 #workspaces button,
 #workspaces button:hover,
 #workspaces button:active,
 #workspaces button:focus {
-  background: $GRUVBOX_DARK_DARK0;
-  padding: 2px;
+  background: #$GRUVBOX_DARK_DARK0;
+  padding: 4px 2px;
   transition: none;
   box-shadow: none;
 }
 
 #workspaces button.visible {
-  background: $GRUVBOX_DARK_DARK2;
+  background: #$GRUVBOX_DARK_DARK2;
 }
 
 #workspaces button.visible,
 #workspaces button:hover,
 #workspaces button:active,
 #workspaces button:focus {
-  color: $GRUVBOX_DARK_LIGHT0;
+  color: #$GRUVBOX_DARK_LIGHT0;
 }
 
 #mode {
   padding: 2px;
-  background: $GRUVBOX_DARK_NEUTRAL_RED;
-  color: $GRUVBOX_DARK_DARK0_HARD;
+  background: #$GRUVBOX_DARK_NEUTRAL_RED;
+  color: #$GRUVBOX_DARK_DARK0_HARD;
 }
 
 #scratchpad {
   padding: 2px;
-  background: $GRUVBOX_DARK_NEUTRAL_YELLOW;
-  color: $GRUVBOX_DARK_DARK0_HARD;
+  background: #$GRUVBOX_DARK_NEUTRAL_YELLOW;
+  color: #$GRUVBOX_DARK_DARK0_HARD;
 }
 
 #temperature.warning {
-  color: $GRUVBOX_DARK_BRIGHT_YELLOW;
+  color: #$GRUVBOX_DARK_BRIGHT_YELLOW;
 }
 
 #temperature.critical {
-  color: $GRUVBOX_DARK_BRIGHT_RED;
+  color: #$GRUVBOX_DARK_BRIGHT_RED;
 }

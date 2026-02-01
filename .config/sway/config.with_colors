@@ -4,12 +4,12 @@ set $down  j
 set $up    k
 set $right l
 
-set $bg          $GRUVBOX_DARK_DARK0_HARD
-set $fg          $GRUVBOX_DARK_LIGHT1
-set $bg-selected $GRUVBOX_DARK_DARK2
-set $fg-selected $GRUVBOX_DARK_LIGHT0
-set $border      $GRUVBOX_DARK_LIGHT4
-set $fg-inactive $GRUVBOX_DARK_LIGHT4
+set $bg          #$GRUVBOX_DARK_DARK0_HARD
+set $fg          #$GRUVBOX_DARK_LIGHT1
+set $bg-selected #$GRUVBOX_DARK_DARK2
+set $fg-selected #$GRUVBOX_DARK_LIGHT0
+set $border      #$GRUVBOX_DARK_LIGHT4
+set $fg-inactive #$GRUVBOX_DARK_LIGHT4
 
 font pango:monospace 12
 titlebar_border_thickness 2
@@ -18,6 +18,10 @@ hide_edge_borders smart
 client.focused $border $bg-selected $fg-selected $border $border
 client.unfocused $bg $bg $fg-inactive $bg $bg
 client.focused_inactive $bg $bg $fg-inactive $bg $bg
+
+exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors 
+exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors 
+exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/swaylock/config.with_colors 
 
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
@@ -115,7 +119,7 @@ mode "move" {
 bindsym $mod+m mode "move"
 
 bar {
-    status_command '~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors && ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors && waybar'
+    swaybar_command waybar
 }
 
 include /etc/sway/config.d/*
