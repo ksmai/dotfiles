@@ -1,0 +1,69 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: monospace;
+  font-size: 14px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: $GRUVBOX_DARK_DARK0_HARD;
+  color: $GRUVBOX_DARK_LIGHT1;
+}
+
+#disk,
+#cpu,
+#temperature,
+#memory,
+#clock,
+#pulseaudio,
+#idle_inhibitor,
+#privacy,
+#tray {
+  padding-left: 20px;
+}
+
+#workspaces button {
+  color: $GRUVBOX_DARK_LIGHT4;
+}
+
+#workspaces button,
+#workspaces button:hover,
+#workspaces button:active,
+#workspaces button:focus {
+  background: $GRUVBOX_DARK_DARK0;
+  padding: 2px;
+  transition: none;
+  box-shadow: none;
+}
+
+#workspaces button.visible {
+  background: $GRUVBOX_DARK_DARK2;
+}
+
+#workspaces button.visible,
+#workspaces button:hover,
+#workspaces button:active,
+#workspaces button:focus {
+  color: $GRUVBOX_DARK_LIGHT0;
+}
+
+#mode {
+  padding: 2px;
+  background: $GRUVBOX_DARK_NEUTRAL_RED;
+  color: $GRUVBOX_DARK_DARK0_HARD;
+}
+
+#scratchpad {
+  padding: 2px;
+  background: $GRUVBOX_DARK_NEUTRAL_YELLOW;
+  color: $GRUVBOX_DARK_DARK0_HARD;
+}
+
+#temperature.warning {
+  color: $GRUVBOX_DARK_BRIGHT_YELLOW;
+}
+
+#temperature.critical {
+  color: $GRUVBOX_DARK_BRIGHT_RED;
+}

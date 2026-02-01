@@ -4,8 +4,6 @@ set $down  j
 set $up    k
 set $right l
 
-include ./colors
-
 set $bg          $GRUVBOX_DARK_DARK0_HARD
 set $fg          $GRUVBOX_DARK_LIGHT1
 set $bg-selected $GRUVBOX_DARK_DARK2
@@ -24,7 +22,7 @@ client.focused_inactive $bg $bg $fg-inactive $bg $bg
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
     timeout 600 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"; /home/ksmai/Scripts/fix_resume.sh' \
+    resume 'swaymsg "output * power on"; ~/Scripts/fix_resume.sh' \
     before-sleep 'swaylock'
 
 exec --no-startup-id gammastep -P -O 3500
@@ -36,7 +34,7 @@ floating_modifier $mod normal
 focus_follows_mouse no
 
 bindsym $mod+Shift+q kill
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c exec ~/Scripts/with_colors.sh ~/.config/sway/config.with_colors && swaymsg reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 bindsym $mod+Return exec kitty
@@ -47,7 +45,7 @@ bindsym --locked End exec pactl set-sink-volume \@DEFAULT_SINK@ -10%
 bindsym --locked Next exec pactl set-sink-volume \@DEFAULT_SINK@ +10%
 bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
 bindsym $mod+x exec flameshot gui --last-region
-bindsym Prior exec --no-startup-id "sh -c 'sleep 0.2; killall -USR1 swayidle'"
+bindsym Prior exec sleep 0.2 && killall -USR1 swayidle
 
 bindsym $mod+$left  focus left
 bindsym $mod+$down  focus down
@@ -117,17 +115,7 @@ mode "move" {
 bindsym $mod+m mode "move"
 
 bar {
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    # status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-    #
-    # colors {
-    #     statusline #ffffff
-    #     background #323232
-    #     inactive_workspace #32323200 #32323200 #5c5c5c
-    # }
-    status_command i3status
+    status_command '~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors && ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors && waybar'
 }
 
 include /etc/sway/config.d/*

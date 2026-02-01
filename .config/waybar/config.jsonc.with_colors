@@ -1,0 +1,123 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "modules-left": [
+        "sway/workspaces",
+        "sway/scratchpad",
+        "sway/mode"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "disk",
+        "temperature",
+        "cpu",
+        "memory",
+        "clock",
+        "pulseaudio",
+        "idle_inhibitor",
+        "privacy",
+        "tray"
+    ],
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "disable-auto-back-and-forth": true
+    },
+    "sway/scratchpad": {
+        "format": "-{count}"
+    },
+    "sway/mode": {
+        "format": "{}",
+        "on-click": "swaymsg 'mode default'"
+    },
+    "disk": {
+        "interval": 30,
+        "format": " {percentage_used}% (/)",
+        "path": "/"
+    },
+    "temperature": {
+        "format": " {temperatureC}°C",
+        "critical-threshold": 80,
+        "format-critical": " {temperatureC}°C"
+    },
+    "cpu": {
+        "interval": 5,
+        "format": " {usage}% [{load}]"
+    },
+    "memory": {
+        "interval": 5,
+        "format": " {}%",
+        "tooltip-format": "RAM {used}GiB used out of {total}GiB ({percentage}%)\nSwap {swapUsed}GiB used out of {swapTotal}GiB ({swapPercentage}%)"
+    },
+    "clock": {
+        "interval": 1,
+        "format": " {:%a, %d %b %H:%M:%S}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='$GRUVBOX_DARK_LIGHT1'><b>{}</b></span>",
+                "days": "<span color='$GRUVBOX_DARK_LIGHT1'><b>{}</b></span>",
+                "weekdays": "<span color='$GRUVBOX_DARK_BRIGHT_YELLOW'><b>{}</b></span>",
+                "today": "<span color='$GRUVBOX_DARK_BRIGHT_RED'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click": "mode"
+        }
+    },
+    "pulseaudio": {
+        "format": "{icon}{volume}%",
+        "format-muted": "{icon}<span strikethrough='true'>{volume}%</span>",
+        "format-icons": {
+            "headphone": "󰋋 ",
+            "headphone-muted": "󰟎 ",
+            "default": [
+                "󰕿 ",
+                "󰖀 ",
+                "󰕾 "
+            ],
+            "default-muted": "󰖁 "
+        },
+        "scroll-step": 10,
+        "max-volume": 200,
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute '@DEFAULT_SINK@' toggle"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 18,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-out",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ],
+        "ignore-monitor": true
+    },
+    "tray": {
+        "icon-size": 20,
+        "spacing": 5
+    }
+}

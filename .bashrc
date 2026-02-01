@@ -10,5 +10,3 @@ PS1='[\u@\h \W]\$ '
 export XMODIFIERS=@im=fcitx
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git/'
-
-[[ -x ~/Scripts/colors.sh ]] && . ~/Scripts/colors.sh
