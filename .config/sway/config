@@ -4,35 +4,27 @@ set $down  j
 set $up    k
 set $right l
 
-set $gruvbox-dark-bg0-hard     #1d2021
-set $gruvbox-dark-bg0          #282828
-set $gruvbox-dark-bg2          #504945
-set $gruvbox-dark-fg0          #fbf1c7
-set $gruvbox-dark-fg1          #ebdbb2
-set $gruvbox-dark-red-dark     #cc241d
-set $gruvbox-dark-red-light    #fb4934
-set $gruvbox-dark-yellow-dark  #d79921
-set $gruvbox-dark-yellow-light #fabd2f
-set $gruvbox-dark-gray         #a89984
+include ./colors
 
-set $bg          $gruvbox-dark-bg0-hard
-set $fg          $gruvbox-dark-fg1
-set $bg-selected $gruvbox-dark-bg2
-set $fg-selected $gruvbox-dark-fg0
-set $border      $gruvbox-dark-gray
+set $bg          $GRUVBOX_DARK_DARK0_HARD
+set $fg          $GRUVBOX_DARK_LIGHT1
+set $bg-selected $GRUVBOX_DARK_DARK2
+set $fg-selected $GRUVBOX_DARK_LIGHT0
+set $border      $GRUVBOX_DARK_LIGHT4
+set $fg-inactive $GRUVBOX_DARK_LIGHT4
 
 font pango:monospace 12
 titlebar_border_thickness 2
 default_border normal 2
 hide_edge_borders smart
 client.focused $border $bg-selected $fg-selected $border $border
-client.unfocused $bg $bg $border $bg $bg
-client.focused_inactive $bg $bg $border $bg $bg
+client.unfocused $bg $bg $fg-inactive $bg $bg
+client.focused_inactive $bg $bg $fg-inactive $bg $bg
 
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
     timeout 600 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"; killall -q gammastep; gammastep -P -O 3500 & /home/ksmai/Scripts/fix_audio.sh' \
+    resume 'swaymsg "output * power on"; /home/ksmai/Scripts/fix_resume.sh' \
     before-sleep 'swaylock'
 
 exec --no-startup-id gammastep -P -O 3500
@@ -55,16 +47,16 @@ bindsym --locked End exec pactl set-sink-volume \@DEFAULT_SINK@ -10%
 bindsym --locked Next exec pactl set-sink-volume \@DEFAULT_SINK@ +10%
 bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
 bindsym $mod+x exec flameshot gui --last-region
-bindsym Prior exec --no-startup-id "bash -c 'sleep 0.2; killall -USR1 swayidle'"
+bindsym Prior exec --no-startup-id "sh -c 'sleep 0.2; killall -USR1 swayidle'"
 
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
+bindsym $mod+$left  focus left
+bindsym $mod+$down  focus down
+bindsym $mod+$up    focus up
 bindsym $mod+$right focus right
 
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$left  move left
+bindsym $mod+Shift+$down  move down
+bindsym $mod+Shift+$up    move up
 bindsym $mod+Shift+$right move right
 
 bindsym $mod+e layout toggle all
@@ -100,10 +92,10 @@ bindsym $mod+minus scratchpad show
 
 
 mode "resize" {
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
+    bindsym $left  resize shrink width  10px
+    bindsym $down  resize grow   height 10px
+    bindsym $up    resize shrink height 10px
+    bindsym $right resize grow   width  10px
 
     bindsym $mod+r mode "default"
     bindsym Escape mode "default"
@@ -113,9 +105,9 @@ bindsym $mod+r mode "resize"
 
 
 mode "move" {
-    bindsym $left move left 10px
-    bindsym $down move down 10px
-    bindsym $up move up 10px
+    bindsym $left  move left  10px
+    bindsym $down  move down  10px
+    bindsym $up    move up    10px
     bindsym $right move right 10px
 
     bindsym $mod+m mode "default"
