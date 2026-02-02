@@ -2,7 +2,7 @@
   border: none;
   border-radius: 0;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 16px;
   min-height: 0;
 }
 
@@ -11,17 +11,17 @@ window#waybar {
   color: #$GRUVBOX_DARK_LIGHT1;
 }
 
-#disk,
-#cpu,
-#temperature,
-#memory,
-#clock,
-#pulseaudio,
-#idle_inhibitor,
-#privacy,
-#tray {
-  padding-top: 4px;
-  padding-left: 20px;
+.modules-right .module {
+  padding: 4px 10px 0;
+}
+
+.modules-right .module:hover:not(#tray) {
+  background: #$GRUVBOX_DARK_DARK2;
+  color: #$GRUVBOX_DARK_LIGHT0;
+}
+
+.modules-right :last-child .module {
+  padding-right: 0;
 }
 
 #workspaces button {
@@ -33,7 +33,7 @@ window#waybar {
 #workspaces button:active,
 #workspaces button:focus {
   background: #$GRUVBOX_DARK_DARK0;
-  padding: 4px 2px;
+  padding: 4px 2px 2px;
   transition: none;
   box-shadow: none;
 }

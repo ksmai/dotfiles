@@ -31,26 +31,27 @@
     },
     "disk": {
         "interval": 30,
-        "format": " {percentage_used}% (/)",
+        "format": "<span size='5.0pt'> </span>{percentage_used}%<span size='5.0pt'> </span>(/)",
         "path": "/"
     },
     "temperature": {
-        "format": " {temperatureC}°C",
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "format": "<span size='5.0pt'> </span>{temperatureC}°C",
         "critical-threshold": 80,
         "format-critical": " {temperatureC}°C"
     },
     "cpu": {
         "interval": 5,
-        "format": " {usage}% [{load}]"
+        "format": "<span size='5.0pt'> </span>{usage}%<span size='5.0pt'> </span>[{load}]"
     },
     "memory": {
         "interval": 5,
-        "format": " {}%",
+        "format": "<span size='5.0pt'> </span>{}%",
         "tooltip-format": "RAM {used}GiB used out of {total}GiB ({percentage}%)\nSwap {swapUsed}GiB used out of {swapTotal}GiB ({swapPercentage}%)"
     },
     "clock": {
         "interval": 1,
-        "format": " {:%a, %d %b %H:%M:%S}",
+        "format": "<span size='5.0pt'> </span>{:%a, %d %b %H:%M:%S}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
             "mode": "month",
@@ -69,17 +70,17 @@
         }
     },
     "pulseaudio": {
-        "format": "{icon}{volume}%",
-        "format-muted": "{icon}<span strikethrough='true'>{volume}%</span>",
+        "format": "{icon}<span size='5.0pt'> </span>{volume}%",
+        "format-muted": "{icon}<span size='5.0pt'> </span><span strikethrough='true'>{volume}%</span>",
         "format-icons": {
-            "headphone": "󰋋 ",
-            "headphone-muted": "󰟎 ",
+            "headphone": "󰋋",
+            "headphone-muted": "󰟎",
             "default": [
-                "󰕿 ",
-                "󰖀 ",
-                "󰕾 "
+                "󰕿",
+                "󰖀",
+                "󰕾"
             ],
-            "default-muted": "󰖁 "
+            "default-muted": "󰖁"
         },
         "scroll-step": 10,
         "max-volume": 200,
