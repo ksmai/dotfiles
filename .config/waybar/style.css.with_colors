@@ -39,7 +39,7 @@ window#waybar {
 }
 
 #workspaces button.visible {
-  background: #$GRUVBOX_DARK_DARK2;
+  background: #$GRUVBOX_DARK_NEUTRAL_BLUE;
 }
 
 #workspaces button.visible,

@@ -6,7 +6,7 @@ set $right l
 
 set $bg          #$GRUVBOX_DARK_DARK0_HARD
 set $fg          #$GRUVBOX_DARK_LIGHT1
-set $bg-selected #$GRUVBOX_DARK_DARK2
+set $bg-selected #$GRUVBOX_DARK_NEUTRAL_BLUE
 set $fg-selected #$GRUVBOX_DARK_LIGHT0
 set $border      #$GRUVBOX_DARK_LIGHT4
 set $fg-inactive #$GRUVBOX_DARK_LIGHT4
