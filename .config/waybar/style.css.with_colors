@@ -39,7 +39,7 @@ window#waybar {
 }
 
 #workspaces button.visible {
-  background: #$GRUVBOX_DARK_NEUTRAL_BLUE;
+  background: #$GRUVBOX_DARK_NEUTRAL_PURPLE;
 }
 
 #workspaces button.visible,
@@ -52,13 +52,13 @@ window#waybar {
 #mode {
   padding: 2px;
   background: #$GRUVBOX_DARK_NEUTRAL_RED;
-  color: #$GRUVBOX_DARK_DARK0_HARD;
+  color: #$GRUVBOX_DARK_LIGHT0;
 }
 
 #scratchpad {
   padding: 2px;
   background: #$GRUVBOX_DARK_NEUTRAL_YELLOW;
-  color: #$GRUVBOX_DARK_DARK0_HARD;
+  color: #$GRUVBOX_DARK_LIGHT0;
 }
 
 #temperature.warning {
@@ -67,4 +67,8 @@ window#waybar {
 
 #temperature.critical {
   color: #$GRUVBOX_DARK_BRIGHT_RED;
+}
+
+#pulseaudio.muted {
+  color: #$GRUVBOX_DARK_GRAY;
 }

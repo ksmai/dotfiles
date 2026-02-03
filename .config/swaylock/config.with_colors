@@ -6,26 +6,26 @@ indicator-radius=70
 indicator-thickness=15
 
 color=$GRUVBOX_DARK_DARK0_HARD
-inside-color=$GRUVBOX_DARK_DARK0_HARD
-inside-clear-color=$GRUVBOX_DARK_DARK0_HARD
-inside-caps-lock-color=$GRUVBOX_DARK_DARK0_HARD
-inside-ver-color=$GRUVBOX_DARK_DARK0_HARD
-inside-wrong-color=$GRUVBOX_DARK_DARK0_HARD
-separator-color=$GRUVBOX_DARK_DARK0_HARD
+inside-color=$GRUVBOX_DARK_NEUTRAL_PURPLE
+inside-clear-color=$GRUVBOX_DARK_NEUTRAL_ORANGE
+inside-caps-lock-color=$GRUVBOX_DARK_NEUTRAL_YELLOW
+inside-ver-color=$GRUVBOX_DARK_NEUTRAL_AQUA
+inside-wrong-color=$GRUVBOX_DARK_NEUTRAL_RED
+separator-color=$GRUVBOX_DARK_LIGHT4
 
-bs-hl-color=$GRUVBOX_DARK_DARK0_HARD
-caps-lock-bs-hl-color=$GRUVBOX_DARK_DARK0_HARD
-caps-lock-key-hl-color=$GRUVBOX_DARK_DARK0_HARD
-key-hl-color=$GRUVBOX_DARK_DARK0_HARD
+bs-hl-color=$GRUVBOX_DARK_LIGHT0
+caps-lock-bs-hl-color=$GRUVBOX_DARK_LIGHT0
+caps-lock-key-hl-color=$GRUVBOX_DARK_LIGHT0
+key-hl-color=$GRUVBOX_DARK_LIGHT0
 
-ring-color=$GRUVBOX_DARK_BRIGHT_GREEN
-ring-clear-color=$GRUVBOX_DARK_BRIGHT_ORANGE
-ring-caps-lock-color=$GRUVBOX_DARK_BRIGHT_YELLOW
-ring-ver-color=$GRUVBOX_DARK_BRIGHT_AQUA
-ring-wrong-color=$GRUVBOX_DARK_BRIGHT_RED
+ring-color=$GRUVBOX_DARK_NEUTRAL_PURPLE
+ring-clear-color=$GRUVBOX_DARK_NEUTRAL_ORANGE
+ring-caps-lock-color=$GRUVBOX_DARK_NEUTRAL_YELLOW
+ring-ver-color=$GRUVBOX_DARK_NEUTRAL_AQUA
+ring-wrong-color=$GRUVBOX_DARK_NEUTRAL_RED
 
-text-color=$GRUVBOX_DARK_LIGHT1
-text-clear-color=$GRUVBOX_DARK_BRIGHT_ORANGE
-text-caps-lock-color=$GRUVBOX_DARK_BRIGHT_YELLOW
-text-ver-color=$GRUVBOX_DARK_BRIGHT_AQUA
-text-wrong-color=$GRUVBOX_DARK_BRIGHT_RED
+text-color=$GRUVBOX_DARK_LIGHT0
+text-clear-color=$GRUVBOX_DARK_LIGHT0
+text-caps-lock-color=$GRUVBOX_DARK_LIGHT0
+text-ver-color=$GRUVBOX_DARK_LIGHT0
+text-wrong-color=$GRUVBOX_DARK_LIGHT0

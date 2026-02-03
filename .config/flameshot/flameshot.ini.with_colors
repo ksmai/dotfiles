@@ -1,0 +1,15 @@
+[General]
+autoCloseIdleDaemon=true
+contrastOpacity=127
+disabledTrayIcon=true
+drawColor=#$GRUVBOX_DARK_BRIGHT_RED
+drawThickness=5
+insecurePixelate=false
+saveLastRegion=true
+savePath=/home/ksmai/Pictures/screenshots
+showAbortNotification=false
+showDesktopNotification=false
+showHelp=false
+showStartupLaunchMessage=false
+uiColor=#$GRUVBOX_DARK_NEUTRAL_PURPLE
+useGrimAdapter=true
