@@ -72,3 +72,27 @@ window#waybar {
 #pulseaudio.muted {
   color: #$GRUVBOX_DARK_GRAY;
 }
+
+menu {
+    background: #$GRUVBOX_DARK_DARK0_HARD;
+    color: #$GRUVBOX_DARK_LIGHT1;
+    border: 2px solid #$GRUVBOX_DARK_LIGHT4;
+}
+
+menuitem {
+    border-left: 2px solid #$GRUVBOX_DARK_LIGHT4;
+    border-right: 2px solid #$GRUVBOX_DARK_LIGHT4;
+}
+
+menuitem:nth-child(odd) {
+    background: #$GRUVBOX_DARK_DARK0;
+}
+
+menuitem:nth-child(even) {
+    background: #$GRUVBOX_DARK_DARK0_HARD;
+}
+
+menuitem:hover {
+    background: #$GRUVBOX_DARK_DARK2;
+    color: #$GRUVBOX_DARK_LIGHT0;
+}
