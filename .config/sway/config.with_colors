@@ -39,7 +39,7 @@ floating_modifier $mod normal
 focus_follows_mouse no
 
 bindsym $mod+Shift+q kill
-bindsym --border button2 kill
+bindsym --border --release button2 kill
 bindsym $mod+Shift+c exec ~/Scripts/with_colors.sh ~/.config/sway/config.with_colors && swaymsg reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
