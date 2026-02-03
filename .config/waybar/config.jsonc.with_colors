@@ -14,7 +14,6 @@
         "memory",
         "clock",
         "pulseaudio",
-        "idle_inhibitor",
         "privacy",
         "tray"
     ],
@@ -86,13 +85,6 @@
         "max-volume": 200,
         "on-click": "pavucontrol",
         "on-click-right": "pactl set-sink-mute '@DEFAULT_SINK@' toggle"
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
     },
     "privacy": {
         "icon-spacing": 4,
