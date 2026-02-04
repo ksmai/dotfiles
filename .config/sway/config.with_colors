@@ -4,12 +4,14 @@ set $down  j
 set $up    k
 set $right l
 
-set $bg          #$GRUVBOX_DARK_DARK0_HARD
-set $fg          #$GRUVBOX_DARK_LIGHT1
-set $bg-selected #$GRUVBOX_DARK_NEUTRAL_PURPLE
-set $fg-selected #$GRUVBOX_DARK_LIGHT0
-set $border      #$GRUVBOX_DARK_LIGHT4
-set $fg-inactive #$GRUVBOX_DARK_LIGHT4
+set $bg                   #$GRUVBOX_DARK_DARK0_HARD
+set $fg                   #$GRUVBOX_DARK_LIGHT1
+set $bg-selected          #$GRUVBOX_DARK_NEUTRAL_PURPLE
+set $bg-selected-inactive #$GRUVBOX_DARK_DARK2
+set $bg-urgent            #$GRUVBOX_DARK_NEUTRAL_RED
+set $fg-selected          #$GRUVBOX_DARK_LIGHT0
+set $border               #$GRUVBOX_DARK_LIGHT4
+set $fg-inactive          #$GRUVBOX_DARK_GRAY
 
 font pango:monospace 12
 titlebar_border_thickness 2
@@ -17,7 +19,8 @@ default_border normal 2
 hide_edge_borders smart
 client.focused $border $bg-selected $fg-selected $border $border
 client.unfocused $bg $bg $fg-inactive $bg $bg
-client.focused_inactive $bg $bg $fg-inactive $bg $bg
+client.focused_inactive $border $bg-selected-inactive $fg-selected $border $border
+client.urgent $border $bg-urgent $fg-selected $border $border
 
 exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors 
 exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors 

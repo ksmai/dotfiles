@@ -25,27 +25,35 @@ window#waybar {
 }
 
 #workspaces button {
-  color: #$GRUVBOX_DARK_LIGHT4;
+  color: #$GRUVBOX_DARK_GRAY;
+  background: #$GRUVBOX_DARK_DARK0_HARD;
+  padding: 4px 2px 2px;
 }
 
 #workspaces button,
 #workspaces button:hover,
 #workspaces button:active,
 #workspaces button:focus {
-  background: #$GRUVBOX_DARK_DARK0;
-  padding: 4px 2px 2px;
   transition: none;
   box-shadow: none;
-}
-
-#workspaces button.visible {
-  background: #$GRUVBOX_DARK_NEUTRAL_PURPLE;
 }
 
 #workspaces button.visible,
 #workspaces button:hover,
 #workspaces button:active,
 #workspaces button:focus {
+  background: #$GRUVBOX_DARK_DARK2;
+  color: #$GRUVBOX_DARK_LIGHT0;
+}
+
+
+#workspaces button.focused {
+  background: #$GRUVBOX_DARK_NEUTRAL_PURPLE;
+  color: #$GRUVBOX_DARK_LIGHT0;
+}
+
+#workspaces button.urgent {
+  background: #$GRUVBOX_DARK_NEUTRAL_RED;
   color: #$GRUVBOX_DARK_LIGHT0;
 }
 
