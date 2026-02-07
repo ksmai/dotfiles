@@ -42,7 +42,7 @@
     },
     "cpu": {
         "interval": 5,
-        "format": "<span size='5.0pt'> </span>{usage}%<span size='5.0pt'> </span>[{load}]"
+        "format": "<span size='5.0pt'> </span>{usage}%<span size='5.0pt'> </span>[{load:.2f}]"
     },
     "memory": {
         "interval": 5,

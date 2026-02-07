@@ -21,6 +21,11 @@ window#waybar {
 }
 
 .modules-right :last-child .module {
+  padding-right: 5px;
+}
+
+#tray {
+  padding-left: 0;
   padding-right: 0;
 }
 
