@@ -24,10 +24,10 @@ client.urgent           $border $bg-urgent            $fg-selected $border $bord
 
 output * bg $bg solid_color
 
-exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors 
-exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors 
-exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/swaylock/config.with_colors 
-exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/flameshot/flameshot.ini.with_colors
+exec_always --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors 
+exec_always --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors 
+exec_always --no-startup-id ~/Scripts/with_colors.sh ~/.config/swaylock/config.with_colors 
+exec_always --no-startup-id ~/Scripts/with_colors.sh ~/.config/flameshot/flameshot.ini.with_colors
 
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
@@ -106,9 +106,10 @@ mode "resize" {
     bindsym $up    resize shrink height 10px
     bindsym $right resize grow   width  10px
 
-    bindsym $mod+r mode "default"
-    bindsym Escape mode "default"
-    bindsym Return mode "default"
+    bindsym $mod+r              mode "default"
+    bindsym Escape              mode "default"
+    bindsym Control+bracketleft mode "default"
+    bindsym Return              mode "default"
 }
 bindsym $mod+r mode "resize"
 
@@ -119,9 +120,10 @@ mode "move" {
     bindsym $up    move up    10px
     bindsym $right move right 10px
 
-    bindsym $mod+m mode "default"
-    bindsym Escape mode "default"
-    bindsym Return mode "default"
+    bindsym $mod+m              mode "default"
+    bindsym Escape              mode "default"
+    bindsym Control+bracketleft mode "default"
+    bindsym Return              mode "default"
 }
 bindsym $mod+m mode "move"
 
