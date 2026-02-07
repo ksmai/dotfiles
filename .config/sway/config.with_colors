@@ -22,6 +22,8 @@ client.unfocused $bg $bg $fg-inactive $bg $bg
 client.focused_inactive $border $bg-selected-inactive $fg-selected $border $border
 client.urgent $border $bg-urgent $fg-selected $border $border
 
+output * bg $bg solid_color
+
 exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/style.css.with_colors 
 exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/waybar/config.jsonc.with_colors 
 exec --no-startup-id ~/Scripts/with_colors.sh ~/.config/swaylock/config.with_colors 
