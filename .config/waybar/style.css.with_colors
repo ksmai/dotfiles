@@ -76,7 +76,7 @@ window#waybar {
 }
 
 #privacy-item {
-  color: #$GRUVBOX_DARK_BRIGHT_YELLOW;
+  color: #$GRUVBOX_DARK_BRIGHT_RED;
 }
 
 #temperature.warning {
