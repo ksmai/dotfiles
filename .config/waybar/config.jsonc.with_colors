@@ -15,6 +15,7 @@
         "memory",
         "clock",
         "pulseaudio",
+        "custom/notification",
         "tray",
         "custom/menu"
     ],
@@ -104,6 +105,26 @@
         "max-volume": 200,
         "on-click": "pavucontrol",
         "on-click-right": "pactl set-sink-mute '@DEFAULT_SINK@' toggle"
+    },
+    "custom/notification": {
+        "tooltip": true,
+        "format": "{icon}<span size='5.0pt'> </span>{0}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂜",
+            "dnd-notification": "󰂠",
+            "dnd-none": "󰪓",
+            "inhibited-notification": "󰂛",
+            "inhibited-none": "󰪑",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰪑"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
     },
     "tray": {
         "icon-size": 20,

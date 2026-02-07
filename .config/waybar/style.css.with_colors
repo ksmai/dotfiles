@@ -26,7 +26,6 @@ window#waybar {
 }
 
 #tray {
-  padding-left: 0;
   padding-right: 0;
 }
 
@@ -89,6 +88,20 @@ window#waybar {
 
 #pulseaudio.muted {
   color: #$GRUVBOX_DARK_GRAY;
+}
+
+#custom-notification.none,
+#custom-notification.dnd-none,
+#custom-notification.inhibited-none,
+#custom-notification.dnd-inhibited-none {
+  color: #$GRUVBOX_DARK_GRAY;
+}
+
+#custom-notification#custom-notification.notification,
+#custom-notification#custom-notification.dnd-notification,
+#custom-notification#custom-notification.inhibited-notification,
+#custom-notification#custom-notification.dnd-inhibited-notification {
+  color: #$GRUVBOX_DARK_BRIGHT_YELLOW;
 }
 
 menu {

@@ -45,7 +45,7 @@ focus_follows_mouse no
 
 bindsym $mod+Shift+q kill
 bindsym --border --release button2 kill
-bindsym $mod+Shift+c exec ~/Scripts/with_colors.sh ~/.config/sway/config.with_colors && swaymsg reload
+bindsym $mod+Shift+c exec ~/Scripts/with_colors.sh ~/.config/sway/config.with_colors && ~/Scripts/with_colors.sh ~/.config/swaync/style.css.with_colors && swaymsg reload && swaync-client -rs
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 bindsym $mod+Return exec kitty
