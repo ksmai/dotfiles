@@ -17,10 +17,10 @@ font pango:monospace 12
 titlebar_border_thickness 2
 default_border normal 2
 hide_edge_borders smart
-client.focused $border $bg-selected $fg-selected $border $border
-client.unfocused $bg $bg $fg-inactive $bg $bg
+client.focused          $border $bg-selected          $fg-selected $border $border
 client.focused_inactive $border $bg-selected-inactive $fg-selected $border $border
-client.urgent $border $bg-urgent $fg-selected $border $border
+client.unfocused        $bg     $bg                   $fg-inactive $bg     $bg
+client.urgent           $border $bg-urgent            $fg-selected $border $border
 
 output * bg $bg solid_color
 
