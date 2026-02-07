@@ -32,7 +32,7 @@ exec_always --no-startup-id ~/Scripts/with_colors.sh ~/.config/flameshot/flamesh
 exec --no-startup-id swayidle -w \
     timeout 300 'swaylock' \
     timeout 600 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"; ~/Scripts/fix_resume.sh' \
+    resume 'swaymsg "output * power on"; killall -q gammastep; gammastep -P -O 3500 &' \
     before-sleep 'swaylock'
 
 exec --no-startup-id gammastep -P -O 3500
