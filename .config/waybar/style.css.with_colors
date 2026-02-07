@@ -11,7 +11,8 @@ window#waybar {
   color: #$GRUVBOX_DARK_LIGHT1;
 }
 
-.modules-right .module {
+.modules-right .module,
+.modules-right #privacy {
   padding: 4px 10px 0;
 }
 
@@ -72,6 +73,10 @@ window#waybar {
   padding: 2px;
   background: #$GRUVBOX_DARK_NEUTRAL_YELLOW;
   color: #$GRUVBOX_DARK_LIGHT0;
+}
+
+#privacy-item {
+  color: #$GRUVBOX_DARK_BRIGHT_YELLOW;
 }
 
 #temperature.warning {

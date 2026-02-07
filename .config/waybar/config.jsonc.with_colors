@@ -8,13 +8,13 @@
     ],
     "modules-center": [],
     "modules-right": [
+        "privacy",
         "disk",
         "temperature",
         "cpu",
         "memory",
         "clock",
         "pulseaudio",
-        "privacy",
         "tray",
         "custom/menu"
     ],
@@ -28,6 +28,29 @@
     "sway/mode": {
         "format": "{}",
         "on-click": "swaymsg 'mode default'"
+    },
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 14,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-out",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ],
+        "ignore-monitor": false
     },
     "disk": {
         "interval": 30,
@@ -86,29 +109,6 @@
         "max-volume": 200,
         "on-click": "pavucontrol",
         "on-click-right": "pactl set-sink-mute '@DEFAULT_SINK@' toggle"
-    },
-    "privacy": {
-        "icon-spacing": 4,
-        "icon-size": 18,
-        "transition-duration": 250,
-        "modules": [
-            {
-                "type": "screenshare",
-                "tooltip": true,
-                "tooltip-icon-size": 24
-            },
-            {
-                "type": "audio-out",
-                "tooltip": true,
-                "tooltip-icon-size": 24
-            },
-            {
-                "type": "audio-in",
-                "tooltip": true,
-                "tooltip-icon-size": 24
-            }
-        ],
-        "ignore-monitor": true
     },
     "tray": {
         "icon-size": 20,
