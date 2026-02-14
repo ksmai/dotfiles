@@ -242,6 +242,7 @@ return {
 				"eslint",
 				"svelte",
 				"gopls",
+				"qmlls",
 			})
 		end,
 	},

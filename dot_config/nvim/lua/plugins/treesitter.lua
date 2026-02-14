@@ -35,6 +35,7 @@ return {
 				"markdown",
 				"mermaid",
 				"python",
+				"qml",
 				"rust",
 				"scss",
 				"sql",
