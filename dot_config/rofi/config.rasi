@@ -1,0 +1,13 @@
+configuration {
+  modes: "drun,window";
+  show-icons: true;
+  matching: "fuzzy";
+  font: "monospace 12";
+  window-format: " {c} — {t}";
+  window-match-fields: "class,title";
+  drun-display-format: " {name}";
+  drun-match-fields: "name,exec";
+  combi-display-format: "<b>{mode}</b>: {text}";
+}
+
+@theme "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
