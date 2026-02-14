@@ -1,0 +1,133 @@
+set $mod   Mod4
+set $left  h
+set $down  j
+set $up    k
+set $right l
+
+set $bg                   #{{ .colors.dark0_hard }}
+set $fg                   #{{ .colors.light1 }}
+set $bg-selected          #{{ .colors.neutral_purple }}
+set $bg-selected-inactive #{{ .colors.dark2 }}
+set $bg-urgent            #{{ .colors.neutral_red }}
+set $fg-selected          #{{ .colors.light0 }}
+set $border               #{{ .colors.light4 }}
+set $fg-inactive          #{{ .colors.gray }}
+
+font pango:monospace 12
+titlebar_border_thickness 2
+default_border normal 2
+hide_edge_borders smart
+client.focused          $border $bg-selected          $fg-selected $border $border
+client.focused_inactive $border $bg-selected-inactive $fg-selected $border $border
+client.unfocused        $bg     $bg                   $fg-inactive $bg     $bg
+client.urgent           $border $bg-urgent            $fg-selected $border $border
+
+output * bg $bg solid_color
+# https://github.com/yeyushengfan258/Future-cursors
+seat seat0 xcursor_theme Future-cursors 40
+
+exec --no-startup-id swayidle -w \
+    timeout 300 'swaylock' \
+    timeout 600 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"; killall -q gammastep; gammastep -P -O 3500 &' \
+    before-sleep 'swaylock'
+
+exec --no-startup-id gammastep -P -O 3500
+exec --no-startup-id fcitx5 -d --replace
+exec --no-startup-id Telegram -startintray
+exec --no-startup-id signal-desktop --start-in-tray
+
+floating_modifier $mod normal
+focus_follows_mouse no
+
+bindsym $mod+Shift+q kill
+bindsym --border --release button2 kill
+bindsym $mod+Shift+c exec swaymsg reload && swaync-client -rs
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+bindsym $mod+Return exec kitty
+bindsym $mod+d exec rofi -show drun
+
+bindsym --locked Delete exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+bindsym --locked End exec pactl set-sink-volume \@DEFAULT_SINK@ -10%
+bindsym --locked Next exec pactl set-sink-volume \@DEFAULT_SINK@ +10%
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+bindsym $mod+x exec flameshot gui --last-region
+bindsym Prior exec sleep 0.2 && killall -USR1 swayidle
+
+bindsym $mod+$left  focus left
+bindsym $mod+$down  focus down
+bindsym $mod+$up    focus up
+bindsym $mod+$right focus right
+
+bindsym $mod+Shift+$left  move left
+bindsym $mod+Shift+$down  move down
+bindsym $mod+Shift+$up    move up
+bindsym $mod+Shift+$right move right
+
+bindsym $mod+e layout toggle all
+bindsym $mod+f fullscreen
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+bindsym $mod+1         workspace number 1
+bindsym $mod+2         workspace number 2
+bindsym $mod+3         workspace number 3
+bindsym $mod+4         workspace number 4
+bindsym $mod+5         workspace number 5
+bindsym $mod+6         workspace number 6
+bindsym $mod+7         workspace number 7
+bindsym $mod+8         workspace number 8
+bindsym $mod+9         workspace number 9
+bindsym $mod+0         workspace number 10
+bindsym $mod+grave     workspace back_and_forth
+bindsym $mod+tab       workspace next
+bindsym $mod+Shift+tab workspace prev
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+
+mode "resize" {
+    bindsym $left  resize shrink width  10px
+    bindsym $down  resize grow   height 10px
+    bindsym $up    resize shrink height 10px
+    bindsym $right resize grow   width  10px
+
+    bindsym $mod+r              mode "default"
+    bindsym Escape              mode "default"
+    bindsym Control+bracketleft mode "default"
+    bindsym Return              mode "default"
+}
+bindsym $mod+r mode "resize"
+
+
+mode "move" {
+    bindsym $left  move left  10px
+    bindsym $down  move down  10px
+    bindsym $up    move up    10px
+    bindsym $right move right 10px
+
+    bindsym $mod+m              mode "default"
+    bindsym Escape              mode "default"
+    bindsym Control+bracketleft mode "default"
+    bindsym Return              mode "default"
+}
+bindsym $mod+m mode "move"
+
+bar {
+    swaybar_command waybar
+}
+
+include /etc/sway/config.d/*
