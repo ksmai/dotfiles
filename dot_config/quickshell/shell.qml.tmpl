@@ -1,0 +1,111 @@
+import Quickshell
+import Quickshell.Io
+import Quickshell.I3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Effects
+import QtQuick.Layouts
+
+Scope {
+    Variants {
+        model: Quickshell.screens
+
+        PanelWindow {
+            required property var modelData
+            screen: modelData
+
+            color: "#{{ .colors.light1 }}"
+
+            anchors {
+                bottom: true
+                left: true
+                right: true
+            }
+
+            implicitHeight: 40
+
+            RowLayout {
+                spacing: 8
+
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 2
+                anchors.left: parent.left
+                anchors.leftMargin: 4
+
+                Repeater {
+                    model: I3.workspaces
+
+                    delegate: Item {
+                        id: item
+
+                        required property I3Workspace modelData
+
+                        width: 30
+                        height: 30
+
+                        RectangularShadow {
+                            id: shadow
+                            anchors.fill: btn
+                            offset.x: 2
+                            offset.y: 2
+                            radius: 8
+                            blur: 0
+                            spread: 0
+                            color: "#{{ .colors.dark1 }}"
+                        }
+
+                        Button {
+                            id: btn
+                            width: 30
+                            height: 30
+
+                            contentItem: Text {
+                                text: item.modelData.name
+                                color: "#{{ .colors.dark1 }}"
+                                font.family: "monospace"
+                                font.weight: 600
+                                font.pointSize: 12
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+
+                            background: Rectangle {
+                                id: rect
+                                anchors.fill: parent
+                                border.color: "#{{ .colors.dark1 }}"
+                                border.width: 2
+                                color: "#{{ .colors.bright_yellow }}"
+                                radius: 8
+                            }
+
+                            states: State {
+                                name: "pressed"
+                                when: btn.hovered || item.modelData.active
+                                PropertyChanges {
+                                    btn {
+                                        x: 2
+                                        y: 2
+                                    }
+                                    shadow {
+                                        offset.x: 0
+                                        offset.y: 0
+                                    }
+                                }
+                            }
+
+                            transitions: Transition {
+                                NumberAnimation {
+                                    properties: "x,y,offset.x,offset.y"
+                                    easing.type: Easing.InOutQuad
+                                    duration: 100
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
