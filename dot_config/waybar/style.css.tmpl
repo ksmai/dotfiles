@@ -1,0 +1,129 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: monospace;
+  font-size: 16px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: #{{ .colors.dark0_hard }};
+  color: #{{ .colors.light1 }};
+}
+
+.modules-right .module,
+.modules-right #privacy {
+  padding: 4px 10px 0;
+}
+
+.modules-right .module:hover:not(#tray) {
+  background: #{{ .colors.dark2 }};
+  color: #{{ .colors.light0 }};
+}
+
+.modules-right :last-child .module {
+  padding-right: 5px;
+}
+
+#tray {
+  padding-right: 0;
+}
+
+#workspaces button {
+  color: #{{ .colors.gray }};
+  background: #{{ .colors.dark0_hard }};
+  padding: 4px 2px 2px;
+}
+
+#workspaces button,
+#workspaces button:hover,
+#workspaces button:active,
+#workspaces button:focus {
+  transition: none;
+  box-shadow: none;
+}
+
+#workspaces button.visible,
+#workspaces button:hover,
+#workspaces button:active,
+#workspaces button:focus {
+  background: #{{ .colors.dark2 }};
+  color: #{{ .colors.light0 }};
+}
+
+
+#workspaces button.focused {
+  background: #{{ .colors.neutral_purple }};
+  color: #{{ .colors.light0 }};
+}
+
+#workspaces button.urgent {
+  background: #{{ .colors.neutral_red }};
+  color: #{{ .colors.light0 }};
+}
+
+#mode {
+  padding: 2px;
+  background: #{{ .colors.neutral_red }};
+  color: #{{ .colors.light0 }};
+}
+
+#scratchpad {
+  padding: 2px;
+  background: #{{ .colors.neutral_yellow }};
+  color: #{{ .colors.light0 }};
+}
+
+#privacy-item {
+  color: #{{ .colors.bright_red }};
+}
+
+#temperature.warning {
+  color: #{{ .colors.bright_yellow }};
+}
+
+#temperature.critical {
+  color: #{{ .colors.bright_red }};
+}
+
+#pulseaudio.muted {
+  color: #{{ .colors.gray }};
+}
+
+#custom-notification.none,
+#custom-notification.dnd-none,
+#custom-notification.inhibited-none,
+#custom-notification.dnd-inhibited-none {
+  color: #{{ .colors.gray }};
+}
+
+#custom-notification#custom-notification.notification,
+#custom-notification#custom-notification.dnd-notification,
+#custom-notification#custom-notification.inhibited-notification,
+#custom-notification#custom-notification.dnd-inhibited-notification {
+  color: #{{ .colors.bright_yellow }};
+}
+
+menu {
+    background: #{{ .colors.dark0_hard }};
+    color: #{{ .colors.light1 }};
+    border: 2px solid #{{ .colors.light4 }};
+}
+
+menuitem {
+    border-left: 2px solid #{{ .colors.light4 }};
+    border-right: 2px solid #{{ .colors.light4 }};
+}
+
+menuitem:nth-child(odd) {
+    background: #{{ .colors.dark0 }};
+}
+
+menuitem:nth-child(even) {
+    background: #{{ .colors.dark0_hard }};
+}
+
+menuitem:hover {
+    background: #{{ .colors.dark2 }};
+    color: #{{ .colors.light0 }};
+}

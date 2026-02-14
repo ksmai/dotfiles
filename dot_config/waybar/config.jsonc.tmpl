@@ -1,0 +1,145 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "modules-left": [
+        "sway/workspaces",
+        "sway/scratchpad",
+        "sway/mode"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "privacy",
+        "disk",
+        "temperature",
+        "cpu",
+        "memory",
+        "clock",
+        "pulseaudio",
+        "custom/notification",
+        "tray",
+        "custom/menu"
+    ],
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "disable-auto-back-and-forth": true
+    },
+    "sway/scratchpad": {
+        "format": "-{count}"
+    },
+    "sway/mode": {
+        "format": "{}",
+        "on-click": "swaymsg 'mode default'"
+    },
+    "privacy": {
+        "icon-spacing": 10,
+        "icon-size": 14,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ],
+        "ignore-monitor": false
+    },
+    "disk": {
+        "interval": 30,
+        "format": "<span size='5.0pt'> </span>{percentage_used}%<span size='5.0pt'> </span>(/)",
+        "path": "/"
+    },
+    "temperature": {
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "format": "<span size='5.0pt'> </span>{temperatureC}°C",
+        "critical-threshold": 80,
+        "format-critical": " {temperatureC}°C"
+    },
+    "cpu": {
+        "interval": 5,
+        "format": "<span size='5.0pt'> </span>{usage}%<span size='5.0pt'> </span>[{load:.2f}]"
+    },
+    "memory": {
+        "interval": 5,
+        "format": "<span size='5.0pt'> </span>{}%",
+        "tooltip-format": "RAM {used}GiB used out of {total}GiB ({percentage}%)\nSwap {swapUsed}GiB used out of {swapTotal}GiB ({swapPercentage}%)"
+    },
+    "clock": {
+        "interval": 1,
+        "format": "<span size='5.0pt'> </span>{:%a, %d %b %H:%M:%S}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#{{ .colors.light1 }}'><b>{}</b></span>",
+                "days": "<span color='#{{ .colors.light1 }}'><b>{}</b></span>",
+                "weekdays": "<span color='#{{ .colors.bright_yellow }}'><b>{}</b></span>",
+                "today": "<span color='#{{ .colors.bright_red }}'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click": "mode"
+        }
+    },
+    "pulseaudio": {
+        "format": "{icon}<span size='5.0pt'> </span>{volume}%",
+        "format-muted": "{icon}<span size='5.0pt'> </span><span strikethrough='true'>{volume}%</span>",
+        "format-icons": {
+            "headphone": "󰋋",
+            "headphone-muted": "󰟎",
+            "default": [
+                "󰕿",
+                "󰖀",
+                "󰕾"
+            ],
+            "default-muted": "󰖁"
+        },
+        "scroll-step": 10,
+        "max-volume": 200,
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute '@DEFAULT_SINK@' toggle"
+    },
+    "custom/notification": {
+        "tooltip": true,
+        "format": "{icon}<span size='5.0pt'> </span>{0}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂜",
+            "dnd-notification": "󰂠",
+            "dnd-none": "󰪓",
+            "inhibited-notification": "󰂛",
+            "inhibited-none": "󰪑",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰪑"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+    "tray": {
+        "icon-size": 20,
+        "spacing": 5
+    },
+    "custom/menu": {
+        "format" : "<span color='#1793d1'>󰣇 </span>",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/menu.xml",
+        "menu-actions": {
+            "lock": "sleep 0.2 && killall -USR1 swayidle",
+            "reboot": "shutdown -r now",
+            "shutdown": "shutdown now",
+            "launch": "rofi -show drun"
+        }
+    }
+}
