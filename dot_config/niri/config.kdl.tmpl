@@ -1,0 +1,204 @@
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+        repeat-delay 350
+        repeat-rate 30
+    }
+
+    touchpad {
+        off
+    }
+
+    mouse {
+    }
+
+    trackpoint {
+        off
+    }
+}
+
+output "HDMI-A-2" {
+    mode "1920x1080@60.000"
+}
+
+spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock" "timeout" "600" "niri msg action power-off-monitors" "resume" "niri msg action power-on-monitors" "before-sleep" "swaylock"
+spawn-at-startup "wlsunset" "-t" "3499" "-T" "3500"
+spawn-at-startup "fcitx5" "-d" "--replace"
+spawn-at-startup "Telegram" "-startintray"
+spawn-at-startup "signal-desktop" "--start-in-tray"
+spawn-at-startup "waybar"
+
+binds {
+    Mod+Return { spawn "kitty"; }
+    Mod+D { spawn "rofi" "-show" "drun"; }
+    Mod+Shift+Q repeat=false { close-window; }
+    Mod+MouseMiddle  { close-window; }
+    Mod+O repeat=false { toggle-overview; }
+
+    Mod+Shift+Semicolon allow-when-locked=true { spawn-sh "sleep 0.2 && killall -USR1 swayidle"; }
+
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    Mod+C     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+
+    XF86AudioPlay        allow-when-locked=true { spawn "playerctl" "-a" "play-pause"; }
+    XF86AudioPrev        allow-when-locked=true { spawn "playerctl" "-a" "previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn "playerctl" "-a" "next"; }
+
+    Mod+Grave { focus-window-previous; }
+
+    Mod+H     { focus-column-left; }
+    Mod+J     { focus-window-or-workspace-down; }
+    Mod+K     { focus-window-or-workspace-up; }
+    Mod+L     { focus-column-right; }
+
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+J     { move-window-down; }
+    Mod+Shift+K     { move-window-up; }
+    Mod+Shift+L     { move-column-right; }
+
+    Mod+Shift+Comma { consume-or-expel-window-left; }
+    Mod+Shift+Period  { consume-or-expel-window-right; }
+
+    Mod+Shift+Bracketleft { move-workspace-up; }
+    Mod+Shift+Bracketright  { move-workspace-down; }
+
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+    Mod+Shift+WheelScrollDown      { focus-column-right; }
+    Mod+Shift+WheelScrollUp        { focus-column-left; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+
+    Mod+E { toggle-column-tabbed-display; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { reset-window-height; }
+    Mod+F { maximize-window-to-edges; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Shift+Backslash { expand-column-to-available-width; }
+
+    Mod+Shift+C { center-column; }
+
+    Mod+Tab { focus-monitor-next; }
+    Mod+Shift+Tab { move-workspace-to-monitor-next; }
+
+    Mod+Space { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+Space       { toggle-window-floating; }
+
+    Print { spawn "flameshot" "gui" "--last-region"; }
+
+    Mod+Shift+E { quit; }
+}
+
+layout {
+    gaps 16
+    center-focused-column "never"
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+
+    default-column-width { proportion 1.0; }
+
+    focus-ring {
+        off
+    }
+
+    border {
+        width 8
+        active-color "#{{ .colors.bright_orange }}"
+        inactive-color "#{{ .colors.dark1 }}"
+        urgent-color "#{{ .colors.bright_red }}"
+    }
+
+    shadow {
+        off
+    }
+
+    tab-indicator {
+        width 8
+        corner-radius 8
+        gap 0
+        length total-proportion=0.975
+        position "left"
+        active-color "#{{ .colors.bright_aqua }}"
+        inactive-color "#{{ .colors.dark1 }}"
+        urgent-color "#{{ .colors.bright_aqua }}"
+    }
+
+    insert-hint {
+        color "#{{ .colors.bright_aqua }}80"
+    }
+
+    struts {
+    }
+
+    background-color "#{{ .colors.light1 }}"
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot-%Y-%m-%d-%H-%M-%S.png"
+
+cursor {
+    // https://github.com/yeyushengfan258/Future-cursors
+    xcursor-theme "Future-cursors"
+    xcursor-size 40
+}
+
+overview {
+    zoom 0.25
+    backdrop-color "#{{ .colors.light1 }}"
+}
+
+clipboard {
+    disable-primary
+}
+
+animations {
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+}
+
+window-rule {
+    geometry-corner-radius 8
+    clip-to-geometry true
+}
