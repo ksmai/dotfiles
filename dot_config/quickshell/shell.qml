@@ -18,8 +18,8 @@ Scope {
             id: bar
             required property ShellScreen modelData
             screen: modelData
-            color: root.bgColor
-            implicitHeight: Math.max(left.implicitHeight) + 10
+            color: "transparent"
+            implicitHeight: Math.max(left.implicitHeight, right.implicitHeight) + 14
 
             anchors {
                 bottom: true
@@ -27,24 +27,43 @@ Scope {
                 right: true
             }
 
-            Row {
-                id: left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 3
+            Rectangle {
+                anchors.fill: parent
+                color: root.bgColor
 
-                Workspaces {}
-            }
+                Item {
+                    anchors.fill: parent
 
-            Row {
-                id: right
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 3
-                spacing: 8
+                    Rectangle {
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        height: 4
+                        color: root.fgColor
+                    }
 
-                Clock {}
-                Tray {}
+                    Row {
+                        id: left
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenterOffset: 2
+                        anchors.left: parent.left
+                        anchors.leftMargin: 3
+
+                        Workspaces {}
+                    }
+
+                    Row {
+                        id: right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenterOffset: 2
+                        anchors.right: parent.right
+                        anchors.rightMargin: 6
+                        spacing: 8
+
+                        Clock {}
+                        Tray {}
+                    }
+                }
             }
         }
     }
