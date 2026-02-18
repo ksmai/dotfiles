@@ -17,6 +17,8 @@ input {
     trackpoint {
         off
     }
+
+    focus-follows-mouse
 }
 
 output "HDMI-A-2" {
@@ -97,6 +99,7 @@ binds {
     Mod+Shift+R { reset-window-height; }
     Mod+F { maximize-window-to-edges; }
     Mod+Shift+F { fullscreen-window; }
+    Mod+Ctrl+F { toggle-windowed-fullscreen; }
     Mod+Shift+Backslash { expand-column-to-available-width; }
 
     Mod+Shift+C { center-column; }
