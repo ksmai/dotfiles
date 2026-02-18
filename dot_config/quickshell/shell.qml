@@ -49,7 +49,9 @@ Scope {
                         anchors.left: parent.left
                         anchors.leftMargin: 3
 
-                        Workspaces {}
+                        Workspaces {
+                            screen: bar.screen
+                        }
                     }
 
                     Row {

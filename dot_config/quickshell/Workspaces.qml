@@ -1,5 +1,5 @@
 pragma ComponentBehavior: Bound
-import Quickshell.I3
+import Quickshell
 import QtQuick
 
 Row {
@@ -7,18 +7,30 @@ Row {
     readonly property color brightYellow: "#fabd2f"
     readonly property color brightOrange: "#fe8019"
     readonly property color brightRed: "#fb4934"
+    required property ShellScreen screen
 
     spacing: 6
 
     Repeater {
-        model: I3.workspaces.values.filter(ws => ws.monitor && bar.modelData && ws.monitor.name === bar.modelData.name)
+        model: (Niri.workspaces ?? []).filter(ws => ws.output === screen.name)
 
         delegate: PressableButton {
-            required property I3Workspace modelData
-            backgroundColor: modelData.urgent ? root.brightRed : modelData.focused ? root.brightOrange : root.brightYellow
-            buttonText: modelData.name
-            pressed: modelData.active
-            onClicked: () => I3.dispatch(`workspace number ${modelData.number}`)
+            required property var modelData
+
+            backgroundColor: modelData.is_urgent ? root.brightRed : modelData.is_focused ? root.brightOrange : root.brightYellow
+            buttonText: modelData.name ?? modelData.idx
+            pressed: modelData.is_active
+            onClicked: () => {
+                Niri.dispatch({
+                    "Action": {
+                        "FocusWorkspace": {
+                            "reference": {
+                                "Id": modelData.id
+                            }
+                        }
+                    }
+                });
+            }
         }
     }
 }
