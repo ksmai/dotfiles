@@ -62,8 +62,9 @@ Scope {
                         anchors.rightMargin: 6
                         spacing: 8
 
-                        Clock {}
+                        Privacy {}
                         AudioSink {}
+                        Clock {}
                         Tray {}
                     }
                 }

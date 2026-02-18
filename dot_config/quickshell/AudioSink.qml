@@ -10,7 +10,12 @@ Item {
     implicitHeight: btn.implicitHeight
 
     PwObjectTracker {
-        objects: Pipewire.nodes.values.filter(node => node.audio && !node.isStream && node.isSink)
+        objects: {
+            if (!Pipewire.ready || !Pipewire.nodes?.values) {
+                return [];
+            }
+            return Pipewire.nodes.values.filter(node => node && node.audio && !node.isStream && node.isSink);
+        }
     }
 
     PressableButton {
