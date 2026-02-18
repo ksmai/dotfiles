@@ -72,11 +72,11 @@ PressableButton {
                 QsMenuOpener {
                     menu: item.modelData.menu
                     Component.onCompleted: {
-                        console.log(this.children);
-                        console.log(this.children.size);
+                        // console.log(this.children);
+                        // console.log(this.children.size);
 
                         for (let x of this.children.values) {
-                            console.log(x.hasChildren);
+                            // console.log(x.hasChildren);
                         }
                     }
                 }

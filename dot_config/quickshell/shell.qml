@@ -63,6 +63,7 @@ Scope {
                         spacing: 8
 
                         Clock {}
+                        AudioSink {}
                         Tray {}
                     }
                 }
