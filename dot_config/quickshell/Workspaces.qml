@@ -19,7 +19,7 @@ Row {
 
             backgroundColor: modelData.is_urgent ? root.brightRed : modelData.is_focused ? root.brightOrange : root.brightYellow
             buttonText: modelData.name ?? modelData.idx
-            pressed: modelData.is_active
+            active: modelData.is_active
             onClicked: () => {
                 Niri.dispatch({
                     "Action": {

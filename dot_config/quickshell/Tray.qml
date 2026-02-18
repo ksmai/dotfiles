@@ -6,7 +6,6 @@ import Quickshell
 PressableButton {
     backgroundColor: "#b8bb26"
     horizontalPadding: 8
-    hoverEnabled: false
 
     Row {
         spacing: 4

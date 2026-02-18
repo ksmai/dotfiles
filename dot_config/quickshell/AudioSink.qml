@@ -3,7 +3,8 @@ import QtQuick
 
 Item {
     id: root
-    readonly property color brightAqua: "#8ec07c"
+    readonly property color brightYellow: "#fabd2f"
+    readonly property color brightOrange: "#fe8019"
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
     implicitWidth: btn.implicitWidth
@@ -20,7 +21,7 @@ Item {
 
     PressableButton {
         id: btn
-        backgroundColor: root.brightAqua
+        backgroundColor: this.active ? root.brightOrange : root.brightYellow
         buttonText: {
             const parts = [];
 
@@ -46,7 +47,7 @@ Item {
 
             return parts.map(part => part.trim()).join(" ");
         }
-        pressed: !(root.sink?.audio?.muted ?? true)
+        active: !(root.sink?.audio?.muted ?? true)
 
         onClicked: () => {
             if (root.sink?.audio) {
