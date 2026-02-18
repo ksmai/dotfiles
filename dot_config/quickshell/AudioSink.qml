@@ -10,37 +10,36 @@ Item {
     implicitHeight: btn.implicitHeight
 
     PwObjectTracker {
-        objects: Pipewire.nodes.values.filter(node => node.audio && !node.isStream)
+        objects: Pipewire.nodes.values.filter(node => node.audio && !node.isStream && node.isSink)
     }
 
     PressableButton {
         id: btn
         backgroundColor: root.brightAqua
         buttonText: {
-            let icon;
-            let text;
+            const parts = [];
 
             if (root.sink?.audio?.muted ?? true) {
-                icon = "󰝟 ";
+                parts.push("󰝟 ");
             } else if (root.sink.audio.volume <= 0.45) {
-                icon = "󰕿 ";
+                parts.push("󰕿 ");
             } else if (root.sink.audio.volume <= 0.75) {
-                icon = "󰖀 ";
+                parts.push("󰖀 ");
             } else {
-                icon = "󰕾 ";
+                parts.push("󰕾 ");
             }
 
             if (!root.sink?.audio) {
-                text = " ";
+                parts.push(" ");
             } else {
-                text = `${(root.sink.audio.volume * 100).toFixed(0)}%`;
+                parts.push(`${(root.sink.audio.volume * 100).toFixed(0)}%`);
             }
 
             if (root.sink?.audio?.volume > 1.05) {
-                text = text.trim() + "  ";
+                parts.push(" ");
             }
 
-            return `${icon.trim()} ${text.trim()}`;
+            return parts.map(part => part.trim()).join(" ");
         }
         pressed: !(root.sink?.audio?.muted ?? true)
 
