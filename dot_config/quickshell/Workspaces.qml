@@ -43,7 +43,7 @@ Row {
             readonly property list<var> windows: {
                 const windows = [];
                 for (const w of Niri.windows) {
-                    if (w.workspace_id === modelData.id) {
+                    if (w && w.workspace_id === modelData?.id) {
                         windows.push(w);
                     }
                 }
@@ -96,13 +96,15 @@ Row {
 
                 Repeater {
                     model: btn.windows
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
 
                     Text {
                         id: text
                         required property var modelData
                         readonly property bool isActive: modelData.id === btn.modelData.active_window_id
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
+                        anchors.top: parent?.top
+                        anchors.bottom: parent?.bottom
                         text: root.icons[modelData.app_id] ?? root.fallbackIcon
                         color: root.dark1
                         font.family: "monospace"
