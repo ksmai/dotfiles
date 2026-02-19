@@ -16,6 +16,7 @@ Item {
     property bool active: false
     property real transitionDuration: 80
     property real removeHoverSlowdown: 8
+
     default property Item contentItem: Text {
         text: root.buttonText
         color: root.foregroundColor

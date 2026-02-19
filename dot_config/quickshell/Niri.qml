@@ -84,7 +84,7 @@ Singleton {
             _sortWindows();
             break;
         case "WindowOpenedOrChanged":
-            idx = root.windows.find(w => w.id === data.window.id);
+            idx = root.windows.findIndex(w => w.id === data.window.id);
             if (idx >= 0) {
                 root.windows[idx] = data.window;
             } else {
@@ -100,7 +100,7 @@ Singleton {
 
             break;
         case "WindowClosed":
-            idx = root.windows.find(w => w.id === data.id);
+            idx = root.windows.findIndex(w => w.id === data.id);
             if (idx >= 0) {
                 root.windows.splice(idx, 1);
             }
@@ -111,14 +111,14 @@ Singleton {
             }
             break;
         case "WindowFocusTimestampChanged":
-            idx = root.windows.find(w => w.id === data.id);
+            idx = root.windows.findIndex(w => w.id === data.id);
             if (idx >= 0) {
                 const w = root.windows[idx];
                 w.focus_timestamp = data.focus_timestamp;
             }
             break;
         case "WindowUrgencyChanged":
-            idx = root.windows.find(w => w.id === data.id);
+            idx = root.windows.findIndex(w => w.id === data.id);
             if (idx >= 0) {
                 const w = root.windows[idx];
                 w.is_urgent = data.urgent;
@@ -126,37 +126,38 @@ Singleton {
             break;
         case "WindowLayoutsChanged":
             for (const [id, layout] of data.changes) {
-                idx = root.windows.find(w => w.id === id);
+                idx = root.windows.findIndex(w => w.id === id);
                 if (idx >= 0) {
                     const w = root.windows[idx];
                     w.layout = layout;
                 }
             }
+            _sortWindows();
             break;
         }
     }
 
     function _sortWindows() {
         root.windows.sort((a, b) => {
-            if (a.pos_in_scrolling_layout && !b.pos_in_scrolling_layout) {
+            if (a.layout.pos_in_scrolling_layout && !b.layout.pos_in_scrolling_layout) {
                 return -1;
             }
-            if (!a.pos_in_scrolling_layout && b.pos_in_scrolling_layout) {
+            if (!a.layout.pos_in_scrolling_layout && b.layout.pos_in_scrolling_layout) {
                 return 1;
             }
-            if (!a.pos_in_scrolling_layout && !b.pos_in_scrolling_layout) {
+            if (!a.layout.pos_in_scrolling_layout && !b.layout.pos_in_scrolling_layout) {
                 return 0;
             }
-            if (a.pos_in_scrolling_layout[0] < b.pos_in_scrolling_layout[0]) {
+            if (a.layout.pos_in_scrolling_layout[0] < b.layout.pos_in_scrolling_layout[0]) {
                 return -1;
             }
-            if (a.pos_in_scrolling_layout[0] > b.pos_in_scrolling_layout[0]) {
+            if (a.layout.pos_in_scrolling_layout[0] > b.layout.pos_in_scrolling_layout[0]) {
                 return 1;
             }
-            if (a.pos_in_scrolling_layout[1] < b.pos_in_scrolling_layout[1]) {
+            if (a.layout.pos_in_scrolling_layout[1] < b.layout.pos_in_scrolling_layout[1]) {
                 return -1;
             }
-            if (a.pos_in_scrolling_layout[1] > b.pos_in_scrolling_layout[1]) {
+            if (a.layout.pos_in_scrolling_layout[1] > b.layout.pos_in_scrolling_layout[1]) {
                 return 1;
             }
             return 0;
