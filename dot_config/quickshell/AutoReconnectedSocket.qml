@@ -9,32 +9,34 @@ Item {
     property int reconnectMaxMs: 15000
     property int _reconnectAttempts: 0
 
-    signal connected
+    onPathChanged: () => {
+        socket.connected = false;
+        root._reconnectAttempts = 0;
+        reconnectTimer.stop();
 
-    function send(data) {
-        const json = typeof data === "string" ? data : JSON.stringify(data);
-        const message = json.endsWith("\n") ? json : json + "\n";
-        socket.write(message);
-        socket.flush();
+        if (path) {
+            Qt.callLater(() => socket.connected = true);
+        }
     }
+
+    signal connected
+    signal disconnected
 
     Socket {
         id: socket
-        connected: true
 
-        onConnectedChanged: {
+        onConnectedChanged: () => {
             if (this.connected) {
                 root.connected();
                 root._reconnectAttempts = 0;
-                return;
-            }
+                reconnectTimer.stop();
+            } else {
+                root.disconnected();
 
-            const pow = Math.min(root._reconnectAttempts, 10);
-            const base = Math.min(root.reconnectBaseMs * Math.pow(2, pow), root.reconnectMaxMs);
-            const jitter = Math.floor(Math.random() * base / 4);
-            reconnectTimer.interval = base + jitter;
-            reconnectTimer.restart();
-            root._reconnectAttempts += 1;
+                if (root.path) {
+                    root._scheduleReconnect();
+                }
+            }
         }
     }
 
@@ -42,9 +44,29 @@ Item {
         id: reconnectTimer
 
         onTriggered: {
-            if (!socket.connected) {
+            if (root.path) {
                 socket.connected = true;
             }
         }
+    }
+
+    function send(data) {
+        if (!socket.connected) {
+            return;
+        }
+
+        const json = typeof data === "string" ? data : JSON.stringify(data);
+        const message = json.endsWith("\n") ? json : json + "\n";
+        socket.write(message);
+        socket.flush();
+    }
+
+    function _scheduleReconnect() {
+        const pow = Math.min(root._reconnectAttempts, 10);
+        const base = Math.min(root.reconnectBaseMs * Math.pow(2, pow), root.reconnectMaxMs);
+        const jitter = Math.floor(Math.random() * base / 4);
+        reconnectTimer.interval = base + jitter;
+        reconnectTimer.restart();
+        root._reconnectAttempts += 1;
     }
 }

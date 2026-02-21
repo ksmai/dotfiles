@@ -32,7 +32,7 @@ Singleton {
             }
         }
 
-        onConnected: {
+        onConnected: () => {
             socket.send('"EventStream"');
         }
     }
