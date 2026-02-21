@@ -15,7 +15,7 @@ Item {
         readonly property string inhibitedNoneIcon: "󰪑 ".trim()
 
         backgroundColor: "#d3869b"
-        buttonText: {
+        text: {
             const parts = [];
 
             if (NotificationService.notifications.count > 0) {

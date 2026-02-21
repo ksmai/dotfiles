@@ -7,7 +7,7 @@ PressableButton {
     backgroundColor: "#b8bb26"
     horizontalPadding: 8
 
-    Row {
+    contentItem: Row {
         spacing: 4
 
         Repeater {

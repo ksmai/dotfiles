@@ -3,10 +3,24 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Services.Pipewire
 
-Item {
+PressableButton {
     id: root
+    backgroundColor: "#fb4934"
+    visible: !!text
 
-    readonly property color brightRed: "#fb4934"
+    text: {
+        const parts = [];
+
+        if (root.hasAudioInput) {
+            parts.push("󰍬 ".trim());
+        }
+
+        if (root.hasVideoInput) {
+            parts.push("󱒃 ".trim());
+        }
+
+        return parts.join(" ");
+    }
 
     readonly property bool hasAudioInput: {
         if (!Pipewire.ready || !Pipewire.nodes?.values) {
@@ -46,28 +60,5 @@ Item {
 
     PwObjectTracker {
         objects: Pipewire.nodes.values
-    }
-
-    implicitWidth: btn.implicitWidth
-    implicitHeight: btn.implicitHeight
-
-    PressableButton {
-        id: btn
-        backgroundColor: root.brightRed
-        visible: !!btn.buttonText
-
-        buttonText: {
-            const parts = [];
-
-            if (root.hasAudioInput) {
-                parts.push("󰍬 ");
-            }
-
-            if (root.hasVideoInput) {
-                parts.push("󱒃 ");
-            }
-
-            return parts.map(part => part.trim()).join(" ");
-        }
     }
 }

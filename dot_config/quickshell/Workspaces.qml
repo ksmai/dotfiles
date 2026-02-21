@@ -43,15 +43,7 @@ Row {
             required property var modelData
             readonly property string workspaceName: modelData.name ?? modelData.idx
             readonly property string separatorIcon: windows.length > 0 ? root.separatorIcon : ""
-            readonly property list<var> windows: {
-                const windows = [];
-                for (const w of NiriService.windows) {
-                    if (w && w.workspace_id === modelData?.id) {
-                        windows.push(w);
-                    }
-                }
-                return windows;
-            }
+            readonly property list<var> windows: NiriService.windows.filter(w => w && w.workspace_id && w.workspace_id === modelData?.id)
 
             backgroundColor: modelData.is_urgent ? root.brightRed : modelData.is_focused ? root.brightOrange : root.brightYellow
             active: modelData.is_active
@@ -68,7 +60,7 @@ Row {
                 });
             }
 
-            Row {
+            contentItem: Row {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 spacing: 2
@@ -98,7 +90,10 @@ Row {
                 }
 
                 Repeater {
-                    model: btn.windows
+                    model: ScriptModel {
+                        objectProp: "id"
+                        values: btn.windows
+                    }
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
 

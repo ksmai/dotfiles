@@ -6,19 +6,20 @@ Item {
     id: root
     implicitWidth: btn.implicitWidth
     implicitHeight: btn.implicitHeight
+
     property real shadowSize: 3
     property real hoveredOffset: 1
     property real radius: 8
-    property real horizontalPadding: 10
+    property alias horizontalPadding: btn.horizontalPadding
     readonly property color foregroundColor: "#3c3836"
-    property color backgroundColor
-    property string buttonText
+    property alias backgroundColor: rect.color
+    property alias text: contentItem.text
     property bool active: false
     property real transitionDuration: 80
     property real removeHoverSlowdown: 8
 
-    default property Item contentItem: Text {
-        text: root.buttonText
+    property Item contentItem: Text {
+        id: contentItem
         color: root.foregroundColor
         font.family: "monospace"
         font.weight: 700
@@ -43,7 +44,7 @@ Item {
     Button {
         id: btn
         implicitHeight: 30
-        horizontalPadding: root.horizontalPadding
+        horizontalPadding: 10
         x: 0
         y: 0
         onClicked: () => root.clicked()
@@ -51,7 +52,6 @@ Item {
 
         background: Rectangle {
             id: rect
-            anchors.fill: parent
             border.color: root.foregroundColor
             border.width: 2
             color: root.backgroundColor

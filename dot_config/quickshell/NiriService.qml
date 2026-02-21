@@ -6,6 +6,7 @@ import QtQml
 
 Singleton {
     id: root
+
     property list<var> workspaces: []
     property list<var> windows: []
     property string focusedScreen: {
