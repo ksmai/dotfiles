@@ -1,72 +1,65 @@
-//@ pragma UseQApplication
 pragma ComponentBehavior: Bound
 import Quickshell
 import QtQuick
 
-Scope {
+ShellRoot {
     id: root
     property color fgColor: "#3c3836"
     property color bgColor: "#ebdbb2"
-    property color brightYellow: "#fabd2f"
-    property color brightOrange: "#fe8019"
-    property color brightRed: "#fb4934"
 
     Variants {
         model: Quickshell.screens
 
-        PanelWindow {
+        Scope {
             id: bar
             required property ShellScreen modelData
-            screen: modelData
-            color: "transparent"
-            implicitHeight: Math.max(left.implicitHeight, right.implicitHeight) + 14
+            readonly property int topBorder: 4
+            readonly property int padding: 5
 
-            anchors {
-                bottom: true
-                left: true
-                right: true
-            }
-
-            Rectangle {
-                anchors.fill: parent
+            PanelWindow {
+                screen: bar.modelData
                 color: root.bgColor
+                implicitHeight: Math.max(left.implicitHeight, right.implicitHeight) + bar.topBorder + 2 * bar.padding
 
-                Item {
-                    anchors.fill: parent
+                anchors {
+                    bottom: true
+                    left: true
+                    right: true
+                }
 
-                    Rectangle {
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        height: 4
-                        color: root.fgColor
+                Rectangle {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: bar.topBorder
+                    color: root.fgColor
+                }
+
+                Row {
+                    id: left
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: bar.topBorder / 2
+                    anchors.left: parent.left
+                    anchors.leftMargin: 3
+
+                    Workspaces {
+                        screen: bar.modelData
                     }
+                }
 
-                    Row {
-                        id: left
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.verticalCenterOffset: 2
-                        anchors.left: parent.left
-                        anchors.leftMargin: 3
+                Row {
+                    id: right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: bar.topBorder / 2
+                    anchors.right: parent.right
+                    anchors.rightMargin: 6
+                    spacing: 8
 
-                        Workspaces {
-                            screen: bar.screen
-                        }
-                    }
-
-                    Row {
-                        id: right
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.verticalCenterOffset: 2
-                        anchors.right: parent.right
-                        anchors.rightMargin: 6
-                        spacing: 8
-
-                        Privacy {}
-                        AudioSink {}
-                        Clock {}
-                        Tray {}
-                    }
+                    Privacy {}
+                    Clock {}
+                    AudioSink {}
+                    Tray {}
+                    Notifications {}
                 }
             }
         }

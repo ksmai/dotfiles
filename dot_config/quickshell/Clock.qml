@@ -14,6 +14,6 @@ Item {
     PressableButton {
         id: btn
         buttonText: Qt.formatDateTime(clock.date, "ddd, d MMM hh:mm")
-        backgroundColor: "#d3869b"
+        backgroundColor: "#8ec07c"
     }
 }
