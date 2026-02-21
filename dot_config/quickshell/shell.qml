@@ -59,7 +59,7 @@ ShellRoot {
                     Clock {}
                     AudioSink {}
                     Tray {}
-                    Notifications {}
+                    NotificationIndicator {}
                 }
             }
         }
