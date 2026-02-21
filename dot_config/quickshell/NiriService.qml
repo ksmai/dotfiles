@@ -9,7 +9,7 @@ Singleton {
 
     property list<var> workspaces: []
     property list<var> windows: []
-    property string focusedScreen: {
+    property string focusedOutput: {
         for (const ws of workspaces) {
             if (ws.is_focused) {
                 return ws.output;

@@ -1,4 +1,5 @@
 pragma Singleton
+import QtQml
 import QtQuick
 import Quickshell
 import Quickshell.Services.Notifications
@@ -6,8 +7,8 @@ import Quickshell.Services.Notifications
 Singleton {
     id: root
 
-    property ListModel notifications: ListModel {}
-    property ListModel displayedNotifications: ListModel {}
+    property list<OnScreenNotification> notifications: []
+    property list<OnScreenNotification> displayedNotifications: []
 
     NotificationServer {
         imageSupported: true
@@ -18,8 +19,20 @@ Singleton {
 
         onNotification: notification => {
             notification.tracked = true;
-            root.notifications.append(notification);
-            root.displayedNotifications.append(notification);
+
+            const x = comp.createObject(root, {
+                notification: notification,
+                output: NiriService.focusedOutput
+            });
+
+            root.notifications.push(x);
+            root.displayedNotifications.push(x);
         }
+    }
+
+    Component {
+        id: comp
+
+        OnScreenNotification {}
     }
 }

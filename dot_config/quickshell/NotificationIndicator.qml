@@ -1,31 +1,25 @@
 import QtQuick
 
-Item {
+PressableButton {
     id: root
-    implicitWidth: btn.implicitWidth
-    implicitHeight: btn.implicitHeight
+    readonly property string notificationIcon: "󱅫 ".trim()
+    readonly property string noneIcon: "󰂜 ".trim()
+    readonly property string dndNotificationIcon: "󰂠 ".trim()
+    readonly property string dndNoneIcon: "󰪓 ".trim()
+    readonly property string inhibitedNotificationIcon: "󰂛 ".trim()
+    readonly property string inhibitedNoneIcon: "󰪑 ".trim()
 
-    PressableButton {
-        id: btn
-        readonly property string notificationIcon: "󱅫 ".trim()
-        readonly property string noneIcon: "󰂜 ".trim()
-        readonly property string dndNotificationIcon: "󰂠 ".trim()
-        readonly property string dndNoneIcon: "󰪓 ".trim()
-        readonly property string inhibitedNotificationIcon: "󰂛 ".trim()
-        readonly property string inhibitedNoneIcon: "󰪑 ".trim()
+    backgroundColor: "#d3869b"
+    text: {
+        const parts = [];
 
-        backgroundColor: "#d3869b"
-        text: {
-            const parts = [];
-
-            if (NotificationService.notifications.count > 0) {
-                parts.push(this.notificationIcon);
-                parts.push(NotificationService.notifications.count);
-            } else {
-                parts.push(this.noneIcon);
-            }
-
-            return parts.join(" ");
+        if (NotificationService.notifications.length > 0) {
+            parts.push(this.notificationIcon);
+            parts.push(NotificationService.notifications.length);
+        } else {
+            parts.push(this.noneIcon);
         }
+
+        return parts.join(" ");
     }
 }

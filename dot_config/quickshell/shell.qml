@@ -1,3 +1,4 @@
+//@ pragma IconTheme default
 pragma ComponentBehavior: Bound
 import Quickshell
 import QtQuick
@@ -61,23 +62,28 @@ ShellRoot {
                     Clock {}
                     AudioSink {}
                     Tray {}
-                    NotificationIndicator {}
+                    // NotificationIndicator {}
                 }
             }
 
-            PanelWindow {
-                id: notifications
-                screen: scope.modelData
-                color: "white"
-
-                implicitWidth: 30
-                implicitHeight: 30
-
-                anchors {
-                    bottom: true
-                    right: true
-                }
-            }
+            // PanelWindow {
+            //     id: notifications
+            //     screen: scope.modelData
+            //     color: "white"
+            //
+            //     implicitWidth: notificationArea.implicitWidth
+            //     implicitHeight: notificationArea.implicitHeight
+            //
+            //     anchors {
+            //         bottom: true
+            //         right: true
+            //     }
+            //
+            //     NotificationArea {
+            //         id: notificationArea
+            //         screen: scope.modelData
+            //     }
+            // }
         }
     }
 }
