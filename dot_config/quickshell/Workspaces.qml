@@ -33,7 +33,10 @@ Row {
     spacing: 6
 
     Repeater {
-        model: (Niri.workspaces ?? []).filter(ws => ws.output === screen.name)
+        model: ScriptModel {
+            objectProp: "id"
+            values: (NiriService.workspaces ?? []).filter(ws => ws.output === screen.name)
+        }
 
         delegate: PressableButton {
             id: btn
@@ -42,7 +45,7 @@ Row {
             readonly property string separatorIcon: windows.length > 0 ? root.separatorIcon : ""
             readonly property list<var> windows: {
                 const windows = [];
-                for (const w of Niri.windows) {
+                for (const w of NiriService.windows) {
                     if (w && w.workspace_id === modelData?.id) {
                         windows.push(w);
                     }
@@ -54,7 +57,7 @@ Row {
             active: modelData.is_active
 
             onClicked: () => {
-                Niri.dispatch({
+                NiriService.dispatch({
                     "Action": {
                         "FocusWorkspace": {
                             "reference": {

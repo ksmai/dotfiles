@@ -8,6 +8,14 @@ Singleton {
     id: root
     property list<var> workspaces: []
     property list<var> windows: []
+    property string focusedScreen: {
+        for (const ws of workspaces) {
+            if (ws.is_focused) {
+                return ws.output;
+            }
+        }
+        return "";
+    }
 
     AutoReconnectedSocket {
         id: socket
@@ -49,6 +57,7 @@ Singleton {
             root.workspaces.sort((a, b) => {
                 return a.idx < b.idx ? -1 : 1;
             });
+
             break;
         case "WorkspaceUrgencyChanged":
             idx = root.workspaces.findIndex(ws => ws.id === data.id);

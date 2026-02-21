@@ -11,13 +11,15 @@ ShellRoot {
         model: Quickshell.screens
 
         Scope {
-            id: bar
+            id: scope
             required property ShellScreen modelData
-            readonly property int topBorder: 4
-            readonly property int padding: 5
 
             PanelWindow {
-                screen: bar.modelData
+                id: bar
+                readonly property int topBorder: 4
+                readonly property int padding: 5
+
+                screen: scope.modelData
                 color: root.bgColor
                 implicitHeight: Math.max(left.implicitHeight, right.implicitHeight) + bar.topBorder + 2 * bar.padding
 
@@ -43,7 +45,7 @@ ShellRoot {
                     anchors.leftMargin: 3
 
                     Workspaces {
-                        screen: bar.modelData
+                        screen: bar.screen
                     }
                 }
 
@@ -60,6 +62,20 @@ ShellRoot {
                     AudioSink {}
                     Tray {}
                     NotificationIndicator {}
+                }
+            }
+
+            PanelWindow {
+                id: notifications
+                screen: scope.modelData
+                color: "white"
+
+                implicitWidth: 30
+                implicitHeight: 30
+
+                anchors {
+                    bottom: true
+                    right: true
                 }
             }
         }

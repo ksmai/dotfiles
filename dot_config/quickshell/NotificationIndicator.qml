@@ -18,9 +18,9 @@ Item {
         buttonText: {
             const parts = [];
 
-            if (Notifications.notifications.count > 0) {
+            if (NotificationService.notifications.count > 0) {
                 parts.push(this.notificationIcon);
-                parts.push(Notifications.notifications.count);
+                parts.push(NotificationService.notifications.count);
             } else {
                 parts.push(this.noneIcon);
             }
