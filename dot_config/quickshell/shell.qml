@@ -62,28 +62,33 @@ ShellRoot {
                     Clock {}
                     AudioSink {}
                     Tray {}
-                    // NotificationIndicator {}
+                    NotificationIndicator {}
                 }
             }
 
-            // PanelWindow {
-            //     id: notifications
-            //     screen: scope.modelData
-            //     color: "white"
-            //
-            //     implicitWidth: notificationArea.implicitWidth
-            //     implicitHeight: notificationArea.implicitHeight
-            //
-            //     anchors {
-            //         bottom: true
-            //         right: true
-            //     }
-            //
-            //     NotificationArea {
-            //         id: notificationArea
-            //         screen: scope.modelData
-            //     }
-            // }
+            PanelWindow {
+                id: notifications
+                screen: scope.modelData
+                color: "white"
+
+                implicitWidth: notificationArea.implicitWidth
+                implicitHeight: notificationArea.implicitHeight
+
+                anchors {
+                    bottom: true
+                    right: true
+                }
+
+                margins {
+                    bottom: 16
+                    right: 16
+                }
+
+                NotificationArea {
+                    id: notificationArea
+                    screen: scope.modelData
+                }
+            }
         }
     }
 }
