@@ -12,11 +12,11 @@ ListView {
 
     model: ScriptModel {
         objectProp: "notification.id"
-        values: NotificationService.displayedNotifications.filter(x => x.output === screen.name)
+        values: NotificationService.onScreenNotifications.filter(x => x.output === screen.name)
     }
 
     delegate: NotificationBox {
-        required property OnScreenNotification modelData
-        notification: modelData.notification
+        required property NotificationObject modelData
+        notificationObject: modelData
     }
 }

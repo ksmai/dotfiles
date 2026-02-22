@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
@@ -7,26 +8,34 @@ import Quickshell.Services.Notifications
 Rectangle {
     id: root
 
-    required property Notification notification
-    property real padding: 12
-    // TODO: cache lookups
+    required property NotificationObject notificationObject
+    property real padding: 16
+    property real iconSize: 50
+    property real appIconSize: 20
+
     readonly property string appIcon: {
+        const notification = notificationObject.notification;
+        if (!notification) {
+            return null;
+        }
+        if (notification.appIcon) {
+            return notification.appIcon;
+        }
         if (!notification.appName) {
-            return "";
+            return null;
         }
-        for (const entry of DesktopEntries.applications.values) {
-            if (String(entry.name) === notification.appName) {
-                if (!entry.icon) {
-                    return "";
-                }
-                return `image://icon/${entry.icon}`;
-            }
+        const entry = DesktopEntries.heuristicLookup(notification.appName);
+        if (!entry || !entry.icon) {
+            return null;
         }
-        return "";
+        return `image://icon/${entry.icon}`;
     }
 
+    readonly property list<var> nonDefaultActions: notificationObject.notification?.actions.filter(action => action.text !== "default") ?? []
+    readonly property var defaultAction: notificationObject.notification?.actions.filter(action => action.text === "default")[0]
+
     implicitWidth: 400
-    implicitHeight: grid.implicitHeight + padding * 2
+    implicitHeight: column.implicitHeight
     border.color: "#3c3836"
     border.width: 2
     color: "#fabd2f"
@@ -43,60 +52,196 @@ Rectangle {
         color: "#3c3836"
     }
 
-    GridLayout {
-        id: grid
-        columns: 2
-        columnSpacing: 10
+    ColumnLayout {
+        id: column
         anchors.left: parent.left
-        anchors.leftMargin: root.padding
         anchors.right: parent.right
-        anchors.rightMargin: root.padding
-        y: root.padding
 
-        // Image {
-        //     source: root.notification.image
-        //     fillMode: Image.PreserveAspectFit
-        //
-        //     Layout.row: 0
-        //     Layout.rowSpan: 2
-        //     Layout.column: 0
-        //     Layout.preferredWidth: 50
-        // }
+        MouseArea {
+            Layout.fillWidth: true
+            implicitHeight: grid.implicitHeight + root.padding * 2
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.LeftButton
 
-        Image {
-            source: root.appIcon
-            fillMode: Image.PreserveAspectFit
+            onClicked: () => {
+                if (root.defaultAction) {
+                    root.defaultAction.invoke();
+                } else {
+                    root.notificationObject.notification?.dismiss();
+                }
+            }
 
-            Layout.row: 0
-            Layout.rowSpan: 2
-            Layout.column: 0
-            Layout.preferredWidth: 50
+            GridLayout {
+                id: grid
+                columns: 4
+                columnSpacing: 10
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: root.padding
+                anchors.rightMargin: root.padding
+                y: root.padding
+
+                Loader {
+                    Layout.row: 0
+                    Layout.rowSpan: 2
+                    Layout.column: 0
+                    Layout.preferredWidth: active ? root.iconSize : 0
+                    Layout.preferredHeight: active ? root.iconSize : 0
+
+                    active: root.notificationObject.notification?.image || root.appIcon
+                    sourceComponent: Item {
+                        implicitWidth: mainIcon.implicitWidth
+                        implicitHeight: mainIcon.implicitHeight
+
+                        Image {
+                            id: mainIcon
+                            source: root.notificationObject.notification?.image || root.appIcon
+                            fillMode: Image.PreserveAspectFit
+                            width: root.iconSize
+                            height: root.iconSize
+                            x: 0
+                            y: 0
+                        }
+
+                        Image {
+                            source: root.notificationObject.notification?.image && root.appIcon || ""
+                            fillMode: Image.PreserveAspectFit
+                            width: root.appIconSize
+                            height: root.appIconSize
+                            x: root.iconSize - root.appIconSize
+                            y: root.iconSize - root.appIconSize
+                        }
+                    }
+                }
+
+                Loader {
+                    Layout.row: 0
+                    Layout.column: 1
+                    Layout.fillWidth: true
+
+                    active: !!root.notificationObject.notification?.summary
+                    sourceComponent: Text {
+                        text: root.notificationObject.notification?.summary
+                        color: "#3c3836"
+                        font.family: "monospace"
+                        font.pointSize: 12
+                        font.weight: 700
+                        wrapMode: Text.Wrap
+                    }
+                }
+
+                Loader {
+                    Layout.row: 0
+                    Layout.column: 2
+
+                    active: !!root.notificationObject.timeString
+                    sourceComponent: Text {
+                        text: root.notificationObject.timeString
+                        color: "#3c3836"
+                        font.family: "monospace"
+                        font.pointSize: 12
+                        font.weight: 500
+                        wrapMode: Text.Wrap
+                    }
+                }
+
+                PressableButton {
+                    Layout.row: 0
+                    Layout.column: 3
+
+                    text: ""
+                    horizontalPadding: 8
+                    backgroundColor: "#fe8019"
+                    onClicked: () => {
+                        root.notificationObject.notification?.dismiss();
+                    }
+                }
+
+                Loader {
+                    Layout.row: 1
+                    Layout.column: 1
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+
+                    active: !!root.notificationObject.notification?.body
+                    sourceComponent: Text {
+                        text: root.notificationObject.notification?.body
+                        color: "#3c3836"
+                        font.family: "monospace"
+                        font.pointSize: 12
+                        font.weight: 500
+                        wrapMode: Text.Wrap
+                    }
+                }
+            }
         }
 
-        Text {
-            text: root.notification.summary
-            color: "#3c3836"
-            font.family: "monospace"
-            font.pointSize: 12
-            font.weight: 900
-            wrapMode: Text.Wrap
-
-            Layout.row: 0
-            Layout.column: 1
+        GridLayout {
             Layout.fillWidth: true
-        }
+            columns: 2
+            columnSpacing: 0
+            rowSpacing: 0
 
-        Text {
-            text: root.notification.body
-            color: "#3c3836"
-            font.family: "monospace"
-            font.pointSize: 12
-            font.weight: 500
-            wrapMode: Text.Wrap
+            Repeater {
+                model: ScriptModel {
+                    values: root.nonDefaultActions
+                }
 
-            Layout.row: 1
-            Layout.column: 1
-            Layout.fillWidth: true
+                MouseArea {
+                    id: actionMouseArea
+
+                    required property NotificationAction modelData
+                    required property int index
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: 0
+                    Layout.preferredHeight: actionText.implicitHeight
+                    Layout.columnSpan: index % 2 === 0 && index === root.nonDefaultActions.length - 1 ? 2 : 1
+
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: () => {
+                        modelData.invoke();
+                    }
+
+                    Rectangle {
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        color: "#3c3836"
+                        height: 2
+                    }
+
+                    Rectangle {
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        color: "#3c3836"
+                        width: actionMouseArea.index % 2 === 0 ? 2 : 0
+                    }
+
+                    Text {
+                        id: actionText
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: actionMouseArea.modelData.text
+                        color: "#3c3836"
+                        font.family: "monospace"
+                        font.pointSize: 12
+                        font.weight: 500
+                        font.capitalization: Font.AllUppercase
+                        wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: root.padding
+                        rightPadding: root.padding
+                        topPadding: root.padding / 2
+                        bottomPadding: root.padding / 2
+                    }
+                }
+            }
         }
     }
 }

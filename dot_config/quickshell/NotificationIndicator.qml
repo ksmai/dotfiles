@@ -13,9 +13,9 @@ PressableButton {
     text: {
         const parts = [];
 
-        if (NotificationService.notifications.length > 0) {
+        if (NotificationService.allNotifications.length > 0) {
             parts.push(this.notificationIcon);
-            parts.push(NotificationService.notifications.length);
+            parts.push(NotificationService.allNotifications.length);
         } else {
             parts.push(this.noneIcon);
         }
