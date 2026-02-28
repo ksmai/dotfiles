@@ -40,6 +40,8 @@ Singleton {
                 target: obj.notification
 
                 function onClosed() {
+                    obj.copyOnDismiss();
+
                     for (let i = 0; i < root.allNotifications.length; ++i) {
                         if (root.allNotifications[i] === obj) {
                             root.allNotifications.splice(i, 1);

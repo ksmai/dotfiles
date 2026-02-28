@@ -69,24 +69,27 @@ ShellRoot {
             PanelWindow {
                 id: notifications
                 screen: scope.modelData
-                color: "white"
-
-                implicitWidth: notificationArea.implicitWidth
-                implicitHeight: notificationArea.implicitHeight
+                color: "transparent"
+                exclusionMode: ExclusionMode.Normal
 
                 anchors {
+                    top: true
                     bottom: true
                     right: true
+                    left: true
                 }
 
-                margins {
-                    bottom: 16
-                    right: 16
+                mask: Region {
+                    item: notificationArea
                 }
 
                 NotificationArea {
                     id: notificationArea
                     screen: scope.modelData
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 16
+                    anchors.right: parent.right
+                    anchors.rightMargin: 16
                 }
             }
         }

@@ -14,28 +14,24 @@ Rectangle {
     property real appIconSize: 20
 
     readonly property string appIcon: {
-        const notification = notificationObject.notification;
-        if (!notification) {
+        if (notificationObject.appIcon) {
+            return notificationObject.appIcon;
+        }
+        if (!notificationObject.appName) {
             return null;
         }
-        if (notification.appIcon) {
-            return notification.appIcon;
-        }
-        if (!notification.appName) {
-            return null;
-        }
-        const entry = DesktopEntries.heuristicLookup(notification.appName);
+        const entry = DesktopEntries.heuristicLookup(notificationObject.appName);
         if (!entry || !entry.icon) {
             return null;
         }
         return `image://icon/${entry.icon}`;
     }
 
-    readonly property list<var> nonDefaultActions: notificationObject.notification?.actions.filter(action => action.text !== "default") ?? []
-    readonly property var defaultAction: notificationObject.notification?.actions.filter(action => action.text === "default")[0]
+    readonly property list<var> nonDefaultActions: notificationObject.actions.filter(action => action.text !== "default") ?? []
+    readonly property var defaultAction: notificationObject.actions.filter(action => action.text === "default")[0]
 
     implicitWidth: 400
-    implicitHeight: column.implicitHeight
+    height: column.implicitHeight
     border.color: "#3c3836"
     border.width: 2
     color: "#fabd2f"
@@ -67,7 +63,7 @@ Rectangle {
                 if (root.defaultAction) {
                     root.defaultAction.invoke();
                 } else {
-                    root.notificationObject.notification?.dismiss();
+                    root.notificationObject.dismiss();
                 }
             }
 
@@ -88,14 +84,14 @@ Rectangle {
                     Layout.preferredWidth: active ? root.iconSize : 0
                     Layout.preferredHeight: active ? root.iconSize : 0
 
-                    active: root.notificationObject.notification?.image || root.appIcon
+                    active: root.notificationObject.image || root.appIcon
                     sourceComponent: Item {
                         implicitWidth: mainIcon.implicitWidth
                         implicitHeight: mainIcon.implicitHeight
 
                         Image {
                             id: mainIcon
-                            source: root.notificationObject.notification?.image || root.appIcon
+                            source: root.notificationObject.image || root.appIcon
                             fillMode: Image.PreserveAspectFit
                             width: root.iconSize
                             height: root.iconSize
@@ -104,7 +100,7 @@ Rectangle {
                         }
 
                         Image {
-                            source: root.notificationObject.notification?.image && root.appIcon || ""
+                            source: root.notificationObject.image && root.appIcon
                             fillMode: Image.PreserveAspectFit
                             width: root.appIconSize
                             height: root.appIconSize
@@ -119,9 +115,9 @@ Rectangle {
                     Layout.column: 1
                     Layout.fillWidth: true
 
-                    active: !!root.notificationObject.notification?.summary
+                    active: !!root.notificationObject.summary
                     sourceComponent: Text {
-                        text: root.notificationObject.notification?.summary
+                        text: root.notificationObject.summary
                         color: "#3c3836"
                         font.family: "monospace"
                         font.pointSize: 12
@@ -153,7 +149,7 @@ Rectangle {
                     horizontalPadding: 8
                     backgroundColor: "#fe8019"
                     onClicked: () => {
-                        root.notificationObject.notification?.dismiss();
+                        root.notificationObject.dismiss();
                     }
                 }
 
@@ -163,9 +159,9 @@ Rectangle {
                     Layout.columnSpan: 3
                     Layout.fillWidth: true
 
-                    active: !!root.notificationObject.notification?.body
+                    active: !!root.notificationObject.body
                     sourceComponent: Text {
-                        text: root.notificationObject.notification?.body
+                        text: root.notificationObject.body
                         color: "#3c3836"
                         font.family: "monospace"
                         font.pointSize: 12
@@ -190,7 +186,7 @@ Rectangle {
                 MouseArea {
                     id: actionMouseArea
 
-                    required property NotificationAction modelData
+                    required property var modelData
                     required property int index
 
                     Layout.fillWidth: true
