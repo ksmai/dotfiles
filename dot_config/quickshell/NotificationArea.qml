@@ -2,13 +2,14 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 
-Item {
+MouseArea {
     id: root
 
     required property ShellScreen screen
     readonly property real spacing: 16
 
     width: 400
+    hoverEnabled: true
 
     implicitHeight: {
         const count = repeater.count;
@@ -37,6 +38,14 @@ Item {
         }
         result.reverse();
         return result;
+    }
+
+    onEntered: {
+        NotificationService.pauseExpiry(screen.name);
+    }
+
+    onExited: {
+        NotificationService.resumeExpiry(screen.name);
     }
 
     Repeater {

@@ -5,6 +5,7 @@ QtObject {
     property Notification notification
     property string output
     property string timeString
+    property real expiryTime
     property Connections connections
 
     property int notificationId: notification ? notification.id : _notificationId
