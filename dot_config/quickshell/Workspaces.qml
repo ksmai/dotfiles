@@ -11,6 +11,7 @@ Row {
     readonly property color brightOrange: "#fe8019"
     readonly property color brightRed: "#fb4934"
     readonly property color dark1: "#3c3836"
+    readonly property color dark3: "#665c54"
 
     readonly property var icons: {
         "kitty": " ".trim(),
@@ -104,10 +105,10 @@ Row {
                         anchors.top: parent?.top
                         anchors.bottom: parent?.bottom
                         text: root.icons[modelData.app_id] ?? root.fallbackIcon
-                        color: root.dark1
+                        color: isActive ? root.dark1 : root.dark3
                         font.family: "monospace"
                         font.weight: 700
-                        font.pointSize: isActive && btn.windows.length > 1 ? 18 : 12
+                        font.pointSize: isActive && btn.windows.length > 1 ? 16 : 12
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
