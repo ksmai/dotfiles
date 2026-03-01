@@ -8,8 +8,15 @@ import Quickshell.Services.Notifications
 Singleton {
     id: root
 
-    property list<NotificationObject> allNotifications: []
-    property list<NotificationObject> onScreenNotifications: []
+    property ListModel allNotifications: ListModel {}
+    property var onScreenNotifications: ({})
+
+    function getForScreen(output) {
+        if (!root.onScreenNotifications[output]) {
+            root.onScreenNotifications[output] = listModelComponent.createObject(root);
+        }
+        return root.onScreenNotifications[output];
+    }
 
     NotificationServer {
         imageSupported: true
@@ -21,18 +28,29 @@ Singleton {
         onNotification: notification => {
             notification.tracked = true;
 
-            const notificationObject = comp.createObject(root, {
+            const output = NiriService.focusedOutput;
+            const notificationObject = notificationObjectComponent.createObject(root, {
                 notification: notification,
-                output: NiriService.focusedOutput,
+                output: output,
                 timeString: ""
             });
-            root.allNotifications.push(notificationObject);
-            root.onScreenNotifications.push(notificationObject);
+            root.allNotifications.append({
+                "value": notificationObject
+            });
+            root.getForScreen(output).append({
+                "value": notificationObject
+            });
         }
     }
 
     Component {
-        id: comp
+        id: listModelComponent
+
+        ListModel {}
+    }
+
+    Component {
+        id: notificationObjectComponent
 
         NotificationObject {
             id: obj
@@ -42,17 +60,19 @@ Singleton {
                 function onClosed() {
                     obj.copyOnDismiss();
 
-                    for (let i = 0; i < root.allNotifications.length; ++i) {
-                        if (root.allNotifications[i] === obj) {
-                            root.allNotifications.splice(i, 1);
+                    for (let i = 0; i < root.allNotifications.count; ++i) {
+                        if (root.allNotifications.get(i)?.value === obj) {
+                            root.allNotifications.remove(i);
                             break;
                         }
                     }
 
-                    for (let i = 0; i < root.onScreenNotifications.length; ++i) {
-                        if (root.onScreenNotifications[i] === obj) {
-                            root.onScreenNotifications.splice(i, 1);
-                            break;
+                    for (const onScreenNotifications of Object.values(root.onScreenNotifications)) {
+                        for (let i = 0; i < onScreenNotifications.count; ++i) {
+                            if (onScreenNotifications.get(i)?.value === obj) {
+                                onScreenNotifications.remove(i);
+                                break;
+                            }
                         }
                     }
                 }

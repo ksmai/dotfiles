@@ -42,10 +42,7 @@ Item {
     Repeater {
         id: repeater
 
-        model: ScriptModel {
-            objectProp: "notificationId"
-            values: NotificationService.onScreenNotifications.filter(x => x.output === screen.name)
-        }
+        model: NotificationService.getForScreen(root.screen.name)
 
         delegate: NotificationBox {
             id: box
@@ -100,6 +97,43 @@ Item {
                     easing.type: Easing.OutBounce
                 }
             }
+        }
+
+        onItemAdded: (i, item) => {
+            item.state = "entered";
+        }
+
+        onItemRemoved: (i, item) => {
+            const notificationBox = notificationBoxComponent.createObject(root, {
+                notificationObject: item.modelData,
+                initialTranslateX: item.translateX,
+                initialTranslateY: item.translateY,
+                opacity: item.opacity
+            });
+            notificationBox?.runRemoveAnimation();
+        }
+    }
+
+    Component {
+        id: notificationBoxComponent
+
+        NotificationBox {
+            id: removedBox
+            readonly property real initialTranslateX: 0
+            readonly property real initialTranslateY: 0
+            property real translateX: initialTranslateX
+            property real translateY: initialTranslateY
+            transform: Translate {
+                x: removedBox.translateX
+                y: removedBox.translateY
+            }
+            anchors.bottom: root.bottom
+            enabled: false
+            z: -1
+
+            function runRemoveAnimation() {
+                removeAnimation.start();
+            }
 
             SequentialAnimation {
                 id: removeAnimation
@@ -112,8 +146,8 @@ Item {
                 readonly property real scaleVelocity: 0.2
 
                 readonly property real t1: upDuration / 1000
-                readonly property real x1: -xVelocity * t1
-                readonly property real y1: -yVelocity * t1 + 0.5 * yAcceleration * t1 * t1
+                readonly property real x1: removedBox.initialTranslateX - xVelocity * t1
+                readonly property real y1: removedBox.initialTranslateY - yVelocity * t1 + 0.5 * yAcceleration * t1 * t1
                 readonly property real s1: 1 - scaleVelocity * t1
                 readonly property real r1: -angularVelocity * t1
 
@@ -123,36 +157,30 @@ Item {
                 readonly property real s2: s1 - scaleVelocity * t2
                 readonly property real r2: r1 - angularVelocity * t2
 
-                PropertyAction {
-                    target: box
-                    property: "ListView.delayRemove"
-                    value: true
-                }
-
                 ParallelAnimation {
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "translateX"
                         to: removeAnimation.x1
                         duration: removeAnimation.upDuration
                         easing.type: Easing.Linear
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "translateY"
                         to: removeAnimation.y1
                         duration: removeAnimation.upDuration
                         easing.type: Easing.OutQuad
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "scale"
                         to: removeAnimation.s1
                         duration: removeAnimation.upDuration
                         easing.type: Easing.Linear
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "rotation"
                         to: removeAnimation.r1
                         duration: removeAnimation.upDuration
@@ -162,35 +190,35 @@ Item {
 
                 ParallelAnimation {
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "translateX"
                         to: removeAnimation.x2
                         duration: removeAnimation.downDuration
                         easing.type: Easing.Linear
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "translateY"
                         to: removeAnimation.y2
                         duration: removeAnimation.downDuration
                         easing.type: Easing.InQuad
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "scale"
                         to: removeAnimation.s2
                         duration: removeAnimation.downDuration
                         easing.type: Easing.Linear
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "rotation"
                         to: removeAnimation.r2
                         duration: removeAnimation.downDuration
                         easing.type: Easing.Linear
                     }
                     NumberAnimation {
-                        target: box
+                        target: removedBox
                         property: "opacity"
                         to: 0.0
                         duration: removeAnimation.downDuration
@@ -198,21 +226,10 @@ Item {
                     }
                 }
 
-                PropertyAction {
-                    target: box
-                    property: "ListView.delayRemove"
-                    value: false
+                onFinished: {
+                    removedBox.destroy();
                 }
             }
-        }
-
-        onItemAdded: (i, item) => {
-            console.log("onItemAdded", item.modelData.notificationId);////
-            item.state = "entered";
-        }
-
-        onItemRemoved: (i, item) => {
-            console.log("onItemRemoved", item.modelData.notificationId);////
         }
     }
 }
