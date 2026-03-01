@@ -3,7 +3,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
-import Quickshell.Services.Notifications
 
 Rectangle {
     id: root
@@ -30,8 +29,8 @@ Rectangle {
     readonly property list<var> nonDefaultActions: notificationObject.actions.filter(action => action.text !== "default") ?? []
     readonly property var defaultAction: notificationObject.actions.filter(action => action.text === "default")[0]
 
-    implicitWidth: 400
-    height: column.implicitHeight
+    width: 400
+    implicitHeight: column.implicitHeight
     border.color: "#3c3836"
     border.width: 2
     color: "#fabd2f"
