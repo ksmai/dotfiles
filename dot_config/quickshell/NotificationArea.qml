@@ -137,13 +137,18 @@ Item {
 
             SequentialAnimation {
                 id: removeAnimation
-                readonly property real upDuration: 400
-                readonly property real downDuration: 600
-                readonly property real xVelocity: 1300
-                readonly property real yVelocity: 1200
-                readonly property real yAcceleration: 3000
-                readonly property real angularVelocity: 50
-                readonly property real scaleVelocity: 0.2
+
+                function rand(low, high) {
+                    return low + (high - low) * Math.random();
+                }
+
+                readonly property real upDuration: rand(360, 440)
+                readonly property real downDuration: rand(540, 660)
+                readonly property real xVelocity: rand(1170, 1430)
+                readonly property real yVelocity: rand(1080, 1320)
+                readonly property real yAcceleration: rand(2700, 3300)
+                readonly property real angularVelocity: rand(45, 55)
+                readonly property real scaleVelocity: rand(0.18, 0.22)
 
                 readonly property real t1: upDuration / 1000
                 readonly property real x1: removedBox.initialTranslateX - xVelocity * t1
