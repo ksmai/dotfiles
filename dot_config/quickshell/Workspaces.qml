@@ -95,13 +95,14 @@ Row {
                         objectProp: "id"
                         values: btn.windows
                     }
+
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
 
                     Text {
-                        id: text
                         required property var modelData
                         readonly property bool isActive: modelData.id === btn.modelData.active_window_id
+
                         anchors.top: parent?.top
                         anchors.bottom: parent?.bottom
                         text: root.icons[modelData.app_id] ?? root.fallbackIcon
@@ -111,6 +112,18 @@ Row {
                         font.pointSize: isActive && btn.windows.length > 1 ? 16 : 12
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
+
+                        TapHandler {
+                            onTapped: {
+                                NiriService.dispatch({
+                                    "Action": {
+                                        "FocusWindow": {
+                                            "id": parent.modelData.id
+                                        }
+                                    }
+                                });
+                            }
+                        }
                     }
                 }
             }
