@@ -17,7 +17,7 @@ ListView {
     Component.onCompleted: positionViewAtEnd()
 
     model: ScriptModel {
-        objectProp: "id"
+        objectProp: "notificationId"
         values: NotificationService.onScreenNotifications.filter(x => x.output === screen.name)
     }
 

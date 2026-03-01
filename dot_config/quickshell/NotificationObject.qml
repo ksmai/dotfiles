@@ -7,7 +7,7 @@ QtObject {
     property string timeString
     property Connections connections
 
-    property int id: notification ? notification.id : _id
+    property int notificationId: notification ? notification.id : _notificationId
     property string appIcon: notification ? notification.appIcon : _appIcon
     property string appName: notification ? notification.appName : _appName
     property string image: notification ? notification.image : _image
@@ -15,7 +15,7 @@ QtObject {
     property string body: notification ? notification.body : _body
     property list<var> actions: notification ? notification.actions : (_actions ?? [])
 
-    property int _id
+    property int _notificationId
     property string _appIcon
     property string _appName
     property string _image
@@ -38,7 +38,7 @@ QtObject {
     }
 
     function copyOnDismiss() {
-        _id = notification?.id;
+        _notificationId = notification?.id;
         _appIcon = notification?.appIcon;
         _appName = notification?.appName;
         _image = notification?.image;
