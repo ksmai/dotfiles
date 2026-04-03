@@ -56,13 +56,20 @@ Rectangle {
             Layout.fillWidth: true
             implicitHeight: grid.implicitHeight + root.padding * 2
             cursorShape: Qt.PointingHandCursor
-            acceptedButtons: Qt.LeftButton
+            acceptedButtons: Qt.LeftButton | Qt.MiddleButton
 
-            onClicked: () => {
-                if (root.defaultAction) {
-                    root.defaultAction.invoke();
-                } else {
+            onClicked: mouse => {
+                switch (mouse.button) {
+                case Qt.LeftButton:
+                    if (root.defaultAction) {
+                        root.defaultAction.invoke();
+                    } else {
+                        root.notificationObject.dismiss();
+                    }
+                    break;
+                case Qt.MiddleButton:
                     root.notificationObject.dismiss();
+                    break;
                 }
             }
 
