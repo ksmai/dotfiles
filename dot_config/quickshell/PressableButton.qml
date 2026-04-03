@@ -6,6 +6,8 @@ MouseArea {
     id: root
     implicitWidth: rect.implicitWidth
     implicitHeight: rect.implicitHeight
+    hoverEnabled: true
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
     default property alias content: row.data
     property real shadowSize: 3
@@ -19,7 +21,38 @@ MouseArea {
     property real transitionDuration: 80
     property real removeHoverSlowdown: 8
 
-    hoverEnabled: true
+    property var onLeftClicked
+    property var onMiddleClicked
+    property var onRightClicked
+
+    onClicked: mouse => {
+        switch (mouse.button) {
+        case Qt.LeftButton:
+            return this.onLeftClicked?.(mouse);
+        case Qt.MiddleButton:
+            return this.onMiddleClicked?.(mouse);
+        case Qt.RightButton:
+            return this.onRightClicked?.(mouse);
+        }
+    }
+
+    cursorShape: onLeftClicked || onMiddleClicked || onRightClicked ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+    property bool pressedEffective: {
+        if (!root.pressed) {
+            return false;
+        }
+        if ((root.pressedButtons & Qt.LeftButton) && root.onLeftClicked) {
+            return true;
+        }
+        if ((root.pressedButtons & Qt.MiddleButton) && root.onMiddleClicked) {
+            return true;
+        }
+        if ((root.pressedButtons & Qt.RightButton) && root.onRightClicked) {
+            return true;
+        }
+        return false;
+    }
 
     RectangularShadow {
         id: shadow
@@ -72,7 +105,7 @@ MouseArea {
     states: [
         State {
             name: "normal"
-            when: !root.containsMouse && !root.pressed && !root.active
+            when: !root.containsMouse && !root.pressedEffective && !root.active
             PropertyChanges {
                 shadow {
                     offset.x: root.shadowSize
@@ -86,7 +119,7 @@ MouseArea {
         },
         State {
             name: "hovered"
-            when: root.containsMouse && !root.pressed
+            when: root.containsMouse && !root.pressedEffective
             PropertyChanges {
                 shadow {
                     offset.x: root.shadowSize + root.hoveredOffset
@@ -100,7 +133,7 @@ MouseArea {
         },
         State {
             name: "active"
-            when: !root.containsMouse && !root.pressed && root.active
+            when: !root.containsMouse && !root.pressedEffective && root.active
             PropertyChanges {
                 shadow {
                     offset.x: 0
@@ -114,7 +147,7 @@ MouseArea {
         },
         State {
             name: "pressed"
-            when: root.pressed
+            when: root.pressedEffective
             PropertyChanges {
                 shadow {
                     offset.x: 0

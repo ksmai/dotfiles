@@ -147,7 +147,7 @@ Rectangle {
                     text: ""
                     horizontalPadding: 8
                     backgroundColor: "#fe8019"
-                    onClicked: () => {
+                    onLeftClicked: () => {
                         root.notificationObject.dismiss();
                     }
                 }

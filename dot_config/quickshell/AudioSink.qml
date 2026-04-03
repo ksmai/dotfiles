@@ -36,7 +36,7 @@ PressableButton {
     }
     active: !(sink?.audio?.muted ?? true)
 
-    onClicked: () => {
+    onLeftClicked: () => {
         if (sink?.audio) {
             sink.audio.muted = !sink.audio.muted;
         }

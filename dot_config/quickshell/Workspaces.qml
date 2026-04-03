@@ -49,7 +49,7 @@ Row {
             backgroundColor: modelData.is_urgent ? root.brightRed : modelData.is_focused ? root.brightOrange : root.brightYellow
             active: modelData.is_active
 
-            onClicked: () => {
+            onLeftClicked: () => {
                 NiriService.dispatch({
                     "Action": {
                         "FocusWorkspace": {
