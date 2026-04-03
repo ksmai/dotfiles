@@ -6,7 +6,6 @@ MouseArea {
     id: root
     implicitWidth: rect.implicitWidth
     implicitHeight: rect.implicitHeight
-    hoverEnabled: true
     acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
     default property alias content: row.data
@@ -36,7 +35,8 @@ MouseArea {
         }
     }
 
-    cursorShape: onLeftClicked || onMiddleClicked || onRightClicked ? Qt.PointingHandCursor : Qt.ArrowCursor
+    hoverEnabled: !!(onLeftClicked || onMiddleClicked || onRightClicked)
+    cursorShape: hoverEnabled ? Qt.PointingHandCursor : Qt.ArrowCursor
 
     property bool pressedEffective: {
         if (!root.pressed) {
@@ -52,6 +52,10 @@ MouseArea {
             return true;
         }
         return false;
+    }
+
+    property bool hoverEffective: {
+        return root.hoverEnabled && root.containsMouse;
     }
 
     RectangularShadow {
@@ -105,7 +109,7 @@ MouseArea {
     states: [
         State {
             name: "normal"
-            when: !root.containsMouse && !root.pressedEffective && !root.active
+            when: !root.hoverEffective && !root.pressedEffective && !root.active
             PropertyChanges {
                 shadow {
                     offset.x: root.shadowSize
@@ -119,7 +123,7 @@ MouseArea {
         },
         State {
             name: "hovered"
-            when: root.containsMouse && !root.pressedEffective
+            when: root.hoverEffective && !root.pressedEffective
             PropertyChanges {
                 shadow {
                     offset.x: root.shadowSize + root.hoveredOffset
@@ -133,7 +137,7 @@ MouseArea {
         },
         State {
             name: "active"
-            when: !root.containsMouse && !root.pressedEffective && root.active
+            when: !root.hoverEffective && !root.pressedEffective && root.active
             PropertyChanges {
                 shadow {
                     offset.x: 0
