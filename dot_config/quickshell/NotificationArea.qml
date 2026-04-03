@@ -119,7 +119,12 @@ MouseArea {
                 initialTranslateY: item.translateY,
                 opacity: item.opacity
             });
-            notificationBox?.runRemoveAnimation();
+
+            if (item.modelData.expired) {
+                notificationBox?.runHideAnimation();
+            } else {
+                notificationBox?.runRemoveAnimation();
+            }
         }
     }
 
@@ -142,6 +147,10 @@ MouseArea {
 
             function runRemoveAnimation() {
                 removeAnimation.start();
+            }
+
+            function runHideAnimation() {
+                hideAnimation.start();
             }
 
             SequentialAnimation {
@@ -240,6 +249,27 @@ MouseArea {
                     }
                 }
 
+                onFinished: {
+                    removedBox.destroy();
+                }
+            }
+
+            ParallelAnimation {
+                id: hideAnimation
+                NumberAnimation {
+                    target: removedBox
+                    property: "translateX"
+                    to: root.width
+                    duration: 400
+                    easing.type: Easing.InBack
+                }
+                NumberAnimation {
+                    target: removedBox
+                    property: "opacity"
+                    to: 0
+                    duration: 400
+                    easing.type: Easing.InQuad
+                }
                 onFinished: {
                     removedBox.destroy();
                 }

@@ -23,6 +23,7 @@ QtObject {
     property string _summary
     property string _body
     property list<var> _actions
+    property bool expired
 
     component Action: QtObject {
         id: actionComponent

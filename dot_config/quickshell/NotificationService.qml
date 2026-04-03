@@ -93,7 +93,9 @@ Singleton {
                     continue;
                 }
                 for (let i = onScreenNotifications.count - 1; i >= 0; --i) {
-                    if (onScreenNotifications.get(i)?.value.expiryTime <= now) {
+                    const obj = onScreenNotifications.get(i)?.value;
+                    if (obj?.expiryTime <= now) {
+                        obj.expired = true;
                         onScreenNotifications.remove(i);
                     }
                 }
