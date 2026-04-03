@@ -51,7 +51,7 @@ MouseArea {
     Repeater {
         id: repeater
 
-        model: NotificationService.getForScreen(root.screen.name)
+        model: NotificationService.getForScreen(root.screen?.name ?? "")
 
         delegate: NotificationBox {
             id: box
