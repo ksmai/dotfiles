@@ -62,7 +62,11 @@ ShellRoot {
                     Clock {}
                     AudioSink {}
                     Tray {}
-                    NotificationIndicator {}
+                    NotificationIndicator {
+                        onLeftClicked: () => {
+                            NotificationService.toggleNotificationCenter(scope.modelData.name);
+                        }
+                    }
                 }
             }
 
@@ -90,6 +94,26 @@ ShellRoot {
                     anchors.bottomMargin: 16
                     anchors.right: parent.right
                     anchors.rightMargin: 16
+                }
+            }
+
+            PanelWindow {
+                id: notificationCenterWindow
+                screen: scope.modelData
+                color: "transparent"
+                exclusionMode: ExclusionMode.Normal
+                implicitWidth: notificationCenter.implicitWidth + notificationCenter.gap
+                visible: notificationCenter.displayed
+
+                anchors {
+                    top: true
+                    bottom: true
+                    right: true
+                }
+
+                NotificationCenter {
+                    id: notificationCenter
+                    screen: scope.modelData
                 }
             }
         }

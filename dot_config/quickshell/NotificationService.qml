@@ -11,6 +11,7 @@ Singleton {
     property ListModel allNotifications: ListModel {}
     property var _onScreenNotifications: ({})
     property var _paused: ({})
+    property string notificationCenterOpenedOn: ""
     readonly property real expireTimeout: 60000
     readonly property real minExpireTimeout: 1000
 
@@ -41,10 +42,13 @@ Singleton {
             root.allNotifications.append({
                 "value": notificationObject
             });
-            root.getForScreen(output).append({
-                "value": notificationObject
-            });
-            root.restartTimer();
+
+            if (!root.notificationCenterOpenedOn) {
+                root.getForScreen(output).append({
+                    "value": notificationObject
+                });
+                root.restartTimer();
+            }
         }
     }
 
@@ -77,6 +81,19 @@ Singleton {
     function resumeExpiry(output) {
         delete root._paused[output];
         restartTimer();
+    }
+
+    function toggleNotificationCenter(output) {
+        if (root.notificationCenterOpenedOn === output) {
+            root.notificationCenterOpenedOn = "";
+            return;
+        }
+
+        root.notificationCenterOpenedOn = output;
+
+        for (const [output, onScreenNotifications] of Object.entries(root._onScreenNotifications)) {
+            onScreenNotifications.clear();
+        }
     }
 
     Timer {

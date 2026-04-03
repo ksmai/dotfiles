@@ -113,6 +113,10 @@ MouseArea {
         }
 
         onItemRemoved: (i, item) => {
+            if (NotificationService.notificationCenterOpenedOn) {
+                return;
+            }
+
             const notificationBox = notificationBoxComponent.createObject(root, {
                 notificationObject: item.modelData,
                 initialTranslateX: item.translateX,
