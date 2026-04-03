@@ -42,6 +42,19 @@ PressableButton {
         }
     }
 
+    onWheel: wheel => {
+        if (!sink?.ready || !sink?.audio) {
+            return;
+        }
+
+        let delta = 0.1;
+        if (wheel.angleDelta.y < 0) {
+            delta *= -1;
+        }
+
+        sink.audio.volume = Math.min(1.5, Math.max(0, sink.audio.volume + delta));
+    }
+
     PwObjectTracker {
         objects: {
             if (!Pipewire.ready || !Pipewire.nodes?.values) {
