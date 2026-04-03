@@ -61,6 +61,31 @@ Row {
                 });
             }
 
+            onWheel: wheel => {
+                let delta = 1;
+                if (wheel.angleDelta.y > 0) {
+                    delta = -1;
+                }
+
+                let focused = btn.windows.findIndex(w => w.is_focused);
+                if (focused === -1) {
+                    return;
+                }
+
+                focused += delta;
+                if (focused < 0 || focused > btn.windows.length - 1) {
+                    return;
+                }
+
+                NiriService.dispatch({
+                    "Action": {
+                        "FocusWindow": {
+                            "id": btn.windows[focused].id
+                        }
+                    }
+                });
+            }
+
             Row {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
