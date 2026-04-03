@@ -2,37 +2,28 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
 
-Item {
+MouseArea {
     id: root
-    implicitWidth: btn.implicitWidth
-    implicitHeight: btn.implicitHeight
+    implicitWidth: rect.implicitWidth
+    implicitHeight: rect.implicitHeight
 
+    default property alias content: row.data
     property real shadowSize: 3
     property real hoveredOffset: 1
-    property real radius: 8
-    property alias horizontalPadding: btn.horizontalPadding
+    property alias radius: rect.radius
+    property real horizontalPadding: 10
     readonly property color foregroundColor: "#3c3836"
     property alias backgroundColor: rect.color
-    property alias text: contentItem.text
+    property alias text: defaultText.text
     property bool active: false
     property real transitionDuration: 80
     property real removeHoverSlowdown: 8
 
-    property Item contentItem: Text {
-        id: contentItem
-        color: root.foregroundColor
-        font.family: "monospace"
-        font.weight: 700
-        font.pointSize: 12
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-    }
-
-    signal clicked
+    hoverEnabled: true
 
     RectangularShadow {
         id: shadow
-        anchors.fill: btn
+        anchors.fill: rect
         offset.x: root.shadowSize
         offset.y: root.shadowSize
         radius: root.radius
@@ -41,26 +32,39 @@ Item {
         color: root.foregroundColor
     }
 
-    Button {
-        id: btn
+    Rectangle {
+        id: rect
+        border.color: root.foregroundColor
+        border.width: 2
+        radius: 8
         implicitHeight: 30
-        horizontalPadding: 10
+        implicitWidth: row.implicitWidth
         x: 0
         y: 0
-        onClicked: () => root.clicked()
-        contentItem: root.contentItem
 
-        background: Rectangle {
-            id: rect
-            border.color: root.foregroundColor
-            border.width: 2
-            color: root.backgroundColor
-            radius: root.radius
+        Behavior on color {
+            PropertyAnimation {
+                duration: root.transitionDuration
+            }
+        }
 
-            Behavior on color {
-                PropertyAnimation {
-                    duration: root.transitionDuration
-                }
+        Row {
+            id: row
+            spacing: 4
+            leftPadding: root.horizontalPadding
+            rightPadding: root.horizontalPadding
+            anchors.verticalCenter: parent.verticalCenter
+            width: childrenRect.width
+            height: childrenRect.height
+
+            Text {
+                id: defaultText
+                color: root.foregroundColor
+                font.family: "monospace"
+                font.weight: 700
+                font.pointSize: 12
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
         }
     }
@@ -68,13 +72,13 @@ Item {
     states: [
         State {
             name: "normal"
-            when: !btn.hovered && !btn.pressed && !root.active
+            when: !root.containsMouse && !root.pressed && !root.active
             PropertyChanges {
                 shadow {
                     offset.x: root.shadowSize
                     offset.y: root.shadowSize
                 }
-                btn {
+                rect {
                     x: 0
                     y: 0
                 }
@@ -82,13 +86,13 @@ Item {
         },
         State {
             name: "hovered"
-            when: btn.hovered && !btn.pressed
+            when: root.containsMouse && !root.pressed
             PropertyChanges {
                 shadow {
                     offset.x: root.shadowSize + root.hoveredOffset
                     offset.y: root.shadowSize + root.hoveredOffset
                 }
-                btn {
+                rect {
                     x: -root.hoveredOffset
                     y: -root.hoveredOffset
                 }
@@ -96,13 +100,13 @@ Item {
         },
         State {
             name: "active"
-            when: !btn.hovered && !btn.pressed && root.active
+            when: !root.containsMouse && !root.pressed && root.active
             PropertyChanges {
                 shadow {
                     offset.x: 0
                     offset.y: 0
                 }
-                btn {
+                rect {
                     x: root.shadowSize
                     y: root.shadowSize
                 }
@@ -110,13 +114,13 @@ Item {
         },
         State {
             name: "pressed"
-            when: btn.pressed
+            when: root.pressed
             PropertyChanges {
                 shadow {
                     offset.x: 0
                     offset.y: 0
                 }
-                btn {
+                rect {
                     x: root.shadowSize
                     y: root.shadowSize
                 }

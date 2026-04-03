@@ -61,7 +61,7 @@ Row {
                 });
             }
 
-            contentItem: Row {
+            Row {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 spacing: 2
