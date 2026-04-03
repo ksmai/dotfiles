@@ -3,8 +3,31 @@ import QtQuick
 import Quickshell
 
 PressableButton {
-    text: Qt.formatDateTime(clock.date, "ddd, d MMM hh:mm")
+    id: root
+
+    property var formats: {
+        return ["ddd, d MMM hh:mm", "ddd, d MMM hh:mm:ss"];
+    }
+    property int formatIndex: 0
+
+    text: Qt.formatDateTime(clock.date, formats[formatIndex])
     backgroundColor: "#8ec07c"
+
+    onWheel: wheel => {
+        if (wheel.angleDelta.y > 0) {
+            if (root.formatIndex === root.formats.length - 1) {
+                root.formatIndex = 0;
+            } else {
+                root.formatIndex += 1;
+            }
+        } else {
+            if (root.formatIndex === 0) {
+                root.formatIndex = root.formats.length - 1;
+            } else {
+                root.formatIndex -= 1;
+            }
+        }
+    }
 
     SystemClock {
         id: clock
