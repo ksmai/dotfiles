@@ -90,66 +90,6 @@ Rectangle {
         anchors.margins: root.gap
         spacing: root.gap
 
-        Flow {
-            Layout.fillWidth: true
-            spacing: root.gap
-
-            PressableButton {
-                height: 40
-                fontSize: 16
-                backgroundColor: ColorService.bright_red
-                text: NotificationService.dnd ? " 󰪓 " : " 󰂜 "
-                onLeftClicked: () => {
-                    NotificationService.toggleDnd();
-                }
-            }
-
-            PressableButton {
-                height: 40
-                fontSize: 16
-                backgroundColor: ColorService.bright_red
-                text: " 󰌾 "
-                onLeftClicked: () => {
-                    lock.startDetached();
-                }
-            }
-
-            Process {
-                id: lock
-                command: ["sh", "-c", "sleep 0.2 && killall -USR1 swayidle"]
-            }
-
-            PressableButton {
-                height: 40
-                fontSize: 16
-                backgroundColor: ColorService.bright_red
-                text: " 󰜉 "
-                onLeftClicked: () => {
-                    reboot.startDetached();
-                }
-            }
-
-            Process {
-                id: reboot
-                command: ["shutdown", "-r", "now"]
-            }
-
-            PressableButton {
-                height: 40
-                fontSize: 16
-                backgroundColor: ColorService.bright_red
-                text: " 󰐥 "
-                onLeftClicked: () => {
-                    shutdown.startDetached();
-                }
-            }
-
-            Process {
-                id: shutdown
-                command: ["shutdown", "now"]
-            }
-        }
-
         RowLayout {
             Layout.fillWidth: true
 
@@ -224,6 +164,66 @@ Rectangle {
                     yScale: box.yScale
                     origin.y: box.height / 2
                 }
+            }
+        }
+
+        Flow {
+            Layout.fillWidth: true
+            spacing: 12
+
+            PressableButton {
+                height: 40
+                fontSize: 16
+                backgroundColor: ColorService.bright_red
+                text: NotificationService.dnd ? "  󰪓  " : "  󰂜  "
+                onLeftClicked: () => {
+                    NotificationService.toggleDnd();
+                }
+            }
+
+            PressableButton {
+                height: 40
+                fontSize: 16
+                backgroundColor: ColorService.bright_red
+                text: "  󰌾  "
+                onLeftClicked: () => {
+                    lock.startDetached();
+                }
+            }
+
+            Process {
+                id: lock
+                command: ["sh", "-c", "sleep 0.2 && killall -USR1 swayidle"]
+            }
+
+            PressableButton {
+                height: 40
+                fontSize: 16
+                backgroundColor: ColorService.bright_red
+                text: "  󰜉  "
+                onLeftClicked: () => {
+                    reboot.startDetached();
+                }
+            }
+
+            Process {
+                id: reboot
+                command: ["shutdown", "-r", "now"]
+            }
+
+            PressableButton {
+                height: 40
+                fontSize: 16
+                backgroundColor: ColorService.bright_red
+                text: "  󰐥  "
+                onLeftClicked: () => {
+                    shutdown.startDetached();
+                }
+            }
+
+            Process {
+                id: shutdown
+                command: ["shutdown", "now"]
             }
         }
     }
