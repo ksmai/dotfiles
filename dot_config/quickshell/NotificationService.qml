@@ -14,6 +14,7 @@ Singleton {
     property string notificationCenterOpenedOn: ""
     readonly property real expireTimeout: 60000
     readonly property real minExpireTimeout: 1000
+    property bool dnd: false
 
     function getForScreen(output) {
         if (!_onScreenNotifications[output]) {
@@ -44,7 +45,7 @@ Singleton {
                 "value": notificationObject
             });
 
-            if (!root.notificationCenterOpenedOn) {
+            if (!root.notificationCenterOpenedOn && !root.dnd) {
                 root.getForScreen(output).append({
                     "value": notificationObject
                 });
@@ -138,6 +139,10 @@ Singleton {
 
     function closeNotificationCenter() {
         notificationCenterOpenedOn = "";
+    }
+
+    function toggleDnd() {
+        dnd = !dnd;
     }
 
     Timer {

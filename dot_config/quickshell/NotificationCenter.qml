@@ -98,6 +98,16 @@ Rectangle {
                 height: 40
                 fontSize: 16
                 backgroundColor: ColorService.bright_red
+                text: NotificationService.dnd ? " 󰪓 " : " 󰂜 "
+                onLeftClicked: () => {
+                    NotificationService.toggleDnd();
+                }
+            }
+
+            PressableButton {
+                height: 40
+                fontSize: 16
+                backgroundColor: ColorService.bright_red
                 text: " 󰌾 "
                 onLeftClicked: () => {
                     lock.startDetached();
