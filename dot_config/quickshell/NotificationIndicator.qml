@@ -9,7 +9,7 @@ PressableButton {
     readonly property string inhibitedNotificationIcon: "󰂛 ".trim()
     readonly property string inhibitedNoneIcon: "󰪑 ".trim()
 
-    backgroundColor: "#d3869b"
+    backgroundColor: ColorService.bright_purple
     text: {
         const parts = [];
 

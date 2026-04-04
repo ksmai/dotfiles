@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell
 
 PressableButton {
-    backgroundColor: "#b8bb26"
+    backgroundColor: ColorService.bright_green
     horizontalPadding: 8
 
     Repeater {

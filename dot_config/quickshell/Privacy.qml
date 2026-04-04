@@ -5,7 +5,7 @@ import Quickshell.Services.Pipewire
 
 PressableButton {
     id: root
-    backgroundColor: "#fb4934"
+    backgroundColor: ColorService.bright_red
     visible: !!text
 
     text: {

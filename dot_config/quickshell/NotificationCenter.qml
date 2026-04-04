@@ -7,9 +7,9 @@ Rectangle {
     implicitWidth: 400
     property real gap: 16
     radius: 8
-    color: "#ebdbb2"
+    color: ColorService.light1
     border.width: 4
-    border.color: "#3c3836"
+    border.color: ColorService.dark1
 
     anchors.top: parent.top
     anchors.topMargin: gap

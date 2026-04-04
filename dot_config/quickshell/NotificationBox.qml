@@ -31,9 +31,9 @@ Rectangle {
 
     width: 400
     implicitHeight: column.implicitHeight
-    border.color: "#3c3836"
+    border.color: ColorService.dark1
     border.width: 2
-    color: "#fabd2f"
+    color: ColorService.bright_yellow
     radius: 8
 
     RectangularShadow {
@@ -44,7 +44,7 @@ Rectangle {
         radius: 8
         blur: 0
         spread: 0
-        color: "#3c3836"
+        color: ColorService.dark1
     }
 
     ColumnLayout {
@@ -124,7 +124,7 @@ Rectangle {
                     active: !!root.notificationObject.summary
                     sourceComponent: Text {
                         text: root.notificationObject.summary
-                        color: "#3c3836"
+                        color: ColorService.dark1
                         font.family: "monospace"
                         font.pointSize: 12
                         font.weight: 700
@@ -139,7 +139,7 @@ Rectangle {
                     active: !!root.notificationObject.timeString
                     sourceComponent: Text {
                         text: root.notificationObject.timeString
-                        color: "#3c3836"
+                        color: ColorService.dark1
                         font.family: "monospace"
                         font.pointSize: 12
                         font.weight: 500
@@ -153,7 +153,7 @@ Rectangle {
 
                     text: ""
                     horizontalPadding: 8
-                    backgroundColor: "#fe8019"
+                    backgroundColor: ColorService.bright_orange
                     onLeftClicked: () => {
                         root.notificationObject.dismiss();
                     }
@@ -168,7 +168,7 @@ Rectangle {
                     active: !!root.notificationObject.body
                     sourceComponent: Text {
                         text: root.notificationObject.body
-                        color: "#3c3836"
+                        color: ColorService.dark1
                         font.family: "monospace"
                         font.pointSize: 12
                         font.weight: 500
@@ -211,7 +211,7 @@ Rectangle {
                         anchors.top: parent.top
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        color: "#3c3836"
+                        color: ColorService.dark1
                         height: 2
                     }
 
@@ -219,7 +219,7 @@ Rectangle {
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         anchors.right: parent.right
-                        color: "#3c3836"
+                        color: ColorService.dark1
                         width: actionMouseArea.index % 2 === 0 ? 2 : 0
                     }
 
@@ -229,7 +229,7 @@ Rectangle {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         text: actionMouseArea.modelData.text
-                        color: "#3c3836"
+                        color: ColorService.dark1
                         font.family: "monospace"
                         font.pointSize: 12
                         font.weight: 500

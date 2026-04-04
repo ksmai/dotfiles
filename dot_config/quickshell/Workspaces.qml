@@ -7,12 +7,6 @@ Row {
 
     required property ShellScreen screen
 
-    readonly property color brightYellow: "#fabd2f"
-    readonly property color brightOrange: "#fe8019"
-    readonly property color brightRed: "#fb4934"
-    readonly property color dark1: "#3c3836"
-    readonly property color dark3: "#665c54"
-
     readonly property var icons: {
         "kitty": " ".trim(),
         "firefox": " ".trim(),
@@ -46,7 +40,7 @@ Row {
             readonly property string separatorIcon: windows.length > 0 ? root.separatorIcon : ""
             readonly property list<var> windows: NiriService.windows.filter(w => w && w.workspace_id && w.workspace_id === modelData?.id)
 
-            backgroundColor: modelData.is_urgent ? root.brightRed : modelData.is_focused ? root.brightOrange : root.brightYellow
+            backgroundColor: modelData.is_urgent ? ColorService.bright_red : modelData.is_focused ? ColorService.bright_orange : ColorService.bright_yellow
             active: modelData.is_active
 
             onLeftClicked: () => {
@@ -95,7 +89,7 @@ Row {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: btn.workspaceName
-                    color: root.dark1
+                    color: ColorService.dark1
                     font.family: "monospace"
                     font.weight: 700
                     font.pointSize: 12
@@ -107,7 +101,7 @@ Row {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: btn.separatorIcon
-                    color: root.dark1
+                    color: ColorService.dark1
                     font.family: "monospace"
                     font.weight: 700
                     font.pointSize: 12
@@ -131,7 +125,7 @@ Row {
                         anchors.top: parent?.top
                         anchors.bottom: parent?.bottom
                         text: root.icons[modelData.app_id] ?? root.fallbackIcon
-                        color: isActive ? root.dark1 : root.dark3
+                        color: isActive ? ColorService.dark1 : ColorService.dark3
                         font.family: "monospace"
                         font.weight: 700
                         font.pointSize: isActive && btn.windows.length > 1 ? 16 : 12

@@ -4,11 +4,9 @@ import QtQuick
 PressableButton {
     id: root
 
-    readonly property color brightYellow: "#fabd2f"
-    readonly property color brightOrange: "#fe8019"
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
-    backgroundColor: active ? brightOrange : brightYellow
+    backgroundColor: active ? ColorService.bright_orange : ColorService.bright_yellow
     text: {
         const parts = [];
 

@@ -11,7 +11,7 @@ PressableButton {
     property int formatIndex: 0
 
     text: Qt.formatDateTime(clock.date, formats[formatIndex])
-    backgroundColor: "#8ec07c"
+    backgroundColor: ColorService.bright_aqua
 
     onWheel: wheel => {
         if (wheel.angleDelta.y > 0) {

@@ -13,7 +13,6 @@ Item {
     property real hoveredOffset: 1
     property alias radius: rect.radius
     property real horizontalPadding: 10
-    readonly property color foregroundColor: "#3c3836"
     property alias backgroundColor: rect.color
     property alias text: defaultText.text
     property bool active: false
@@ -52,7 +51,7 @@ Item {
         radius: root.radius
         blur: 0
         spread: 0
-        color: root.foregroundColor
+        color: ColorService.dark1
     }
 
     MouseArea {
@@ -100,7 +99,7 @@ Item {
 
     Rectangle {
         id: rect
-        border.color: root.foregroundColor
+        border.color: ColorService.dark1
         border.width: 2
         radius: 8
         implicitHeight: 30
@@ -125,7 +124,7 @@ Item {
 
             Text {
                 id: defaultText
-                color: root.foregroundColor
+                color: ColorService.dark1
                 font.family: "monospace"
                 font.weight: 700
                 font.pointSize: 12
