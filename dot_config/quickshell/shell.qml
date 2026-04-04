@@ -59,6 +59,7 @@ ShellRoot {
                     spacing: 8
 
                     Privacy {}
+                    SystemUsage {}
                     Clock {}
                     AudioSink {}
                     Tray {}
