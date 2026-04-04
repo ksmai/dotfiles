@@ -4,7 +4,7 @@ import QtQuick.Effects
 Item {
     id: root
     implicitWidth: rect.implicitWidth
-    implicitHeight: rect.implicitHeight
+    height: 30
 
     signal wheel(WheelEvent wheel)
 
@@ -15,6 +15,7 @@ Item {
     property real horizontalPadding: 10
     property alias backgroundColor: rect.color
     property alias text: defaultText.text
+    property alias fontSize: defaultText.font.pointSize
     property bool active: false
     property real transitionDuration: 80
     property real removeHoverSlowdown: 8
@@ -102,7 +103,7 @@ Item {
         border.color: ColorService.dark1
         border.width: 2
         radius: 8
-        implicitHeight: 30
+        height: root.height
         implicitWidth: row.implicitWidth
         x: 0
         y: 0
