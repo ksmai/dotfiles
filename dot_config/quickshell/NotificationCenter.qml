@@ -8,7 +8,8 @@ Rectangle {
     id: root
     readonly property real gap: 16
     readonly property real notificationWidth: 400
-    implicitWidth: notificationWidth + 2 * gap
+    readonly property real notificationShadow: 4
+    implicitWidth: notificationWidth + notificationShadow + 2 * gap
     radius: 8
     color: ColorService.light1
     border.width: 4
@@ -122,11 +123,44 @@ Rectangle {
             clip: true
             boundsBehavior: Flickable.StopAtBounds
 
+            add: Transition {
+                NumberAnimation {
+                    property: "yScale"
+                    from: 0
+                    to: 1
+                    duration: 300
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            remove: Transition {
+                NumberAnimation {
+                    property: "yScale"
+                    from: 1
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            displaced: Transition {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 400
+                    easing.type: Easing.OutBounce
+                }
+            }
+
             delegate: NotificationBox {
                 id: box
                 required property NotificationObject modelData
                 notificationObject: modelData
                 width: root.notificationWidth
+                property real yScale: 1
+                transform: Scale {
+                    yScale: box.yScale
+                    origin.y: box.height / 2
+                }
             }
         }
     }
