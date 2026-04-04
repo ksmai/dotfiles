@@ -1,11 +1,14 @@
 pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Effects
+import QtQuick.Layouts
 import Quickshell
 
 Rectangle {
     id: root
-    implicitWidth: 400
-    property real gap: 16
+    readonly property real gap: 16
+    readonly property real notificationWidth: 400
+    implicitWidth: notificationWidth + 2 * gap
     radius: 8
     color: ColorService.light1
     border.width: 4
@@ -20,15 +23,18 @@ Rectangle {
 
     required property ShellScreen screen
     property bool opened: NotificationService.notificationCenterOpenedOn === screen.name
-    property real translateX: width + gap
+
     transform: Translate {
-        x: root.translateX
+        id: translate
+        x: root.width + root.gap
     }
-    property bool displayed: false
+    visible: false
+    signal changed
 
     onOpenedChanged: {
         if (opened) {
-            root.displayed = true;
+            root.visible = true;
+            list.positionViewAtEnd();
             closeAnimation.stop();
             openAnimation.start();
         } else {
@@ -37,21 +43,91 @@ Rectangle {
         }
     }
 
-    NumberAnimation {
+    PropertyAnimation {
         id: openAnimation
-        target: root
-        properties: "translateX"
+        target: translate
+        properties: "x"
         to: 0
-    }
-
-    NumberAnimation {
-        id: closeAnimation
-        target: root
-        properties: "translateX"
-        to: root.width + root.gap
+        duration: 350
+        easing.type: Easing.OutBack
 
         onFinished: {
-            root.displayed = false;
+            root.changed();
+        }
+    }
+
+    PropertyAnimation {
+        id: closeAnimation
+        target: translate
+        properties: "x"
+        to: root.width + root.gap
+        duration: 350
+        easing.type: Easing.InBack
+
+        onFinished: {
+            root.visible = false;
+            root.changed();
+        }
+    }
+
+    RectangularShadow {
+        id: shadow
+        anchors.fill: root
+        offset.x: root.border.width
+        offset.y: root.border.width
+        radius: root.radius
+        blur: 0
+        spread: 0
+        color: ColorService.dark1
+        z: -1
+    }
+
+    ColumnLayout {
+        id: column
+        anchors.fill: root
+        anchors.margins: root.gap
+        spacing: root.gap
+
+        RowLayout {
+            Text {
+                text: "NOTIFICATIONS"
+                color: ColorService.dark1
+                font.family: "monospace"
+                font.pointSize: 12
+                font.weight: 700
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            PressableButton {
+                text: "CLEAR"
+                backgroundColor: ColorService.bright_orange
+                onLeftClicked: () => {
+                    NotificationService.clearAllNotifications();
+                    NotificationService.closeNotificationCenter();
+                }
+            }
+        }
+
+        ListView {
+            id: list
+            model: NotificationService.allNotifications
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            orientation: ListView.Vertical
+            verticalLayoutDirection: ListView.TopToBottom
+            spacing: root.gap
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+
+            delegate: NotificationBox {
+                id: box
+                required property NotificationObject modelData
+                notificationObject: modelData
+                width: root.notificationWidth
+            }
         }
     }
 }

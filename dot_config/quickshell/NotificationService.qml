@@ -16,10 +16,10 @@ Singleton {
     readonly property real minExpireTimeout: 1000
 
     function getForScreen(output) {
-        if (!root._onScreenNotifications[output]) {
-            root._onScreenNotifications[output] = listModelComponent.createObject(root);
+        if (!_onScreenNotifications[output]) {
+            _onScreenNotifications[output] = listModelComponent.createObject(root);
         }
-        return root._onScreenNotifications[output];
+        return _onScreenNotifications[output];
     }
 
     NotificationServer {
@@ -37,6 +37,7 @@ Singleton {
                 notification: notification,
                 output: output,
                 timeString: "",
+                createTime: Date.now(),
                 expiryTime: Date.now() + (notification.expireTimeout >= 0 ? notification.expireTimeout : root.expireTimeout)
             });
             root.allNotifications.append({
@@ -55,8 +56,8 @@ Singleton {
     function restartTimer() {
         let minTimeout = 0;
 
-        for (const [output, onScreenNotifications] of Object.entries(root._onScreenNotifications)) {
-            if (root._paused[output]) {
+        for (const [output, onScreenNotifications] of Object.entries(_onScreenNotifications)) {
+            if (_paused[output]) {
                 continue;
             }
             for (let i = 0; i < onScreenNotifications.count; ++i) {
@@ -70,30 +71,73 @@ Singleton {
             return;
         }
 
-        timer.interval = Math.max(root.minExpireTimeout, minTimeout - Date.now());
+        timer.interval = Math.max(minExpireTimeout, minTimeout - Date.now());
         timer.restart();
     }
 
     function pauseExpiry(output) {
-        root._paused[output] = true;
+        _paused[output] = true;
     }
 
     function resumeExpiry(output) {
-        delete root._paused[output];
+        delete _paused[output];
         restartTimer();
     }
 
     function toggleNotificationCenter(output) {
-        if (root.notificationCenterOpenedOn === output) {
-            root.notificationCenterOpenedOn = "";
+        if (notificationCenterOpenedOn === output) {
+            closeNotificationCenter();
             return;
         }
 
-        root.notificationCenterOpenedOn = output;
+        notificationCenterOpenedOn = output;
+        clearOnScreenNotifications();
+        updateTimeStrings();
+    }
 
-        for (const [output, onScreenNotifications] of Object.entries(root._onScreenNotifications)) {
+    function clearOnScreenNotifications() {
+        for (const [output, onScreenNotifications] of Object.entries(_onScreenNotifications)) {
             onScreenNotifications.clear();
         }
+    }
+
+    function clearAllNotifications() {
+        for (let i = allNotifications.count - 1; i >= 0; --i) {
+            allNotifications.get(i)?.value?.dismiss();
+        }
+    }
+
+    function updateTimeStrings() {
+        const now = Date.now();
+        for (let i = 0; i < allNotifications.count; ++i) {
+            const obj = allNotifications.get(i)?.value;
+            if (obj) {
+                const timeDiff = now - obj.createTime;
+                const days = Math.floor(timeDiff / 1000 / 60 / 60 / 24);
+                if (days > 0) {
+                    obj.timeString = `${days}d`;
+                    continue;
+                }
+
+                const hours = Math.floor(timeDiff / 1000 / 60 / 60);
+                if (hours > 0) {
+                    obj.timeString = `${hours}h`;
+                    continue;
+                }
+
+                const minutes = Math.floor(timeDiff / 1000 / 60);
+                if (minutes > 0) {
+                    obj.timeString = `${minutes}m`;
+                    continue;
+                }
+
+                obj.timeString = "";
+            }
+        }
+    }
+
+    function closeNotificationCenter() {
+        notificationCenterOpenedOn = "";
     }
 
     Timer {

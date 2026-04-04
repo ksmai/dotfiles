@@ -102,18 +102,26 @@ ShellRoot {
                 screen: scope.modelData
                 color: "transparent"
                 exclusionMode: ExclusionMode.Normal
-                implicitWidth: notificationCenter.implicitWidth + notificationCenter.gap
-                visible: notificationCenter.displayed
 
                 anchors {
                     top: true
                     bottom: true
                     right: true
+                    left: true
+                }
+
+                mask: Region {
+                    id: notificationCenterRegion
+                    item: notificationCenter
                 }
 
                 NotificationCenter {
                     id: notificationCenter
                     screen: scope.modelData
+
+                    onChanged: {
+                        notificationCenterRegion.changed();
+                    }
                 }
             }
         }
