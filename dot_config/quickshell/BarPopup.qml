@@ -9,7 +9,8 @@ PopupWindow {
     color: "transparent"
     implicitWidth: rect.implicitWidth + root.borderWidth
     implicitHeight: rect.implicitHeight + root.borderWidth
-    visible: !!component
+    visible: false
+    property bool visibleBefore: false
 
     required property Item anchorItem
     required property int anchorY
@@ -22,7 +23,15 @@ PopupWindow {
 
     function toggle(component, anchorX) {
         root.anchorX = anchorX;
-        root.component = component && component !== root.component ? component : null;
+        if (component && component !== root.component) {
+            if (visibleBefore) {
+                root.visible = true;
+            }
+            root.component = component;
+        } else {
+            root.visible = false;
+            root.component = null;
+        }
     }
 
     anchor {
@@ -47,6 +56,13 @@ PopupWindow {
         child: Loader {
             active: !!root.component
             sourceComponent: root.component
+
+            onLoaded: () => {
+                if (root.component && !root.visibleBefore) {
+                    root.visibleBefore = true;
+                    root.visible = true;
+                }
+            }
         }
     }
 
