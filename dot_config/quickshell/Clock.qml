@@ -10,8 +10,14 @@ PressableButton {
     }
     property int formatIndex: 0
 
+    signal popupToggled(Component component, int anchorX)
+
     text: Qt.formatDateTime(clock.date, formats[formatIndex])
     backgroundColor: ColorService.bright_aqua
+
+    onLeftClicked: mouse => {
+        popupToggled(popupComponent, Math.floor(mouse.x));
+    }
 
     onWheel: wheel => {
         if (wheel.angleDelta.y > 0) {
@@ -32,5 +38,12 @@ PressableButton {
     SystemClock {
         id: clock
         precision: SystemClock.Seconds
+    }
+
+    Component {
+        id: popupComponent
+        Text {
+            text: "This is a calendar"
+        }
     }
 }

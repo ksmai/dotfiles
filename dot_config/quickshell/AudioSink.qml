@@ -6,6 +6,8 @@ PressableButton {
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
+    signal popupToggled(Component component, int anchorX)
+
     backgroundColor: active ? ColorService.bright_orange : ColorService.bright_yellow
     text: {
         const parts = [];
@@ -34,7 +36,11 @@ PressableButton {
     }
     active: !(sink?.audio?.muted ?? true)
 
-    onLeftClicked: () => {
+    onLeftClicked: mouse => {
+        popupToggled(popupComponent, Math.floor(mouse.x));
+    }
+
+    onMiddleClicked: () => {
         if (sink?.audio) {
             sink.audio.muted = !sink.audio.muted;
         }
@@ -59,6 +65,13 @@ PressableButton {
                 return [];
             }
             return Pipewire.nodes.values.filter(node => node && node.audio && !node.isStream && node.isSink);
+        }
+    }
+
+    Component {
+        id: popupComponent
+        Text {
+            text: "MIXER"
         }
     }
 }

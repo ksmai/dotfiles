@@ -1,7 +1,9 @@
 import QtQuick
+import Quickshell
 
 PressableButton {
     id: root
+    required property ShellScreen screen
     readonly property string notificationIcon: "󱅫 ".trim()
     readonly property string noneIcon: "󰂜 ".trim()
     readonly property string dndNotificationIcon: "󰂠 ".trim()
@@ -19,6 +21,10 @@ PressableButton {
         }
 
         return parts.join(" ");
+    }
+
+    onLeftClicked: () => {
+        NotificationService.toggleNotificationCenter(scope.modelData.name);
     }
 
     onMiddleClicked: () => {

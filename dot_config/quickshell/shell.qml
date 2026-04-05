@@ -60,13 +60,24 @@ ShellRoot {
 
                     Privacy {}
                     SystemUsage {}
-                    Clock {}
-                    AudioSink {}
+                    Clock {
+                        onPopupToggled: (component, anchorX) => {
+                            barPopup.toggle(component, this.x + anchorX);
+                        }
+                    }
+                    AudioSink {
+                        onPopupToggled: (component, anchorX) => {
+                            barPopup.toggle(component, this.x + anchorX);
+                        }
+                    }
                     Tray {}
                     NotificationIndicator {
-                        onLeftClicked: () => {
-                            NotificationService.toggleNotificationCenter(scope.modelData.name);
-                        }
+                        screen: scope.modelData
+                    }
+                    BarPopup {
+                        id: barPopup
+                        anchorItem: right
+                        anchorY: -bar.topBorder - bar.padding
                     }
                 }
             }
