@@ -70,7 +70,7 @@ PressableButton {
 
     Component {
         id: popupComponent
-        Text {
+        MonoText {
             text: "MIXER"
         }
     }

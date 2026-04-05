@@ -93,12 +93,8 @@ Rectangle {
         RowLayout {
             Layout.fillWidth: true
 
-            Text {
+            MonoText {
                 text: "NOTIFICATIONS"
-                color: ColorService.dark1
-                font.family: "monospace"
-                font.pointSize: 12
-                font.weight: 700
             }
 
             Item {

@@ -123,14 +123,8 @@ Item {
             width: childrenRect.width
             height: childrenRect.height
 
-            Text {
+            MonoText {
                 id: defaultText
-                color: ColorService.dark1
-                font.family: "monospace"
-                font.weight: 700
-                font.pointSize: 12
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
             }
         }
     }

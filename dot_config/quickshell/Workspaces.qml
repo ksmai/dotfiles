@@ -85,28 +85,16 @@ Row {
                 anchors.bottom: parent.bottom
                 spacing: 2
 
-                Text {
+                MonoText {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: btn.workspaceName
-                    color: ColorService.dark1
-                    font.family: "monospace"
-                    font.weight: 700
-                    font.pointSize: 12
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
                 }
 
-                Text {
+                MonoText {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     text: btn.separatorIcon
-                    color: ColorService.dark1
-                    font.family: "monospace"
-                    font.weight: 700
-                    font.pointSize: 12
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
                 }
 
                 Repeater {
@@ -118,7 +106,7 @@ Row {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
 
-                    Text {
+                    MonoText {
                         required property var modelData
                         readonly property bool isActive: modelData.id === btn.modelData.active_window_id
 
@@ -126,11 +114,7 @@ Row {
                         anchors.bottom: parent?.bottom
                         text: root.icons[modelData.app_id] ?? root.fallbackIcon
                         color: isActive ? ColorService.dark1 : ColorService.dark3
-                        font.family: "monospace"
-                        font.weight: 700
                         font.pointSize: isActive && btn.windows.length > 1 ? 16 : 12
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
 
                         TapHandler {
                             onTapped: {

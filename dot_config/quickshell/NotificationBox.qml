@@ -122,13 +122,11 @@ Rectangle {
                     Layout.fillWidth: true
 
                     active: !!root.notificationObject.summary
-                    sourceComponent: Text {
+                    sourceComponent: MonoText {
                         text: root.notificationObject.summary
-                        color: ColorService.dark1
-                        font.family: "monospace"
-                        font.pointSize: 12
-                        font.weight: 700
                         wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignTop
                     }
                 }
 
@@ -137,13 +135,12 @@ Rectangle {
                     Layout.column: 2
 
                     active: !!root.notificationObject.timeString
-                    sourceComponent: Text {
+                    sourceComponent: MonoText {
                         text: root.notificationObject.timeString
-                        color: ColorService.dark1
-                        font.family: "monospace"
-                        font.pointSize: 12
                         font.weight: 500
                         wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignTop
                     }
                 }
 
@@ -166,13 +163,12 @@ Rectangle {
                     Layout.fillWidth: true
 
                     active: !!root.notificationObject.body
-                    sourceComponent: Text {
+                    sourceComponent: MonoText {
                         text: root.notificationObject.body
-                        color: ColorService.dark1
-                        font.family: "monospace"
-                        font.pointSize: 12
                         font.weight: 500
                         wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignTop
                     }
                 }
             }
@@ -223,20 +219,15 @@ Rectangle {
                         width: actionMouseArea.index % 2 === 0 ? 2 : 0
                     }
 
-                    Text {
+                    MonoText {
                         id: actionText
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         text: actionMouseArea.modelData.text
-                        color: ColorService.dark1
-                        font.family: "monospace"
-                        font.pointSize: 12
                         font.weight: 500
                         font.capitalization: Font.AllUppercase
                         wrapMode: Text.Wrap
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
                         leftPadding: root.padding
                         rightPadding: root.padding
                         topPadding: root.padding / 2
