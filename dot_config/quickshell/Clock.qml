@@ -1,5 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 import Quickshell
 
 PressableButton {
@@ -42,8 +44,97 @@ PressableButton {
 
     Component {
         id: popupComponent
-        Text {
-            text: "This is a calendar"
+
+        ColumnLayout {
+            RowLayout {
+                Layout.fillWidth: true
+
+                Text {
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: "󰅁"
+                    color: ColorService.dark1
+                    font.family: "monospace"
+                    font.weight: 700
+                    font.pointSize: 12
+
+                    TapHandler {
+                        onTapped: {
+                            monthGrid.addMonths(-1);
+                        }
+                    }
+                }
+
+                Text {
+                    Layout.fillWidth: true
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: `${monthGrid.year} ${monthGrid.locale.monthName(monthGrid.month, Locale.ShortFormat)}`
+                    color: ColorService.dark1
+                    font.family: "monospace"
+                    font.weight: 700
+                    font.pointSize: 12
+                }
+
+                Text {
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: "󰅂"
+                    color: ColorService.dark1
+                    font.family: "monospace"
+                    font.weight: 700
+                    font.pointSize: 12
+
+                    TapHandler {
+                        onTapped: {
+                            monthGrid.addMonths(1);
+                        }
+                    }
+                }
+            }
+
+            DayOfWeekRow {
+                Layout.fillWidth: true
+
+                locale: Qt.locale("en_US")
+                delegate: Text {
+                    required property string shortName
+                    text: shortName
+                    color: ColorService.dark1
+                    font.family: "monospace"
+                    font.weight: 700
+                    font.pointSize: 12
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            MonthGrid {
+                id: monthGrid
+
+                Layout.fillWidth: true
+                locale: Qt.locale("en_US")
+
+                delegate: Text {
+                    required property var model
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: monthGrid.locale.toString(model.date, "d")
+
+                    color: model.today ? ColorService.neutral_orange : model.month === monthGrid.month ? ColorService.dark1 : ColorService.gray
+                    font.family: "monospace"
+                    font.weight: model.today ? 700 : 400
+                    font.pointSize: 12
+                }
+
+                function addMonths(months) {
+                    const newMonth = monthGrid.month + months;
+                    monthGrid.year += Math.floor(newMonth / 12);
+                    monthGrid.month = (12 + newMonth % 12) % 12;
+                }
+            }
         }
     }
 }
