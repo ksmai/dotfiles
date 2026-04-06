@@ -22,6 +22,7 @@ PopupWindow {
     property Component component: null
 
     function toggle(component, anchorX) {
+        root.visible = false;
         root.anchorX = anchorX;
         if (component && component !== root.component) {
             if (visibleBefore) {
