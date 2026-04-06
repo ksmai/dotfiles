@@ -114,17 +114,14 @@ ListView {
     }
 
     function changeDate(date) {
+        day = date.getDate();
         if (date.getFullYear() !== year || date.getMonth() !== month) {
             year = date.getFullYear();
             month = date.getMonth();
             model = [];
             listEventProc.running = false;
             listEventProc.running = true;
-        }
-
-        day = date.getDate();
-
-        if (!listEventProc.running) {
+        } else {
             jumpToDay();
         }
     }
