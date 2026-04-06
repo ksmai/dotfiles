@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
+import Quickshell.Io
 
 PressableButton {
     id: root
@@ -89,6 +90,8 @@ PressableButton {
             MonthGrid {
                 id: monthGrid
 
+                property var holidays: []
+
                 Layout.fillWidth: true
                 locale: Qt.locale("en_US")
 
@@ -97,14 +100,48 @@ PressableButton {
 
                     text: monthGrid.locale.toString(model.date, "d")
 
-                    color: model.today ? ColorService.neutral_orange : model.month === monthGrid.month ? ColorService.dark1 : ColorService.gray
-                    font.weight: model.today ? 700 : 400
+                    color: {
+                        if (model.month !== monthGrid.month) {
+                            return ColorService.gray;
+                        }
+
+                        const weekDay = model.date.getDay();
+                        if (weekDay === 0 || weekDay == 6) {
+                            return ColorService.neutral_red;
+                        }
+                        if (monthGrid.holidays[model.day - 1]) {
+                            return ColorService.neutral_red;
+                        }
+
+                        return ColorService.dark1;
+                    }
                 }
 
                 function addMonths(months) {
                     const newMonth = monthGrid.month + months;
                     monthGrid.year += Math.floor(newMonth / 12);
                     monthGrid.month = (12 + newMonth % 12) % 12;
+                    monthGrid.holidays = [];
+                    listHolidayProc.running = false;
+                    listHolidayProc.running = true;
+                }
+
+                function toDateString(date) {
+                    return locale.toString(date, "yyyy-MM-dd");
+                }
+
+                Process {
+                    id: listHolidayProc
+                    running: true
+                    property string start: monthGrid.toDateString(new Date(monthGrid.year, monthGrid.month, 1))
+                    property string end: monthGrid.toDateString(new Date(monthGrid.year, monthGrid.month + 1, 0))
+                    command: ["khal", "list", "-a", "holiday", "--json", "title", start, end]
+
+                    stdout: StdioCollector {
+                        onStreamFinished: {
+                            monthGrid.holidays = this.text.split("\n").filter(Boolean).map(line => line != "[]");
+                        }
+                    }
                 }
             }
         }
