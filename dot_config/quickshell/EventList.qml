@@ -1,0 +1,190 @@
+pragma ComponentBehavior: Bound
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Effects
+import Quickshell
+import Quickshell.Io
+
+ListView {
+    id: root
+    model: []
+
+    readonly property var holidays: {
+        const result = [];
+
+        for (const event of model) {
+            while (result.length <= event.idx) {
+                result.push(false);
+            }
+            if (event.calendar === "holiday") {
+                result[event.idx] = true;
+            }
+        }
+
+        return result;
+    }
+
+    property int year: 0
+    property int month: 0
+    property int day: 0
+    property date startOfMonth: new Date(year, month, 1)
+    property date endOfMonth: new Date(year, month + 1, 0)
+    property string startOfMonthStr: toDateString(startOfMonth)
+    property string endOfMonthStr: toDateString(endOfMonth)
+    readonly property var locale: Qt.locale("en_US")
+
+    section.property: "idx"
+    section.delegate: Rectangle {
+        required property int section
+        readonly property real paddingTop: section > 0 ? 16 : 0
+        readonly property real paddingBottom: 8
+        implicitHeight: sectionText.implicitHeight + paddingTop + paddingBottom
+
+        MonoText {
+            id: sectionText
+            text: root.toDateString(new Date(root.year, root.month, parent.section + 1))
+            anchors.top: parent.top
+            anchors.topMargin: parent.paddingTop
+        }
+    }
+    section.labelPositioning: ViewSection.InlineLabels
+    spacing: 8
+    clip: true
+
+    delegate: Rectangle {
+        required property var model
+        implicitHeight: eventText.implicitHeight + 2 * eventText.anchors.topMargin
+        width: ListView.view.width
+        radius: 8
+        border.color: ColorService.dark1
+        border.width: model.empty ? 0 : 2
+
+        color: {
+            if (model.empty) {
+                return "transparent";
+            }
+            if (model.calendar === "holiday") {
+                return ColorService.bright_red;
+            }
+            if (model.allDay) {
+                return ColorService.bright_orange;
+            }
+            return ColorService.bright_aqua;
+        }
+
+        MonoText {
+            id: eventText
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignLeft
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: parent.model.empty ? 2 : 8
+            anchors.leftMargin: 16
+            anchors.rightMargin: 16
+            lineHeight: 1.2
+
+            text: {
+                if (parent.model.empty) {
+                    return "No events";
+                }
+                if (parent.model.allDay) {
+                    return `${parent.model.title}`;
+                }
+                return `${parent.model.title}\n${parent.model.startTime}-${parent.model.endTime}`;
+            }
+
+            color: parent.model.empty ? ColorService.gray : ColorService.dark1
+            font.italic: !!parent.model.empty
+        }
+    }
+
+    function toDateString(date) {
+        return locale.toString(date, "yyyy-MM-dd");
+    }
+
+    function jumpToDay() {
+        for (let i = 0; i < model.length; ++i) {
+            if (model[i].idx === day - 1) {
+                positionViewAtIndex(i, ListView.Beginning);
+                return;
+            }
+        }
+    }
+
+    function changeDate(date) {
+        if (date.getFullYear() !== year || date.getMonth() !== month) {
+            year = date.getFullYear();
+            month = date.getMonth();
+            model = [];
+            listEventProc.running = false;
+            listEventProc.running = true;
+        }
+
+        day = date.getDate();
+
+        if (!listEventProc.running) {
+            jumpToDay();
+        }
+    }
+
+    Process {
+        id: listEventProc
+        running: false
+        command: ["khal", "list", "--json", "title", "--json", "start-date", "--json", "start-time", "--json", "end-date", "--json", "end-time", "--json", "all-day", "--json", "calendar", root.startOfMonthStr, root.endOfMonthStr]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.model = this.text.split("\n").filter(Boolean).reduce((events, line, idx) => {
+                    const parsedEvents = JSON.parse(line);
+                    const day = idx + 1;
+
+                    if (parsedEvents.length === 0) {
+                        const event = {};
+                        event.idx = idx;
+                        event.empty = true;
+                        events.push(event);
+                    } else {
+                        for (const parsed of parsedEvents) {
+                            const startDate = Date.fromLocaleString(root.locale, parsed["start-date"], "yyyy-MM-dd");
+                            const startsToday = startDate.getDate() === day;
+                            const endDate = Date.fromLocaleString(root.locale, parsed["end-date"], "yyyy-MM-dd");
+                            const endsToday = endDate.getDate() === day;
+
+                            const event = {};
+                            event.title = parsed.title;
+                            event.calendar = parsed.calendar;
+                            event.idx = idx;
+
+                            if (parsed["all-day"] == "True") {
+                                event.allDay = true;
+                            } else if (!startsToday && !endsToday) {
+                                event.allDay = true;
+                            } else if (!endsToday) {
+                                event.allDay = false;
+                                event.startTime = parsed["start-time"];
+                                event.endTime = "24:00";
+                            } else if (!startsToday) {
+                                event.allDay = false;
+                                event.startTime = "00:00";
+                                event.endTime = parsed["end-time"];
+                            } else {
+                                event.allDay = false;
+                                event.startTime = parsed["start-time"];
+                                event.endTime = parsed["end-time"];
+                            }
+
+                            events.push(event);
+                        }
+                    }
+                    return events;
+                }, []);
+
+                Qt.callLater(() => {
+                    jumpToDay();
+                });
+            }
+        }
+    }
+}
