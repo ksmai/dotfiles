@@ -36,14 +36,14 @@ PressableButton {
     }
     active: !(sink?.audio?.muted ?? true)
 
-    onLeftClicked: mouse => {
-        popupToggled(popupComponent, Math.floor(mouse.x));
-    }
-
-    onMiddleClicked: () => {
+    onLeftClicked: () => {
         if (sink?.audio) {
             sink.audio.muted = !sink.audio.muted;
         }
+    }
+
+    onRightClicked: mouse => {
+        popupToggled(popupComponent, Math.floor(mouse.x));
     }
 
     onWheel: wheel => {
