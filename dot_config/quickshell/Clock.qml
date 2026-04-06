@@ -108,6 +108,7 @@ PressableButton {
                 property date endOfMonth: new Date(year, month + 1, 0)
                 property string startOfMonthStr: toDateString(startOfMonth)
                 property string endOfMonthStr: toDateString(endOfMonth)
+                property int toJumpDay: 0
 
                 Layout.fillWidth: true
                 locale: Qt.locale("en_US")
@@ -122,11 +123,7 @@ PressableButton {
                             return ColorService.gray;
                         }
 
-                        const weekDay = model.date.getDay();
-                        if (weekDay === 0 || weekDay == 6) {
-                            return ColorService.neutral_red;
-                        }
-                        if (monthGrid.holidays[model.day - 1]) {
+                        if (monthGrid.holidays[model.day - 1] || model.date.getDay() === 0) {
                             return ColorService.neutral_red;
                         }
 
@@ -151,23 +148,51 @@ PressableButton {
                 }
 
                 function addMonths(months) {
-                    const newMonth = monthGrid.month + months;
-                    monthGrid.year += Math.floor(newMonth / 12);
-                    monthGrid.month = (12 + newMonth % 12) % 12;
-                    monthGrid.holidays = [];
-                    listHolidayProc.running = false;
-                    listEventProc.running = false;
-                    listHolidayProc.running = true;
-                    listEventProc.running = true;
+                    let newMonth = monthGrid.month + months;
+                    const newYear = monthGrid.year + Math.floor(newMonth / 12);
+                    newMonth = (12 + newMonth % 12) % 12;
+                    jumpToDate(newYear, newMonth);
                 }
 
                 function toDateString(date) {
                     return locale.toString(date, "yyyy-MM-dd");
                 }
 
+                Component.onCompleted: {
+                    const now = new Date();
+                    jumpToDate(now.getFullYear(), now.getMonth(), now.getDate(), true);
+                }
+
+                onClicked: date => {
+                    jumpToDate(date.getFullYear(), date.getMonth(), date.getDate());
+                }
+
+                function jumpToDate(year, month, day, force) {
+                    if (year !== monthGrid.year || month !== monthGrid.month || force) {
+                        monthGrid.year = year;
+                        monthGrid.month = month;
+                        monthGrid.holidays = [];
+                        monthGrid.events = [];
+                        listHolidayProc.running = false;
+                        listEventProc.running = false;
+                        listHolidayProc.running = true;
+                        listEventProc.running = true;
+                    }
+
+                    if (day) {
+                        if (listEventProc.running) {
+                            monthGrid.toJumpDay = day;
+                        } else {
+                            eventList.jumpToIndex(day - 1);
+                        }
+                    } else {
+                        monthGrid.toJumpDay = 0;
+                    }
+                }
+
                 Process {
                     id: listHolidayProc
-                    running: true
+                    running: false
                     command: ["khal", "list", "-a", "holiday", "--json", "title", monthGrid.startOfMonthStr, monthGrid.endOfMonthStr]
 
                     stdout: StdioCollector {
@@ -179,7 +204,7 @@ PressableButton {
 
                 Process {
                     id: listEventProc
-                    running: true
+                    running: false
                     command: ["khal", "list", "--json", "title", "--json", "start-date", "--json", "start-time", "--json", "end-date", "--json", "end-time", "--json", "all-day", "--json", "calendar", monthGrid.startOfMonthStr, monthGrid.endOfMonthStr]
 
                     stdout: StdioCollector {
@@ -228,12 +253,20 @@ PressableButton {
                                 }
                                 return events;
                             }, []);
+
+                            Qt.callLater(() => {
+                                if (monthGrid.toJumpDay) {
+                                    eventList.jumpToIndex(monthGrid.toJumpDay - 1);
+                                    monthGrid.toJumpDay = 0;
+                                }
+                            });
                         }
                     }
                 }
             }
 
             ListView {
+                id: eventList
                 Layout.row: 0
                 Layout.column: 3
                 Layout.rowSpan: 3
@@ -264,8 +297,7 @@ PressableButton {
                 delegate: Rectangle {
                     required property var model
                     implicitHeight: eventText.implicitHeight + 2 * eventText.anchors.topMargin
-                    anchors.left: parent.left
-                    anchors.right: parent.right
+                    width: ListView.view.width
                     radius: 8
                     border.color: ColorService.dark1
                     border.width: model.empty ? 0 : 2
@@ -306,7 +338,16 @@ PressableButton {
                         }
 
                         color: parent.model.empty ? ColorService.gray : ColorService.dark1
-                        font.italic: parent.model.empty
+                        font.italic: !!parent.model.empty
+                    }
+                }
+
+                function jumpToIndex(idx) {
+                    for (let i = 0; i < model.length; ++i) {
+                        if (model[i].idx === idx) {
+                            positionViewAtIndex(i, ListView.Beginning);
+                            return;
+                        }
                     }
                 }
             }
