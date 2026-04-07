@@ -1,24 +1,33 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
-import QtQuick.Effects
-import Quickshell
 import Quickshell.Io
 
 ListView {
     id: root
     model: []
 
-    readonly property var holidays: {
+    readonly property int holidayFlag: 1 << 0
+    readonly property int eventFlag: 1 << 1
+
+    readonly property var types: {
         const result = [];
 
         for (const event of model) {
             while (result.length <= event.idx) {
-                result.push(false);
+                result.push(0);
             }
-            if (event.calendar === "holiday") {
-                result[event.idx] = true;
+
+            if (event.empty) {
+                continue;
+            }
+
+            switch (event.calendar) {
+            case "holiday":
+                result[event.idx] |= holidayFlag;
+                break;
+            default:
+                result[event.idx] |= eventFlag;
+                break;
             }
         }
 
@@ -124,6 +133,16 @@ ListView {
         } else {
             jumpToDay();
         }
+    }
+
+    function hasHoliday(day) {
+        const idx = day - 1;
+        return types.length > idx && !!(types[idx] & holidayFlag);
+    }
+
+    function hasEvent(day) {
+        const idx = day - 1;
+        return types.length > idx && !!(types[idx] & eventFlag);
     }
 
     Process {

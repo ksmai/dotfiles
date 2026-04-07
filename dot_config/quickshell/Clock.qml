@@ -114,14 +114,14 @@ PressableButton {
                             return ColorService.gray;
                         }
 
-                        if (eventList.holidays[model.day - 1] || model.date.getDay() === 0) {
+                        if (model.date.getDay() === 0 || eventList.hasHoliday(model.day)) {
                             return ColorService.neutral_red;
                         }
 
                         return ColorService.dark1;
                     }
 
-                    font.underline: model.today
+                    font.underline: model.month === monthGrid.month && eventList.hasEvent(model.day)
 
                     Loader {
                         anchors.fill: parent
