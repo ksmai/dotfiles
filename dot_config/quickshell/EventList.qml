@@ -52,6 +52,7 @@ ListView {
 
         MonoText {
             text: root.toDateString(new Date(root.year, root.month, parent.section + 1))
+            font.pointSize: 13
         }
     }
     section.labelPositioning: ViewSection.InlineLabels
@@ -88,6 +89,7 @@ ListView {
             lineHeight: 1.2
             color: parent.model.empty ? ColorService.gray : ColorService.dark1
             font.italic: !!parent.model.empty
+            font.pointSize: 13
 
             text: {
                 if (parent.model.empty) {

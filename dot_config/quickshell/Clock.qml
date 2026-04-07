@@ -53,6 +53,7 @@ PressableButton {
                 Layout.row: 0
                 Layout.column: 0
 
+                font.pointSize: 14
                 text: "󰅁"
 
                 TapHandler {
@@ -66,6 +67,7 @@ PressableButton {
                 Layout.row: 0
                 Layout.column: 1
                 Layout.fillWidth: true
+                font.pointSize: 14
 
                 text: `${monthGrid.year} ${monthGrid.locale.monthName(monthGrid.month, Locale.ShortFormat)}`
             }
@@ -73,6 +75,8 @@ PressableButton {
             MonoText {
                 Layout.row: 0
                 Layout.column: 2
+
+                font.pointSize: 14
                 text: "󰅂"
 
                 TapHandler {
@@ -92,6 +96,7 @@ PressableButton {
                 delegate: MonoText {
                     required property string shortName
                     text: shortName
+                    font.pointSize: 14
                 }
             }
 
@@ -127,6 +132,7 @@ PressableButton {
                     MonoText {
                         text: monthGrid.locale.toString(parent.model.date, "d")
                         color: parent.border.color
+                        font.pointSize: 14
                     }
                 }
 
@@ -165,10 +171,19 @@ PressableButton {
                 id: eventList
                 Layout.row: 0
                 Layout.column: 3
-                Layout.rowSpan: 3
-                Layout.preferredWidth: 400
+                Layout.rowSpan: 4
+                Layout.preferredWidth: 360
                 Layout.fillHeight: true
                 Layout.leftMargin: 24
+            }
+
+            TaskList {
+                Layout.row: 3
+                Layout.column: 0
+                Layout.columnSpan: 3
+                Layout.fillWidth: true
+                Layout.topMargin: 16
+                height: 300
             }
         }
     }
