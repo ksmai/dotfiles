@@ -6,8 +6,6 @@ PressableButton {
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
 
-    signal popupToggled(Component component, int anchorX)
-
     backgroundColor: active ? ColorService.bright_orange : ColorService.bright_yellow
     text: {
         const parts = [];
@@ -40,10 +38,6 @@ PressableButton {
         if (sink?.audio) {
             sink.audio.muted = !sink.audio.muted;
         }
-    }
-
-    onRightClicked: mouse => {
-        popupToggled(popupComponent, Math.floor(mouse.x));
     }
 
     onWheel: wheel => {

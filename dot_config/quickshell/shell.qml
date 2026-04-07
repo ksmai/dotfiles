@@ -60,24 +60,36 @@ ShellRoot {
 
                     Privacy {}
                     SystemUsage {}
+
                     Clock {
-                        onPopupToggled: (component, anchorX) => {
-                            barPopup.toggle(component, this.x + anchorX);
+                        onLeftClicked: mouse => {
+                            barPopup.toggle(planner, Math.floor(this.x + mouse.x));
                         }
                     }
                     AudioSink {
-                        onPopupToggled: (component, anchorX) => {
-                            barPopup.toggle(component, this.x + anchorX);
+                        onRightClicked: mouse => {
+                            barPopup.toggle(mixer, Math.floor(this.x + mouse.x));
                         }
                     }
                     Tray {}
                     NotificationIndicator {
                         screen: scope.modelData
                     }
+
                     BarPopup {
                         id: barPopup
                         anchorItem: right
                         anchorY: -bar.topBorder - bar.padding
+                    }
+                    Component {
+                        id: planner
+                        Planner {}
+                    }
+                    Component {
+                        id: mixer
+                        MonoText {
+                            text: "TODO: MIXER"
+                        }
                     }
                 }
             }
