@@ -2,9 +2,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtQuick.Effects
 import Quickshell
-import Quickshell.Io
+import Quickshell.Widgets
 
 PressableButton {
     id: root
@@ -87,6 +86,7 @@ PressableButton {
                 Layout.row: 1
                 Layout.column: 0
                 Layout.columnSpan: 3
+                Layout.fillWidth: true
 
                 locale: Qt.locale("en_US")
                 delegate: MonoText {
@@ -104,12 +104,15 @@ PressableButton {
                 Layout.fillWidth: true
                 locale: Qt.locale("en_US")
 
-                delegate: MonoText {
+                delegate: WrapperRectangle {
                     required property var model
+                    radius: 4
+                    color: model.today ? ColorService.light0_hard : "transparent"
+                    topMargin: 2
+                    bottomMargin: 2
 
-                    text: monthGrid.locale.toString(model.date, "d")
-
-                    color: {
+                    border.width: model.month === monthGrid.month && eventList.hasEvent(model.day) ? 2 : 0
+                    border.color: {
                         if (model.month !== monthGrid.month) {
                             return ColorService.gray;
                         }
@@ -121,20 +124,9 @@ PressableButton {
                         return ColorService.dark1;
                     }
 
-                    font.underline: model.month === monthGrid.month && eventList.hasEvent(model.day)
-
-                    Loader {
-                        anchors.fill: parent
-                        active: parent.model.today
-                        z: -1
-
-                        sourceComponent: RectangularShadow {
-                            anchors.fill: parent
-                            radius: 4
-                            blur: 0
-                            spread: 4
-                            color: ColorService.light0_hard
-                        }
+                    MonoText {
+                        text: monthGrid.locale.toString(parent.model.date, "d")
+                        color: parent.border.color
                     }
                 }
 
