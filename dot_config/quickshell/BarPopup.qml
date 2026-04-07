@@ -30,9 +30,13 @@ PopupWindow {
             }
             root.component = component;
         } else {
-            root.visible = false;
-            root.component = null;
+            close();
         }
+    }
+
+    function close() {
+        root.visible = false;
+        root.component = null;
     }
 
     anchor {

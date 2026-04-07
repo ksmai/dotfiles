@@ -1,6 +1,7 @@
 //@ pragma IconTheme default
 pragma ComponentBehavior: Bound
 import Quickshell
+import Quickshell.Io
 import QtQuick
 
 ShellRoot {
@@ -146,6 +147,15 @@ ShellRoot {
                     onChanged: {
                         notificationCenterRegion.changed();
                     }
+                }
+            }
+
+            IpcHandler {
+                target: "shell"
+
+                function hide() {
+                    NotificationService.closeNotificationCenter();
+                    barPopup.close();
                 }
             }
         }
