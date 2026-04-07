@@ -93,10 +93,26 @@ ListView {
                 if (parent.model.empty) {
                     return "No events";
                 }
-                if (parent.model.allDay) {
-                    return `${parent.model.title}`;
+
+                const parts = [parent.model.title];
+
+                if (parent.model.description) {
+                    parts.push(` ${parent.model.description}`);
                 }
-                return `${parent.model.title}\n${parent.model.startTime}-${parent.model.endTime}`;
+
+                if (parent.model.location) {
+                    parts.push(` ${parent.model.location}`);
+                }
+
+                if (!parent.model.allDay) {
+                    parts.push(` ${parent.model.startTime}-${parent.model.endTime}`);
+                }
+
+                if (parts.length > 1) {
+                    parts[0] = `󰸘 ${parts[0]}`;
+                }
+
+                return parts.join("\n");
             }
         }
     }
@@ -140,7 +156,7 @@ ListView {
     Process {
         id: listEventProc
         running: false
-        command: ["khal", "list", "--json", "title", "--json", "start-date", "--json", "start-time", "--json", "end-date", "--json", "end-time", "--json", "all-day", "--json", "calendar", root.startOfMonthStr, root.endOfMonthStr]
+        command: ["khal", "list", "--json", "title", "--json", "start-date", "--json", "start-time", "--json", "end-date", "--json", "end-time", "--json", "all-day", "--json", "calendar", "--json", "description", "--json", "location", root.startOfMonthStr, root.endOfMonthStr]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -162,6 +178,8 @@ ListView {
 
                             const event = {};
                             event.title = parsed.title;
+                            event.description = parsed.description;
+                            event.location = parsed.location;
                             event.calendar = parsed.calendar;
                             event.idx = idx;
 
