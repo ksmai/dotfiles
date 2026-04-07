@@ -58,6 +58,7 @@ ListView {
     section.labelPositioning: ViewSection.InlineLabels
     spacing: 8
     clip: true
+    boundsBehavior: Flickable.StopAtBounds
 
     delegate: WrapperRectangle {
         required property var model

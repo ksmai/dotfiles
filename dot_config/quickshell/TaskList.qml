@@ -10,6 +10,7 @@ ListView {
     model: []
     spacing: 8
     clip: true
+    boundsBehavior: Flickable.StopAtBounds
 
     delegate: WrapperRectangle {
         id: wrapper
