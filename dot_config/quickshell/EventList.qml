@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Io
+import Quickshell.Widgets
 
 ListView {
     id: root
@@ -44,27 +45,26 @@ ListView {
     readonly property var locale: Qt.locale("en_US")
 
     section.property: "idx"
-    section.delegate: Rectangle {
+    section.delegate: WrapperItem {
         required property int section
-        readonly property real paddingTop: section > 0 ? 16 : 0
-        readonly property real paddingBottom: 8
-        implicitHeight: sectionText.implicitHeight + paddingTop + paddingBottom
+        topMargin: section > 0 ? 16 : 0
+        bottomMargin: 8
 
         MonoText {
-            id: sectionText
             text: root.toDateString(new Date(root.year, root.month, parent.section + 1))
-            anchors.top: parent.top
-            anchors.topMargin: parent.paddingTop
         }
     }
     section.labelPositioning: ViewSection.InlineLabels
     spacing: 8
     clip: true
 
-    delegate: Rectangle {
+    delegate: WrapperRectangle {
         required property var model
-        implicitHeight: eventText.implicitHeight + 2 * eventText.anchors.topMargin
-        width: ListView.view.width
+        implicitWidth: ListView.view.width
+        topMargin: model.empty ? 0 : 8
+        bottomMargin: model.empty ? 0 : 8
+        leftMargin: 16
+        rightMargin: 16
         radius: 8
         border.color: ColorService.dark1
         border.width: model.empty ? 0 : 2
@@ -83,16 +83,11 @@ ListView {
         }
 
         MonoText {
-            id: eventText
             wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignLeft
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.topMargin: parent.model.empty ? 2 : 8
-            anchors.leftMargin: 16
-            anchors.rightMargin: 16
             lineHeight: 1.2
+            color: parent.model.empty ? ColorService.gray : ColorService.dark1
+            font.italic: !!parent.model.empty
 
             text: {
                 if (parent.model.empty) {
@@ -103,9 +98,6 @@ ListView {
                 }
                 return `${parent.model.title}\n${parent.model.startTime}-${parent.model.endTime}`;
             }
-
-            color: parent.model.empty ? ColorService.gray : ColorService.dark1
-            font.italic: !!parent.model.empty
         }
     }
 
