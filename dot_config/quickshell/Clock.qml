@@ -47,7 +47,10 @@ PressableButton {
         id: popupComponent
 
         GridLayout {
+            id: grid
             columns: 4
+            property int selectedYear: 0
+            property int selectedMonth: 0
 
             MonoText {
                 Layout.row: 0
@@ -55,10 +58,19 @@ PressableButton {
 
                 font.pointSize: 14
                 text: "󰅁"
+                color: prevYearArea.containsMouse ? ColorService.dark3 : ColorService.dark1
 
-                TapHandler {
-                    onTapped: {
-                        monthGrid.addMonths(-1);
+                MouseArea {
+                    id: prevYearArea
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                    onClicked: () => {
+                        if (stack.currentIndex === 0) {
+                            monthGrid.addMonths(-1);
+                        } else {
+                            grid.selectedYear -= 1;
+                        }
                     }
                 }
             }
@@ -69,7 +81,25 @@ PressableButton {
                 Layout.fillWidth: true
                 font.pointSize: 14
 
-                text: `${monthGrid.year} ${monthGrid.locale.monthName(monthGrid.month, Locale.ShortFormat)}`
+                text: stack.currentIndex === 0 ? `${monthGrid.year} ${monthGrid.locale.monthName(monthGrid.month, Locale.ShortFormat)}` : `${grid.selectedYear}`
+                color: selectYearArea.containsMouse ? ColorService.dark3 : ColorService.dark1
+
+                MouseArea {
+                    id: selectYearArea
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                    onClicked: () => {
+                        if (stack.currentIndex === 0) {
+                            grid.selectedYear = monthGrid.year;
+                            grid.selectedMonth = monthGrid.month;
+                            stack.currentIndex = 1;
+                        } else {
+                            monthGrid.changeDate(new Date(grid.selectedYear, grid.selectedMonth, 1), true);
+                            stack.currentIndex = 0;
+                        }
+                    }
+                }
             }
 
             MonoText {
@@ -78,92 +108,183 @@ PressableButton {
 
                 font.pointSize: 14
                 text: "󰅂"
+                color: nextYearArea.containsMouse ? ColorService.dark3 : ColorService.dark1
 
-                TapHandler {
-                    onTapped: {
-                        monthGrid.addMonths(1);
+                MouseArea {
+                    id: nextYearArea
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                    onClicked: () => {
+                        if (stack.currentIndex === 0) {
+                            monthGrid.addMonths(1);
+                        } else {
+                            grid.selectedYear += 1;
+                        }
                     }
                 }
             }
 
-            DayOfWeekRow {
+            StackLayout {
+                id: stack
                 Layout.row: 1
                 Layout.column: 0
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
+                Layout.preferredWidth: 300
 
-                locale: Qt.locale("en_US")
-                delegate: MonoText {
-                    required property string shortName
-                    text: shortName
-                    font.pointSize: 14
-                }
-            }
+                ColumnLayout {
+                    DayOfWeekRow {
+                        Layout.fillWidth: true
+                        locale: Qt.locale("en_US")
+                        delegate: MonoText {
+                            required property string shortName
+                            text: shortName
+                            font.pointSize: 14
+                        }
+                    }
 
-            MonthGrid {
-                id: monthGrid
+                    MonthGrid {
+                        id: monthGrid
+                        Layout.fillWidth: true
 
-                Layout.row: 2
-                Layout.column: 0
-                Layout.columnSpan: 3
-                Layout.fillWidth: true
-                locale: Qt.locale("en_US")
+                        locale: Qt.locale("en_US")
 
-                delegate: WrapperRectangle {
-                    required property var model
-                    radius: 4
-                    color: model.today ? ColorService.light0_hard : "transparent"
-                    topMargin: 2
-                    bottomMargin: 2
+                        delegate: WrapperRectangle {
+                            required property var model
+                            radius: 4
+                            color: model.today ? ColorService.light0_hard : "transparent"
+                            topMargin: 2
+                            bottomMargin: 2
 
-                    border.width: model.month === monthGrid.month && eventList.hasEvent(model.day) ? 2 : 0
-                    border.color: {
-                        if (model.month !== monthGrid.month) {
-                            return ColorService.gray;
+                            border.width: model.month === monthGrid.month && eventList.hasEvent(model.day) ? 2 : 0
+                            border.color: {
+                                if (model.month !== monthGrid.month) {
+                                    return ColorService.gray;
+                                }
+
+                                if (model.date.getDay() === 0 || eventList.hasHoliday(model.day)) {
+                                    return ColorService.neutral_red;
+                                }
+
+                                return ColorService.dark1;
+                            }
+
+                            MonoText {
+                                text: monthGrid.locale.toString(parent.model.date, "d")
+                                color: parent.border.color
+                                font.pointSize: 14
+                            }
                         }
 
-                        if (model.date.getDay() === 0 || eventList.hasHoliday(model.day)) {
-                            return ColorService.neutral_red;
+                        function addMonths(months) {
+                            let newMonth = monthGrid.month + months;
+                            const newYear = monthGrid.year + Math.floor(newMonth / 12);
+                            newMonth = (12 + newMonth % 12) % 12;
+                            changeDate(new Date(newYear, newMonth, 1), true);
                         }
 
-                        return ColorService.dark1;
-                    }
+                        Component.onCompleted: {
+                            changeDate(new Date());
+                        }
 
-                    MonoText {
-                        text: monthGrid.locale.toString(parent.model.date, "d")
-                        color: parent.border.color
-                        font.pointSize: 14
+                        onClicked: date => {
+                            changeDate(date);
+                        }
+
+                        function changeDate(date, checksToday) {
+                            if (date.getFullYear() !== year || date.getMonth() !== month) {
+                                year = date.getFullYear();
+                                month = date.getMonth();
+                            }
+
+                            const now = new Date();
+                            if (checksToday && now.getFullYear() === date.getFullYear() && now.getMonth() === date.getMonth()) {
+                                eventList.changeDate(now);
+                            } else {
+                                eventList.changeDate(date);
+                            }
+                        }
                     }
                 }
 
-                function addMonths(months) {
-                    let newMonth = monthGrid.month + months;
-                    const newYear = monthGrid.year + Math.floor(newMonth / 12);
-                    newMonth = (12 + newMonth % 12) % 12;
+                GridLayout {
+                    columns: 4
 
-                    const now = new Date();
-                    let day = 1;
-                    if (now.getFullYear() === newYear && now.getMonth() === newMonth) {
-                        day = now.getDate();
+                    Repeater {
+                        model: [
+                            {
+                                "month": 0,
+                                "name": "JAN"
+                            },
+                            {
+                                "month": 1,
+                                "name": "FEB"
+                            },
+                            {
+                                "month": 2,
+                                "name": "MAR"
+                            },
+                            {
+                                "month": 3,
+                                "name": "APR"
+                            },
+                            {
+                                "month": 4,
+                                "name": "MAY"
+                            },
+                            {
+                                "month": 5,
+                                "name": "JUN"
+                            },
+                            {
+                                "month": 6,
+                                "name": "JUL"
+                            },
+                            {
+                                "month": 7,
+                                "name": "AUG"
+                            },
+                            {
+                                "month": 8,
+                                "name": "SEP"
+                            },
+                            {
+                                "month": 9,
+                                "name": "OCT"
+                            },
+                            {
+                                "month": 10,
+                                "name": "NOV"
+                            },
+                            {
+                                "month": 11,
+                                "name": "DEC"
+                            },
+                        ]
+
+                        delegate: MonoText {
+                            required property var model
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+
+                            font.pointSize: 14
+                            text: model.name
+                            color: selectMonthArea.containsMouse ? ColorService.dark3 : ColorService.dark1
+
+                            MouseArea {
+                                id: selectMonthArea
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                hoverEnabled: true
+
+                                onClicked: () => {
+                                    monthGrid.changeDate(new Date(grid.selectedYear, parent.model.month, 1), true);
+                                    stack.currentIndex = 0;
+                                }
+                            }
+                        }
                     }
-
-                    changeDate(new Date(newYear, newMonth, day));
-                }
-
-                Component.onCompleted: {
-                    changeDate(new Date());
-                }
-
-                onClicked: date => {
-                    changeDate(date);
-                }
-
-                function changeDate(date) {
-                    if (date.getFullYear() !== year || date.getMonth() !== month) {
-                        year = date.getFullYear();
-                        month = date.getMonth();
-                    }
-                    eventList.changeDate(date);
                 }
             }
 
@@ -171,14 +292,14 @@ PressableButton {
                 id: eventList
                 Layout.row: 0
                 Layout.column: 3
-                Layout.rowSpan: 4
-                Layout.preferredWidth: 360
+                Layout.rowSpan: 3
+                Layout.preferredWidth: 400
                 Layout.fillHeight: true
                 Layout.leftMargin: 24
             }
 
             TaskList {
-                Layout.row: 3
+                Layout.row: 2
                 Layout.column: 0
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
