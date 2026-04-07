@@ -14,6 +14,7 @@ ListView {
     delegate: WrapperRectangle {
         id: wrapper
         required property var model
+        required property int index
         width: ListView.view.width
         topMargin: 4
         bottomMargin: 4
@@ -23,53 +24,69 @@ ListView {
         radius: 8
         border.color: ColorService.dark1
         border.width: 2
-        color: "transparent"
+        color: mouseArea.containsMouse ? ColorService.light0_soft : "transparent"
 
-        Column {
+        WrapperMouseArea {
+            id: mouseArea
             width: wrapper.width
-            spacing: 2
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.MiddleButton
+            hoverEnabled: true
 
-            MonoText {
-                width: parent.width
-                wrapMode: Text.Wrap
-                horizontalAlignment: Text.AlignLeft
-                text: wrapper.model.description
-                font.pointSize: 13
+            onClicked: () => {
+                const uuid = wrapper.model.uuid;
+                root.model.splice(wrapper.index, 1);
+                doneTaskProc.exec({
+                    "command": ["task", uuid, "done"]
+                });
             }
 
-            Loader {
-                active: !!wrapper.model.scheduled
-                width: parent.width
-                sourceComponent: MonoText {
+            Column {
+                width: wrapper.width
+                spacing: 2
+
+                MonoText {
                     width: parent.width
                     wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignLeft
-                    color: {
-                        const now = Date.now();
-                        if (wrapper.model.scheduled.getTime() < now) {
-                            return ColorService.neutral_orange;
-                        }
-                        return ColorService.gray;
-                    }
-                    text: root.toDateTimeString(wrapper.model.scheduled)
+                    text: wrapper.model.description
+                    font.pointSize: 13
                 }
-            }
 
-            Loader {
-                active: !!wrapper.model.due
-                width: parent.width
-                sourceComponent: MonoText {
+                Loader {
+                    active: !!wrapper.model.scheduled
                     width: parent.width
-                    wrapMode: Text.Wrap
-                    horizontalAlignment: Text.AlignLeft
-                    color: {
-                        const now = Date.now();
-                        if (wrapper.model.due.getTime() < now) {
-                            return ColorService.neutral_red;
+                    sourceComponent: MonoText {
+                        width: parent.width
+                        wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignLeft
+                        color: {
+                            const now = Date.now();
+                            if (wrapper.model.scheduled.getTime() < now) {
+                                return ColorService.neutral_orange;
+                            }
+                            return ColorService.gray;
                         }
-                        return ColorService.gray;
+                        text: root.toDateTimeString(wrapper.model.scheduled)
                     }
-                    text: root.toDateTimeString(wrapper.model.due)
+                }
+
+                Loader {
+                    active: !!wrapper.model.due
+                    width: parent.width
+                    sourceComponent: MonoText {
+                        width: parent.width
+                        wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignLeft
+                        color: {
+                            const now = Date.now();
+                            if (wrapper.model.due.getTime() < now) {
+                                return ColorService.neutral_red;
+                            }
+                            return ColorService.gray;
+                        }
+                        text: root.toDateTimeString(wrapper.model.due)
+                    }
                 }
             }
         }
@@ -123,5 +140,10 @@ ListView {
                 root.model = tasks;
             }
         }
+    }
+
+    Process {
+        id: doneTaskProc
+        running: false
     }
 }
