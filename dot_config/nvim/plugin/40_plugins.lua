@@ -21,7 +21,6 @@ vim.api.nvim_create_autocmd("PackChanged", {
 })
 
 vim.pack.add({
-	"https://github.com/Wansmer/treesj",
 	"https://github.com/aaronik/treewalker.nvim",
 	"https://github.com/antoinemadec/FixCursorHold.nvim",
 	"https://github.com/brenoprata10/nvim-highlight-colors",
@@ -62,10 +61,10 @@ vim.pack.add({
 	"https://github.com/tpope/vim-unimpaired",
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
+	"https://github.com/Wansmer/treesj",
 	"https://github.com/williamboman/mason.nvim",
 })
 
-vim.o.background = "dark" -- or "light" for light mode
 require("gruvbox").setup({ contrast = "hard" })
 vim.cmd([[colorscheme gruvbox]])
 
@@ -77,9 +76,5 @@ require("lspkind").setup({
 })
 
 require("nvim-surround").setup({})
-
--- disable maps in tpope/unimpaired in favor of treewalker.nvim
-vim.g.nremap = { ["[e"] = "", ["]e"] = "" }
-vim.g.xremap = { ["[e"] = "", ["]e"] = "" }
 
 require("nvim-web-devicons").setup({})
