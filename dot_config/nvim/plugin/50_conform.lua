@@ -1,3 +1,13 @@
+local prettier = {
+	"prettierd",
+	"prettier",
+	stop_after_first = true,
+	lsp_format = "first",
+	filter = function(client)
+		return client.name == "eslint"
+	end,
+}
+
 require("conform").setup({
 	formatters = {
 		ruff_fix = {
@@ -7,80 +17,17 @@ require("conform").setup({
 
 	formatters_by_ft = {
 		lua = { "stylua" },
-		javascript = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		javascriptreact = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		typescript = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		typescriptreact = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		markdown = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		html = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		css = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
-		json = {
-			"prettierd",
-			"prettier",
-			stop_after_first = true,
-			lsp_format = "first",
-			filter = function(client)
-				return client.name == "eslint"
-			end,
-		},
+		javascript = prettier,
+		javascriptreact = prettier,
+		typescript = prettier,
+		typescriptreact = prettier,
+		markdown = prettier,
+		html = prettier,
+		css = prettier,
+		json = prettier,
 		python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 		go = { "goimports", "gofmt" },
+		http = { "kulala-fmt" },
 	},
 
 	default_format_opts = {
@@ -121,19 +68,22 @@ end, { range = true })
 
 vim.api.nvim_create_user_command("FormatDisable", function(args)
 	if args.bang then
-		-- FormatDisable! will disable formatting just for this buffer
-		vim.b.disable_autoformat = true
-	else
 		vim.g.disable_autoformat = true
+	else
+		vim.b.disable_autoformat = true
 	end
 end, {
 	desc = "Disable autoformat-on-save",
 	bang = true,
 })
 
-vim.api.nvim_create_user_command("FormatEnable", function()
-	vim.b.disable_autoformat = false
-	vim.g.disable_autoformat = false
+vim.api.nvim_create_user_command("FormatEnable", function(args)
+	if args.bang then
+		vim.g.disable_autoformat = false
+	else
+		vim.b.disable_autoformat = false
+	end
 end, {
 	desc = "Re-enable autoformat-on-save",
+	bang = true,
 })
