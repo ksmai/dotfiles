@@ -64,6 +64,8 @@ vim.opt.pumheight = 10
 vim.opt.pumblend = 10
 vim.opt.wildmode = "longest:full,full"
 vim.opt.diffopt:append("followwrap")
+vim.opt.background = "dark"
+vim.opt.winborder = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
 
 -- https://neovim.io/doc/user/provider.html#provider-clipboard
 -- vim.opt.clipboard:append("unnamedplus")
@@ -71,9 +73,3 @@ vim.opt.diffopt:append("followwrap")
 if vim.fn.executable("rg") then
 	vim.opt.grepprg = "rg --no-heading --vimgrep --hidden --iglob !.git/"
 end
-
-vim.o.background = "dark" -- or "light" for light mode
-
--- disable maps in tpope/unimpaired in favor of treewalker.nvim
-vim.g.nremap = { ["[e"] = "", ["]e"] = "" }
-vim.g.xremap = { ["[e"] = "", ["]e"] = "" }

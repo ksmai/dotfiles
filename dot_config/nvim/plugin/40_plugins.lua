@@ -1,3 +1,7 @@
+-- disable maps in tpope/unimpaired in favor of treewalker.nvim
+vim.g.nremap = { ["[e"] = "", ["]e"] = "" }
+vim.g.xremap = { ["[e"] = "", ["]e"] = "" }
+
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
 		local name, kind = ev.data.spec.name, ev.data.kind
@@ -28,6 +32,7 @@ vim.pack.add({
 	"https://github.com/ellisonleao/gruvbox.nvim",
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/ibhagwan/fzf-lua",
+	{ src = "https://github.com/igorlfs/nvim-dap-view", version = vim.version.range("1.*") },
 	"https://github.com/jay-babu/mason-nvim-dap.nvim",
 	{
 		src = "https://github.com/kylechui/nvim-surround",
@@ -49,12 +54,10 @@ vim.pack.add({
 	"https://github.com/nvim-neotest/nvim-nio",
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/onsails/lspkind.nvim",
-	"https://github.com/rcarriga/nvim-dap-ui",
 	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.x") },
 	"https://github.com/stevearc/aerial.nvim",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/stevearc/oil.nvim",
-	"https://github.com/theHamsta/nvim-dap-virtual-text",
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/tpope/vim-rhubarb",
 	"https://github.com/tpope/vim-sleuth",

@@ -1,16 +1,25 @@
 local dap = require("dap")
-local dapui = require("dapui")
+local dap_view = require("dap-view")
 
-dapui.setup({})
+dap.defaults.fallback.stepping_granularity = "line"
+dap.defaults.fallback.switchbuf = "usetab,uselast"
 
-require("nvim-dap-virtual-text").setup({
-	display_callback = function(variable)
-		local limit = 25
-		if #variable.value > limit then
-			return " " .. variable.value:sub(1, limit) .. "..."
-		end
-		return " " .. variable.value
-	end,
+dap_view.setup({
+	winbar = {
+		sections = { "watches", "exceptions", "breakpoints", "scopes", "threads", "repl", "console" },
+		default_section = "scopes",
+	},
+	virtual_text = {
+		enabled = true,
+		format = function(variable, _, _)
+			local limit = 25
+			if #variable.value > limit then
+				return " " .. variable.value:sub(1, limit) .. "…"
+			end
+			return " " .. variable.value
+		end,
+	},
+	auto_toggle = true,
 })
 
 vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
@@ -45,25 +54,10 @@ vim.fn.sign_define("DapLogPoint", {
 	numhl = "",
 })
 
-dap.listeners.after.event_initialized["dapui_config"] = function()
-	dapui.open({ reset = true })
-end
-
-dap.listeners.before.event_terminated["dapui_config"] = function()
-	dapui.close({})
-end
-
-dap.listeners.before.event_exited["dapui_config"] = function()
-	dapui.close({})
-end
-
-vim.keymap.set("n", "<leader>du", function()
-	require("dapui").toggle({ reset = true })
-end, { desc = "Dap UI" })
 
 vim.keymap.set({ "n", "x" }, "<C-\\>", function()
-	require("dapui").eval()
-end, { desc = "Eval" })
+	dap_view.hover()
+end, { desc = "DAP Hover" })
 
 vim.keymap.set("n", "<leader>fd", "<cmd>FzfLua dap_commands<cr>", { desc = "Find DAP commands" })
 
