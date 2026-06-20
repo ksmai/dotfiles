@@ -65,7 +65,7 @@ vim.opt.pumblend = 10
 vim.opt.wildmode = "longest:full,full"
 vim.opt.diffopt:append("followwrap")
 vim.opt.background = "dark"
-vim.opt.winborder = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+vim.opt.winborder = "single"
 
 -- https://neovim.io/doc/user/provider.html#provider-clipboard
 -- vim.opt.clipboard:append("unnamedplus")
