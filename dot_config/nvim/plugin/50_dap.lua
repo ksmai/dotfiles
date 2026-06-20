@@ -54,7 +54,6 @@ vim.fn.sign_define("DapLogPoint", {
 	numhl = "",
 })
 
-
 vim.keymap.set({ "n", "x" }, "<C-\\>", function()
 	dap_view.hover()
 end, { desc = "DAP Hover" })
