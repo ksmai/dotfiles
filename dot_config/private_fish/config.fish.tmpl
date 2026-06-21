@@ -1,0 +1,44 @@
+if status is-interactive
+    set -g fish_key_bindings fish_vi_key_bindings
+
+    set -g fish_color_normal {{ .colors.light1 }}
+    set -g fish_color_command {{ .colors.bright_green }} --bold 
+    set -g fish_color_keyword {{ .colors.bright_red }}
+    set -g fish_color_quote {{ .colors.bright_yellow }}
+    set -g fish_color_redirection {{ .colors.bright_aqua }} --bold
+    set -g fish_color_end {{ .colors.bright_orange }}
+    set -g fish_color_error {{ .colors.bright_red }} --underline=curly
+    set -g fish_color_param {{ .colors.light1 }}
+    set -g fish_color_valid_path {{ .colors.light1 }} --underline=single
+    set -g fish_color_option {{ .colors.bright_blue }}
+    set -g fish_color_comment {{ .colors.gray }}
+    set -g fish_color_selection {{ .colors.light1 }} --bold --background={{ .colors.dark3 }}
+    set -g fish_color_operator {{ .colors.light1 }}
+    set -g fish_color_escape {{ .colors.bright_orange }}
+    set -g fish_color_autosuggestion {{ .colors.gray }}
+    set -g fish_color_cwd {{ .colors.bright_green }}
+    set -g fish_color_cwd_root {{ .colors.bright_red }}
+    set -g fish_color_user {{ .colors.bright_green }}
+    set -g fish_color_host {{ .colors.bright_yellow }}
+    set -g fish_color_host_remote {{ .colors.bright_yellow }}
+    set -g fish_color_status {{ .colors.bright_red }}
+    set -g fish_color_cancel {{ .colors.light1 }}
+    set -g fish_color_search_match --reset
+    set -g fish_color_history_current {{ .colors.bright_yellow }} --bold
+
+    set -g fish_pager_color_progress {{ .colors.dark0 }} --bold --background={{ .colors.light4 }}
+    set -g fish_pager_color_background 
+    set -g fish_pager_color_prefix {{ .colors.light1 }} --bold --underline=single
+    set -g fish_pager_color_completion {{ .colors.light1 }}
+    set -g fish_pager_color_description {{ .colors.bright_orange }}
+    set -g fish_pager_color_selected_background --background={{ .colors.bright_blue }}
+    set -g fish_pager_color_selected_prefix {{ .colors.dark2 }} --bold --underline=single
+    set -g fish_pager_color_selected_completion {{ .colors.dark2 }} --bold
+    set -g fish_pager_color_selected_description {{ .colors.dark2 }} --bold
+    set -g fish_pager_color_secondary_background 
+    set -g fish_pager_color_secondary_prefix 
+    set -g fish_pager_color_secondary_completion 
+    set -g fish_pager_color_secondary_description 
+
+    direnv hook fish | source
+end
