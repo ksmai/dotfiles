@@ -1,4 +1,9 @@
-require("fzf-lua").setup({ "telescope" })
+require("fzf-lua").setup({
+	"telescope",
+	grep = {
+		rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --iglob '!.git/*' -e",
+	},
+})
 
 vim.cmd("FzfLua register_ui_select")
 
