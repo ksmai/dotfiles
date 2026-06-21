@@ -1,6 +1,9 @@
 require("neotest").setup({
 	adapters = {
-		require("neotest-python"),
+		require("neotest-python")({
+			args = { "--log-level", "WARNING" },
+			dap = { justMyCode = true },
+		}),
 		require("neotest-jest")({}),
 		require("rustaceanvim.neotest"),
 	},
