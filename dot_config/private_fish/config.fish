@@ -23,18 +23,18 @@ if status is-interactive
     set -g fish_color_host_remote bryellow
     set -g fish_color_status brred
     set -g fish_color_cancel white
-    set -g fish_color_search_match white --bold --background=black
+    set -g fish_color_search_match --reset
     set -g fish_color_history_current bryellow --bold
 
-    set -g fish_pager_color_progress brwhite --bold --background=cyan
+    set -g fish_pager_color_progress 282828 --bold --background=a89984
     set -g fish_pager_color_background 
-    set -g fish_pager_color_prefix --bold --underline=single
-    set -g fish_pager_color_completion normal
-    set -g fish_pager_color_description yellow --italics
-    set -g fish_pager_color_selected_background --reverse
-    set -g fish_pager_color_selected_prefix 
-    set -g fish_pager_color_selected_completion 
-    set -g fish_pager_color_selected_description 
+    set -g fish_pager_color_prefix white --bold --underline=single
+    set -g fish_pager_color_completion white
+    set -g fish_pager_color_description fe8019
+    set -g fish_pager_color_selected_background --background=brblue
+    set -g fish_pager_color_selected_prefix 504945 --bold --underline=single
+    set -g fish_pager_color_selected_completion 504945 --bold
+    set -g fish_pager_color_selected_description 504945 --bold
     set -g fish_pager_color_secondary_background 
     set -g fish_pager_color_secondary_prefix 
     set -g fish_pager_color_secondary_completion 
