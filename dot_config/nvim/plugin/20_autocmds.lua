@@ -1,24 +1,12 @@
-local function augroup(name)
-	return vim.api.nvim_create_augroup("ksmai_" .. name, { clear = true })
-end
-
--- highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
-	group = augroup("highlight_yank"),
+	group = vim.api.nvim_create_augroup("HighlightOnYank", { clear = true }),
 	callback = function()
 		vim.hl.on_yank({ higroup = "IncSearch", timeout = 500 })
 	end,
 })
 
--- resize splits if window got resized
--- vim.api.nvim_create_autocmd({"VimResized"}, {
---     group = augroup("resize_splits"),
---     callback = function() vim.cmd("tabdo wincmd =") end
--- })
-
--- spell checking in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("spell_checking"),
+	group = vim.api.nvim_create_augroup("SpellChecking", { clear = true }),
 	pattern = { "gitcommit", "markdown", "text" },
 	callback = function()
 		vim.opt_local.spell = true
@@ -26,20 +14,15 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- vim.api.nvim_create_autocmd("FileType", {
--- 	pattern = "html",
--- 	command = "setlocal shiftwidth=2 tabstop=2 softtabstop=2",
--- })
-
 vim.api.nvim_create_autocmd({ "VimEnter", "VimResume", "UIEnter" }, {
-	group = vim.api.nvim_create_augroup("KittySetVarVimEnter", { clear = true }),
+	group = vim.api.nvim_create_augroup("KittySetVarInEditor", { clear = true }),
 	callback = function()
 		vim.api.nvim_ui_send("\x1b]1337;SetUserVar=in_editor=MQ==\007")
 	end,
 })
 
 vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
-	group = vim.api.nvim_create_augroup("KittyUnsetVarVimLeave", { clear = true }),
+	group = vim.api.nvim_create_augroup("KittyUnsetVarInEditor", { clear = true }),
 	callback = function()
 		vim.api.nvim_ui_send("\x1b]1337;SetUserVar=in_editor\007")
 	end,
