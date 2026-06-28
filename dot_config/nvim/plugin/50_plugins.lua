@@ -40,7 +40,6 @@ vim.pack.add({
 	},
 	"https://github.com/mfussenegger/nvim-dap",
 	"https://github.com/mfussenegger/nvim-lint",
-	"https://github.com/mistweaverco/kulala.nvim",
 	{
 		src = "https://github.com/mrcjkb/rustaceanvim",
 		version = vim.version.range("^9"),
