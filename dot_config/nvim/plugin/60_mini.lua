@@ -2,9 +2,12 @@ local mini_ai = require("mini.ai")
 local jump2d = require("mini.jump2d")
 local operators = require("mini.operators")
 local splitjoin = require("mini.splitjoin")
+local pairs = require("mini.pairs")
 
 mini_ai.setup({
-	n_lines = 1000,
+	n_lines = 9999,
+
+	search_method = "cover",
 
 	custom_textobjects = {
 		b = { { "%b()", "%b[]", "%b{}" }, "^.%s*().-()%s*.$" },
@@ -21,6 +24,7 @@ splitjoin.setup({
 })
 
 operators.setup({})
+pairs.setup({})
 
 jump2d.setup({
 	mappings = {
