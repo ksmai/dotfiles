@@ -53,7 +53,6 @@ vim.pack.add({
 	"https://github.com/nvim-neotest/nvim-nio",
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/onsails/lspkind.nvim",
-	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.x") },
 	"https://github.com/stevearc/aerial.nvim",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/stevearc/oil.nvim",
