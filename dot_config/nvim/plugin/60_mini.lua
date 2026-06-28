@@ -1,6 +1,7 @@
 local mini_ai = require("mini.ai")
 local jump2d = require("mini.jump2d")
 local operators = require("mini.operators")
+local splitjoin = require("mini.splitjoin")
 
 mini_ai.setup({
 	n_lines = 1000,
@@ -13,13 +14,19 @@ mini_ai.setup({
 	},
 })
 
+splitjoin.setup({
+	mappings = {
+		toggle = "<leader>cj",
+	},
+})
+
+operators.setup({})
+
 jump2d.setup({
 	mappings = {
 		start_jumping = "",
 	},
 })
-
-operators.setup({})
 
 vim.keymap.set("n", "\\", function()
 	local opts = {

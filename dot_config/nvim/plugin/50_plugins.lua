@@ -64,7 +64,6 @@ vim.pack.add({
 	"https://github.com/tpope/vim-unimpaired",
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
-	"https://github.com/Wansmer/treesj",
 	"https://github.com/williamboman/mason.nvim",
 })
 
