@@ -80,3 +80,6 @@ require("lspkind").setup({
 require("nvim-surround").setup({})
 
 require("nvim-web-devicons").setup({})
+
+require("mason").setup()
+require("mason-nvim-dap").setup()
