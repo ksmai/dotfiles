@@ -92,4 +92,8 @@ require("nvim-surround").setup({
 require("nvim-web-devicons").setup({})
 
 require("mason").setup()
-require("mason-nvim-dap").setup()
+require("mason-nvim-dap").setup({
+	automatic_installation = false,
+	handlers = {},
+	ensure_installed = { "codelldb", "python" },
+})
