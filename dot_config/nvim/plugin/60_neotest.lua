@@ -29,51 +29,28 @@ require("neotest").setup({
 	},
 })
 
-local function after_saved(fn)
-	if not vim.bo.modified then
-		fn()
-		return
-	end
-
-	vim.cmd("write")
-
-	vim.defer_fn(fn, 300)
-end
-
 vim.keymap.set("n", "<leader>rt", function()
-	after_saved(function()
-		require("neotest").run.run()
-	end)
+	require("neotest").run.run()
 end, { desc = "Run nearest test" })
 
 vim.keymap.set("n", "<leader>rd", function()
-	after_saved(function()
-		require("neotest").run.run({ strategy = "dap" })
-	end)
+	require("neotest").run.run({ strategy = "dap" })
 end, { desc = "Debug nearest test" })
 
 vim.keymap.set("n", "<leader>rl", function()
-	after_saved(function()
-		require("neotest").run.run_last()
-	end)
+	require("neotest").run.run_last()
 end, { desc = "Run last test" })
 
 vim.keymap.set("n", "<leader>rT", function()
-	after_saved(function()
-		require("neotest").run.stop()
-	end)
+	require("neotest").run.stop()
 end, { desc = "Terminate" })
 
 vim.keymap.set("n", "<leader>rf", function()
-	after_saved(function()
-		require("neotest").run.run(vim.fn.expand("%"))
-	end)
+	require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "Run current file" })
 
 vim.keymap.set("n", "<leader>rw", function()
-	after_saved(function()
-		require("neotest").watch.toggle(vim.fn.expand("%"))
-	end)
+	require("neotest").watch.toggle(vim.fn.expand("%"))
 end, { desc = "Toggle watch current file" })
 
 vim.keymap.set("n", "<leader>ro", function()
