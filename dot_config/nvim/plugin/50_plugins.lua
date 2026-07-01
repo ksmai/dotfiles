@@ -1,6 +1,14 @@
--- disable maps in tpope/unimpaired in favor of treewalker.nvim
-vim.g.nremap = { ["[e"] = "", ["]e"] = "" }
-vim.g.xremap = { ["[e"] = "", ["]e"] = "" }
+vim.g.nremap = {
+	-- disable maps in tpope/unimpaired in favor of treewalker.nvim
+	["[e"] = "",
+	["]e"] = "",
+	-- conflict with jumps for neotest
+	["[x"] = "",
+	["[xx"] = "",
+	["]x"] = "",
+	["]xx"] = "",
+}
+vim.g.xremap = vim.g.nremap
 
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
