@@ -6,6 +6,8 @@ vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { silent = true, desc = "Quick sa
 
 vim.keymap.set("n", "<BS>", "<cmd>nohlsearch | mode<cr>", { silent = true, desc = "Clear highlights" })
 
+vim.keymap.set("n", "<Tab>", "<cmd>cnext<cr>", { desc = "cnext" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>cprev<cr>", { desc = "cprev" })
 vim.keymap.set("n", "<leader>q", function()
 	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
 		vim.cmd("copen")
