@@ -25,13 +25,7 @@ vim.opt.shortmess:append("c")
 
 -- Always show the signcolumn, otherwise it would shift the text each time
 -- diagnostics appear/become resolved.
-if vim.fn.has("patch-8.1.1564") == 1 then
-	-- Recently vim can merge signcolumn and number column into one
-	vim.opt.signcolumn = "number"
-else
-	vim.opt.signcolumn = "yes"
-end
-
+vim.opt.signcolumn = "number"
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.opt.mouse = "a"
@@ -49,26 +43,21 @@ vim.opt.expandtab = true
 vim.opt.smarttab = true
 vim.opt.wrap = true
 vim.opt.dir = "/tmp/nvim/swap/"
--- vim.opt.scrolloff = 2
 vim.opt.showmode = false
 vim.opt.joinspaces = false
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.undofile = true
 vim.opt.undodir = "/tmp/nvim/undo/"
--- Make diffing better: https://vimways.org/2018/the-power-of-diff/
-vim.opt.diffopt:append("algorithm:patience")
 vim.opt.showcmd = true
 vim.opt.laststatus = 2
 vim.opt.pumheight = 10
 vim.opt.pumblend = 10
 vim.opt.wildmode = "longest:full,full"
+vim.opt.diffopt:append("algorithm:histogram")
 vim.opt.diffopt:append("followwrap")
 vim.opt.background = "dark"
 vim.opt.winborder = "single"
-
--- https://neovim.io/doc/user/provider.html#provider-clipboard
--- vim.opt.clipboard:append("unnamedplus")
 
 if vim.fn.executable("rg") then
 	vim.opt.grepprg = "rg --no-heading --vimgrep --hidden --iglob !.git/"
