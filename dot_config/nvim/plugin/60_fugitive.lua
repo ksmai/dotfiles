@@ -41,9 +41,91 @@ vim.keymap.set("n", "<leader>gh", "<cmd>GBrowse<cr>", { desc = "Open in Github" 
 vim.keymap.set("x", "<leader>gh", ":GBrowse<cr>", { desc = "Open in Github (selected lines)" })
 
 vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("FugitiveKeyMap", { clear = true }),
 	pattern = "fugitive",
 	callback = function(event)
 		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = event.buf, remap = true })
 		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = event.buf, remap = true })
+	end,
+})
+
+local autodiff = false
+
+vim.api.nvim_create_user_command("AutoDiff", function(opts)
+	if opts.fargs[1] == nil or opts.fargs[1] == "toggle" then
+		autodiff = not autodiff
+	elseif opts.fargs[1] == "on" then
+		autodiff = true
+	elseif opts.fargs[1] == "off" then
+		autodiff = false
+	else
+		vim.notify("Invalid arg for AutoDiff (on | off | toggle)")
+	end
+end, {
+	desc = "Toggle autodiff for Fugitive difftool",
+	nargs = "?",
+	complete = function()
+		return { "on", "off", "toggle" }
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
+	callback = function(ev)
+		if not autodiff then
+			return
+		end
+
+		local idx = vim.fn.getqflist({ idx = 0 }).idx
+		if idx == 0 then
+			return
+		end
+
+		if vim.fn.getqflist()[idx].bufnr ~= ev.buf then
+			return
+		end
+
+		local context = vim.fn.getqflist({ context = 0 }).context
+		if type(context) ~= "table" or type(context.items) ~= "table" then
+			return
+		end
+
+		local item = context.items[idx]
+		if
+			type(item) ~= "table"
+			or type(item.diff) ~= "table"
+			or #item.diff ~= 1
+			or type(item.diff[1].filename) ~= "string"
+		then
+			return
+		end
+
+		local parsed = vim.fn.FugitiveParse(item.diff[1].filename)
+		if type(parsed) ~= "table" or #parsed < 1 then
+			return
+		end
+
+		local current_win = vim.api.nvim_get_current_win()
+
+		vim.schedule(function()
+			if current_win ~= vim.api.nvim_get_current_win() then
+				return
+			end
+
+			if ev.buf ~= vim.api.nvim_get_current_buf() then
+				return
+			end
+
+			local wins = vim.api.nvim_tabpage_list_wins(0)
+
+			for _, win in ipairs(wins) do
+				if win ~= current_win and vim.fn.win_gettype(win) ~= "quickfix" then
+					vim.api.nvim_win_close(win, false)
+				end
+			end
+
+			vim.cmd("leftabove Gvdiffsplit " .. parsed[1])
+			vim.api.nvim_set_current_win(current_win)
+		end)
 	end,
 })
