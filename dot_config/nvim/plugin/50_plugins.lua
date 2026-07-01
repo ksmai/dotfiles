@@ -75,7 +75,11 @@ require("lspkind").setup({
 	preset = "codicons",
 })
 
-require("nvim-surround").setup({})
+require("nvim-surround").setup({
+	aliases = {
+		["k"] = "f",
+	},
+})
 
 require("nvim-web-devicons").setup({})
 
