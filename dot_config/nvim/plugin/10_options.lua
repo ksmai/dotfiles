@@ -50,7 +50,6 @@ vim.opt.splitbelow = true
 vim.opt.undofile = true
 vim.opt.undodir = "/tmp/nvim/undo/"
 vim.opt.showcmd = true
-vim.opt.laststatus = 2
 vim.opt.pumheight = 10
 vim.opt.pumblend = 10
 vim.opt.wildmode = "longest:full,full"
