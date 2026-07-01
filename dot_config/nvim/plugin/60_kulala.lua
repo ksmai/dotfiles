@@ -7,13 +7,6 @@ vim.api.nvim_create_autocmd("FileType", {
 
 		require("kulala").setup({
 			global_keymaps = {
-				["Open scratchpad"] = {
-					"<leader>ko",
-					function()
-						require("kulala").scratchpad()
-					end,
-				},
-
 				["Copy as cURL"] = {
 					"<leader>kc",
 					function()
@@ -54,14 +47,6 @@ vim.api.nvim_create_autocmd("FileType", {
 					end,
 				},
 
-				["Find request"] = {
-					"<leader>fk",
-					function()
-						require("kulala").search()
-					end,
-					ft = { "http", "rest" },
-				},
-
 				["Jump to next request"] = {
 					"]k",
 					function()
@@ -92,6 +77,12 @@ vim.api.nvim_create_autocmd("FileType", {
 						require("kulala.ui").show_previous()
 					end,
 				},
+				["Show verbose"] = {
+					"D",
+					function()
+						require("kulala.ui").show_verbose()
+					end,
+				},
 			},
 
 			ui = {
@@ -102,6 +93,8 @@ vim.api.nvim_create_autocmd("FileType", {
 				},
 			},
 
+			max_response_size = 1024 * 1024,
+			max_request_size = 16384,
 			generate_bug_report = false,
 
 			-- change highlight timeout from the default 100ms to 500ms
