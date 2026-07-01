@@ -7,7 +7,7 @@ local pairs = require("mini.pairs")
 mini_ai.setup({
 	n_lines = 9999,
 
-	search_method = "cover",
+	search_method = "cover_or_next",
 
 	custom_textobjects = {
 		b = { { "%b()", "%b[]", "%b{}" }, "^.%s*().-()%s*.$" },
@@ -24,7 +24,13 @@ splitjoin.setup({
 })
 
 operators.setup({})
-pairs.setup({})
+pairs.setup({
+	mappings = {
+		["("] = { neigh_pattern = "^[^\\][%s%])}]$" },
+		["["] = { neigh_pattern = "^[^\\][%s%])}]$" },
+		["{"] = { neigh_pattern = "^[^\\][%s%])}]$" },
+	},
+})
 
 jump2d.setup({
 	mappings = {
