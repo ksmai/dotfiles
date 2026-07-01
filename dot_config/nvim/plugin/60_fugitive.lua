@@ -100,8 +100,8 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 			return
 		end
 
-		local parsed = vim.fn.FugitiveParse(item.diff[1].filename)
-		if type(parsed) ~= "table" or #parsed < 1 then
+		local ok, parsed = pcall(vim.fn.FugitiveParse, item.diff[1].filename)
+		if not ok or type(parsed) ~= "table" or #parsed < 1 or parsed[1] == "" then
 			return
 		end
 
