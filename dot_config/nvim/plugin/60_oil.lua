@@ -5,8 +5,6 @@ require("oil").setup({
 	keymaps = { ["<CR>"] = "actions.select" },
 })
 
-vim.cmd([[command! -nargs=1 Browse silent execute '!xdg-open' shellescape(<q-args>,1)]])
-
 vim.keymap.set("n", "<leader>n", function()
 	if vim.bo.filetype == "oil" then
 		return
