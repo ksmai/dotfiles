@@ -1,23 +1,10 @@
 vim.keymap.set("n", "<leader>s", function()
-	local wins = vim.api.nvim_list_wins()
-	local current_tabpage = vim.api.nvim_get_current_tabpage()
-
-	for _, win in ipairs(wins) do
-		local buf = vim.api.nvim_win_get_buf(win)
-		local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
-
-		if filetype == "fugitive" then
-			local win_tabpage = vim.api.nvim_win_get_tabpage(win)
-			if win_tabpage == current_tabpage then
-				vim.api.nvim_win_close(win, false)
-			else
-				vim.api.nvim_set_current_tabpage(win_tabpage)
-			end
-			return
-		end
+	if vim.bo.filetype == "fugitive" then
+		return
 	end
-	vim.cmd("tab Git")
-end, { desc = "Toggle git status" })
+
+	vim.cmd("Gedit :")
+end, { desc = "Git status" })
 
 vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit !^<cr><C-w>R", { desc = "Git diff against parent" })
 
@@ -36,9 +23,11 @@ vim.keymap.set(
 	{ desc = "Git log with patch" }
 )
 
-vim.keymap.set("n", "<leader>gh", "<cmd>GBrowse<cr>", { desc = "Open in Github" })
+vim.keymap.set("n", "<leader>gh", "<cmd>GBrowse!<cr>", { desc = "Copy GitHub URL" })
+vim.keymap.set("n", "<leader>gH", "<cmd>GBrowse<cr>", { desc = "Open in GitHub" })
 
-vim.keymap.set("x", "<leader>gh", ":GBrowse<cr>", { desc = "Open in Github (selected lines)" })
+vim.keymap.set("x", "<leader>gh", ":GBrowse!<cr>", { desc = "Copy GitHub URL (selected lines)" })
+vim.keymap.set("x", "<leader>gH", ":GBrowse<cr>", { desc = "Open in Github (selected lines)" })
 
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("FugitiveKeyMap", { clear = true }),
