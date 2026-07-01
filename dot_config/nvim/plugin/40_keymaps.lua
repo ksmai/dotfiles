@@ -25,7 +25,7 @@ vim.keymap.set({ "v", "n" }, "<leader>[P", "<cmd>put! +<cr>", { noremap = true, 
 -- quick save
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { silent = true, noremap = true, desc = "Save" })
 
-vim.keymap.set("n", "<BS>", "<cmd>nohlsearch<cr>", { silent = true, noremap = true, desc = "Clear highlights" })
+vim.keymap.set("n", "<BS>", "<cmd>nohlsearch | mode<cr>", { silent = true, noremap = true, desc = "Clear highlights" })
 
 -- quick fix window
 local function toggleQuickFix()
