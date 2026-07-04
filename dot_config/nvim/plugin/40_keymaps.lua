@@ -11,8 +11,51 @@ vim.keymap.set(
 	{ silent = true, desc = "Refresh" }
 )
 
-vim.keymap.set("n", "<Tab>", "<cmd>cnext<cr>", { desc = "cnext" })
-vim.keymap.set("n", "<S-Tab>", "<cmd>cprev<cr>", { desc = "cprev" })
+vim.keymap.set("n", "<Tab>", function()
+	if vim.wo.diff then
+		local current = vim.fn.line(".")
+		vim.cmd("normal! ]c")
+
+		if current ~= vim.fn.line(".") then
+			return
+		end
+	end
+
+	local ok = pcall(vim.cmd, "cnext")
+	if ok then
+		vim.schedule(function()
+			if vim.wo.diff then
+				local on_hunk = vim.fn.diff_hlID(".", 1) > 0
+				if not on_hunk then
+					vim.cmd("normal! ]c")
+				end
+			end
+		end)
+	end
+end, { desc = "Next hunk/quickfix item" })
+
+vim.keymap.set("n", "<S-Tab>", function()
+	if vim.wo.diff then
+		local current = vim.fn.line(".")
+		vim.cmd("normal! [c")
+
+		if current ~= vim.fn.line(".") then
+			return
+		end
+	end
+
+	local ok = pcall(vim.cmd, "cprev")
+
+	if ok then
+		vim.schedule(function()
+			if vim.wo.diff then
+				vim.cmd("normal! G")
+				vim.cmd("normal! [c")
+			end
+		end)
+	end
+end, { desc = "Prev hunk/quickfix item" })
+
 vim.keymap.set("n", "<leader>q", function()
 	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
 		vim.cmd("copen")
