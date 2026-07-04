@@ -30,11 +30,12 @@ vim.keymap.set("x", "<leader>gh", ":GBrowse!<cr>", { desc = "Copy GitHub URL (se
 vim.keymap.set("x", "<leader>gH", ":GBrowse<cr>", { desc = "Open in Github (selected lines)" })
 
 vim.api.nvim_create_autocmd("FileType", {
-	group = vim.api.nvim_create_augroup("FugitiveKeyMap", { clear = true }),
+	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
 	pattern = "fugitive",
-	callback = function(event)
-		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = event.buf, remap = true })
-		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = event.buf, remap = true })
+	callback = function(ev)
+		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = ev.buf, remap = true })
+		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = ev.buf, remap = true })
+		vim.bo[ev.buf].bufhidden = ""
 	end,
 })
 
