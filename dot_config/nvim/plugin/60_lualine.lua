@@ -1,14 +1,22 @@
+local function location()
+	local line = vim.fn.line(".")
+	local total_lines = vim.fn.line("$")
+	local col = vim.fn.charcol(".")
+	return string.format("%3d/%d:%-2d", line, total_lines, col)
+end
+
 local sections = {
 	lualine_b = {
 		{
-			"branch",
+			"FugitiveHead",
 			fmt = function(s)
 				if s:len() <= 17 then
 					return s
 				end
 
-				return s:sub(1, 15) .. ".."
+				return s:sub(1, 16) .. "…"
 			end,
+			icon = "",
 		},
 	},
 	lualine_c = {
@@ -42,18 +50,17 @@ local sections = {
 		{
 			"searchcount",
 			maxcount = 9999,
-			timeout = 500,
 		},
+	},
+	lualine_z = {
+		location,
 	},
 }
 
 local winbar = {
-	lualine_c = { "aerial" },
+	lualine_c = { { "aerial", draw_empty = true } },
 	lualine_y = {
-		{
-			"lsp_status",
-			draw_empty = true,
-		},
+		"lsp_status",
 	},
 }
 
