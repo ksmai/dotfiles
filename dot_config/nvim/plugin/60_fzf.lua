@@ -1,7 +1,26 @@
+local function make_toggle_flag_action(flag)
+	return function(_, opts)
+		local o = vim.tbl_deep_extend("keep", {
+			cmd = require("fzf-lua.utils").toggle_cmd_flag(opts._cmd or opts.cmd, flag),
+			resume = true,
+		}, opts.__call_opts or {})
+		opts.__call_fn(o)
+	end
+end
+
 require("fzf-lua").setup({
 	"telescope",
 	grep = {
-		rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --iglob '!.git/*' -e",
+		rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --iglob '!.git/*' -e",
+		hidden = true,
+		actions = {
+			["ctrl-s"] = {
+				make_toggle_flag_action(" --smart-case"),
+			},
+			["ctrl-l"] = {
+				make_toggle_flag_action(" --multiline"),
+			},
+		},
 	},
 })
 
