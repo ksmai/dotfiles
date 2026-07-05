@@ -2,7 +2,10 @@ require("oil").setup({
 	default_file_explorer = true,
 	view_options = { show_hidden = true },
 	use_default_keymaps = false,
-	keymaps = { ["<CR>"] = "actions.select" },
+	keymaps = {
+		["<CR>"] = "actions.select",
+		["<F4>"] = "actions.preview",
+	},
 })
 
 vim.keymap.set("n", "<leader>n", function()
