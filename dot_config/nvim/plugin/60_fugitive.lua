@@ -48,8 +48,8 @@ vim.keymap.set("n", "<leader>gl", function()
 end, { desc = "Git log" })
 
 vim.keymap.set("x", "<leader>gl", function()
-	local line1 = vim.fn.getpos("v")[2]
-	local line2 = vim.fn.getpos(".")[2]
+	local line1 = vim.fn.line("v")
+	local line2 = vim.fn.line(".")
 
 	if line1 > line2 then
 		line1, line2 = line2, line1
@@ -216,3 +216,74 @@ vim.keymap.set("n", "<S-Tab>", function()
 		end)
 	end
 end, { desc = "Prev hunk/quickfix item" })
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("QuickfixKeymaps", { clear = true }),
+	pattern = "qf",
+	callback = function(ev)
+		vim.keymap.set("n", "X", function()
+			local pos = vim.fn.getpos(".")
+			local idx = pos[2]
+			local col = pos[3]
+			local qflist = vim.fn.getqflist()
+
+			if #qflist < idx then
+				return
+			end
+
+			local deleted = { idx = idx, entry = qflist[idx] }
+			table.remove(qflist, idx)
+
+			local context = vim.fn.getqflist({ context = 0 }).context
+			if context == "" then
+				context = {}
+			end
+
+			if type(context) == "table" and type(context.items) == "table" and #context.items >= idx then
+				deleted.item = context.items[idx]
+				table.remove(context.items, idx)
+			end
+
+			if type(context) == "table" then
+				if type(context.delete_history) ~= "table" then
+					context.delete_history = {}
+				end
+
+				table.insert(context.delete_history, deleted)
+			end
+
+			local current = vim.fn.getqflist({ idx = 0 }).idx
+			local target = math.min(current, #qflist)
+			if idx < current then
+				target = current - 1
+			end
+			vim.fn.setqflist({}, "r", { context = context, items = qflist, idx = target })
+			vim.api.nvim_win_set_cursor(0, { math.max(1, math.min(idx, #qflist)), col - 1 })
+		end, { buf = ev.buf, desc = "Remove quickfix item" })
+
+		vim.keymap.set("n", "u", function()
+			local context = vim.fn.getqflist({ context = 0 }).context
+
+			if type(context) ~= "table" or type(context.delete_history) ~= "table" or #context.delete_history == 0 then
+				return
+			end
+
+			local qflist = vim.fn.getqflist()
+			local deleted = table.remove(context.delete_history)
+			table.insert(qflist, deleted.idx, deleted.entry)
+
+			if type(deleted.item) == "table" and type(context.items) == "table" then
+				table.insert(context.items, deleted.idx, deleted.item)
+			end
+
+			local pos = vim.fn.getpos(".")
+			local current = vim.fn.getqflist({ idx = 0 }).idx
+			local target = deleted.idx <= current and current + 1 or current
+			vim.fn.setqflist({}, "r", { context = context, items = qflist, idx = target })
+			vim.api.nvim_win_set_cursor(
+				0,
+				{ math.max(1, math.min(pos[2] + (deleted.idx <= pos[2] and 1 or 0), #qflist)), pos[3] - 1 }
+			)
+		end, { desc = "Undo removing quickfix item" })
+	end,
+})
