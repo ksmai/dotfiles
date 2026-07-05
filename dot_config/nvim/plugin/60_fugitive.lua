@@ -8,10 +8,6 @@ end, { desc = "Git status" })
 
 vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit !^<cr><C-w>R", { desc = "Git diff against parent" })
 
-vim.keymap.set("n", "<leader>gl", "<cmd>0Gclog<cr>", { desc = "Git log" })
-
-vim.keymap.set("x", "<leader>gl", ":Gclog<cr>", { desc = "Git log (selected lines)" })
-
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", { desc = "Git blame" })
 
 vim.keymap.set("n", "<leader>gp", "<cmd>Git log --patch -- %<cr>", { desc = "Git log with patch" })
@@ -39,13 +35,33 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_user_command("AutoDiff", function(opts)
-	vim.cmd("Git difftool --name-status " .. opts.args)
-
+local function start_autodiff()
 	local qflist = vim.fn.getqflist({ id = 0, context = 0 })
 	qflist.context.autodiff = true
 	vim.fn.setqflist({}, "r", { id = qflist.id, context = qflist.context })
 	vim.api.nvim_exec_autocmds("BufWinEnter", { buf = vim.api.nvim_get_current_buf() })
+end
+
+vim.keymap.set("n", "<leader>gl", function()
+	vim.cmd("0Gclog")
+	start_autodiff()
+end, { desc = "Git log" })
+
+vim.keymap.set("x", "<leader>gl", function()
+	local line1 = vim.fn.getpos("v")[2]
+	local line2 = vim.fn.getpos(".")[2]
+
+	if line1 > line2 then
+		line1, line2 = line2, line1
+	end
+	vim.cmd(string.format("%d,%dGclog", line1, line2))
+
+	start_autodiff()
+end, { desc = "Git log (selected lines)" })
+
+vim.api.nvim_create_user_command("AutoDiff", function(opts)
+	vim.cmd("Git difftool --name-status " .. opts.args)
+	start_autodiff()
 end, {
 	nargs = "*",
 	complete = function(_, CmdLine, _)
