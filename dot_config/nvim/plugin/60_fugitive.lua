@@ -39,7 +39,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_user_command("DiffTool", function(opts)
+vim.api.nvim_create_user_command("AutoDiff", function(opts)
 	vim.cmd("Git difftool --name-status " .. opts.args)
 
 	local qflist = vim.fn.getqflist({ id = 0, context = 0 })
