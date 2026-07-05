@@ -39,44 +39,33 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-local autodiff = false
+vim.api.nvim_create_user_command("DiffTool", function(opts)
+	vim.cmd("Git difftool --name-status " .. opts.args)
 
-vim.api.nvim_create_user_command("AutoDiff", function(opts)
-	if opts.fargs[1] == nil or opts.fargs[1] == "toggle" then
-		autodiff = not autodiff
-	elseif opts.fargs[1] == "on" then
-		autodiff = true
-	elseif opts.fargs[1] == "off" then
-		autodiff = false
-	else
-		vim.notify("Invalid arg for AutoDiff (on | off | toggle)")
-	end
-end, {
-	desc = "Toggle autodiff for Fugitive difftool",
-	nargs = "?",
-	complete = function()
-		return { "on", "off", "toggle" }
-	end,
-})
+	local qflist = vim.fn.getqflist({ id = 0, context = 0 })
+	qflist.context.autodiff = true
+	vim.fn.setqflist({}, "r", { id = qflist.id, context = qflist.context })
+	vim.api.nvim_exec_autocmds("BufWinEnter", { buf = vim.api.nvim_get_current_buf() })
+end, { nargs = "*" })
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
 	callback = function(ev)
-		if not autodiff then
-			return
-		end
+		local buf = ev.buf
+		local win = vim.api.nvim_get_current_win()
+		local qflist = vim.fn.getqflist({ id = 0, idx = 0, context = 0 })
+		local id = qflist.id
+		local idx = qflist.idx
+		local context = qflist.context
+		local split = context.split
 
-		local idx = vim.fn.getqflist({ idx = 0 }).idx
-		if idx == 0 then
-			return
-		end
-
-		if vim.fn.getqflist()[idx].bufnr ~= ev.buf then
-			return
-		end
-
-		local context = vim.fn.getqflist({ context = 0 }).context
-		if type(context) ~= "table" or type(context.items) ~= "table" then
+		if
+			idx == 0
+			or vim.fn.getqflist()[idx].bufnr ~= buf
+			or type(context) ~= "table"
+			or not context.autodiff
+			or type(context.items) ~= "table"
+		then
 			return
 		end
 
@@ -95,27 +84,114 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 			return
 		end
 
-		local current_win = vim.api.nvim_get_current_win()
-
 		vim.schedule(function()
-			if current_win ~= vim.api.nvim_get_current_win() then
+			if win ~= vim.api.nvim_get_current_win() then
 				return
 			end
 
-			if ev.buf ~= vim.api.nvim_get_current_buf() then
+			if buf ~= vim.api.nvim_get_current_buf() then
 				return
 			end
 
-			local wins = vim.api.nvim_tabpage_list_wins(0)
+			vim.cmd("diffoff!")
 
-			for _, win in ipairs(wins) do
-				if win ~= current_win and vim.fn.win_gettype(win) ~= "quickfix" then
-					vim.api.nvim_win_close(win, false)
+			if
+				split ~= nil
+				and split ~= win
+				and vim.api.nvim_win_is_valid(split)
+				and vim.api.nvim_win_get_tabpage(split) == vim.api.nvim_get_current_tabpage()
+			then
+				vim.cmd("diffthis")
+
+				vim.api.nvim_win_call(split, function()
+					vim.cmd("silent Gedit " .. parsed[1])
+					vim.cmd("diffthis")
+				end)
+			else
+				local wins = vim.api.nvim_tabpage_list_wins(0)
+
+				for _, w in ipairs(wins) do
+					if w ~= win and vim.fn.win_gettype(w) ~= "quickfix" then
+						vim.api.nvim_win_close(w, false)
+					end
 				end
-			end
 
-			vim.cmd("leftabove Gvdiffsplit " .. parsed[1])
-			vim.api.nvim_set_current_win(current_win)
+				vim.cmd("leftabove Gvdiffsplit " .. parsed[1])
+				context.split = vim.api.nvim_get_current_win()
+				vim.fn.setqflist({}, "r", { id = id, context = context })
+				vim.api.nvim_set_current_win(win)
+			end
 		end)
 	end,
 })
+
+vim.keymap.set("n", "<leader>dw", "<cmd>diffoff! | windo diffthis<cr>", { silent = true, desc = "Diff windows" })
+vim.keymap.set("n", "<leader>dq", function()
+	vim.cmd("diffoff!")
+
+	local qflist = vim.fn.getqflist({ id = 0, context = 0 })
+	if type(qflist.context) == "table" and qflist.context.autodiff then
+		local split = qflist.context.split
+		if vim.api.nvim_win_is_valid(split) then
+			vim.api.nvim_win_close(split, false)
+		end
+
+		vim.fn.setqflist({}, "f", { id = qflist.id })
+		vim.cmd("cclose")
+	end
+end, { silent = true, desc = "Diff off" })
+
+vim.keymap.set("n", "<Tab>", function()
+	if vim.wo.diff then
+		local current = vim.fn.line(".")
+		vim.cmd("normal! ]c")
+
+		if current ~= vim.fn.line(".") then
+			return
+		end
+
+		local context = vim.fn.getqflist({ context = 0 }).context
+		if type(context) ~= "table" or not context.autodiff then
+			return
+		end
+	end
+
+	local ok = pcall(vim.cmd, "cnext")
+	if ok then
+		vim.schedule(function()
+			if vim.wo.diff then
+				local on_hunk = vim.fn.diff_hlID(".", 1) > 0
+				if not on_hunk then
+					vim.cmd("normal! ]c")
+				end
+			end
+		end)
+	end
+end, { desc = "Next hunk/quickfix item" })
+
+vim.keymap.set("n", "<S-Tab>", function()
+	if vim.wo.diff then
+		local current = vim.fn.line(".")
+		vim.cmd("normal! [c")
+
+		if current ~= vim.fn.line(".") then
+			return
+		end
+
+		local context = vim.fn.getqflist({ context = 0 }).context
+		if type(context) ~= "table" or not context.autodiff then
+			return
+		end
+	end
+
+	local ok = pcall(vim.cmd, "cprev")
+
+	if ok then
+		vim.schedule(function()
+			if vim.wo.diff then
+				vim.cmd("normal! G")
+				vim.cmd("normal! [c")
+			end
+		end)
+	end
+end, { desc = "Prev hunk/quickfix item" })
