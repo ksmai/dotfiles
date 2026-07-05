@@ -46,7 +46,12 @@ vim.api.nvim_create_user_command("DiffTool", function(opts)
 	qflist.context.autodiff = true
 	vim.fn.setqflist({}, "r", { id = qflist.id, context = qflist.context })
 	vim.api.nvim_exec_autocmds("BufWinEnter", { buf = vim.api.nvim_get_current_buf() })
-end, { nargs = "*" })
+end, {
+	nargs = "*",
+	complete = function(_, CmdLine, _)
+		return vim.fn.getcompletion("Git difftool " .. CmdLine:sub(10), "cmdline")
+	end,
+})
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
