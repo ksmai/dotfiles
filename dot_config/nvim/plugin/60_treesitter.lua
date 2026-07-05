@@ -34,40 +34,6 @@ end, { desc = "Goto previous end" })
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("SetupTreesitter", { clear = true }),
 
-	pattern = {
-		"bash",
-		"css",
-		"diff",
-		"dockerfile",
-		"fish",
-		"gitconfig",
-		"gitrebase",
-		"gitattributes",
-		"gitcommit",
-		"gitignore",
-		"glsl",
-		"go",
-		"html",
-		"http",
-		"javascript",
-		"javascriptreact",
-		"json",
-		"lua",
-		"make",
-		"markdown",
-		"mermaid",
-		"python",
-		"qml",
-		"rust",
-		"scss",
-		"sql",
-		"svelte",
-		"typescript",
-		"typescriptreact",
-		"vue",
-		"yaml",
-	},
-
 	callback = function(args)
 		local lang = vim.treesitter.language.get_lang(args.match) or args.match
 		local buf = args.buf
@@ -80,7 +46,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			return
 		end
 
-		nvim_treesitter.install({ lang })
+		if vim.tbl_contains(nvim_treesitter.get_installed(), lang) then
+		elseif vim.tbl_contains(nvim_treesitter.get_available(), lang) then
+			local choice = vim.fn.confirm("Install treesitter parser for " .. lang .. " ?", "&Yes\n&No", 1)
+			if choice == 1 then
+				nvim_treesitter.install({ lang })
+			end
+		else
+		end
 
 		if vim.treesitter.query.get(lang, "highlights") then
 			vim.treesitter.start(buf, lang)
