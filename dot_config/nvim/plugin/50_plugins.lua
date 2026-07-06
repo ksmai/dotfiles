@@ -61,7 +61,6 @@ vim.pack.add({
 	"https://github.com/nvim-neotest/nvim-nio",
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/onsails/lspkind.nvim",
-	"https://github.com/OXY2DEV/markview.nvim",
 	"https://github.com/stevearc/aerial.nvim",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/stevearc/oil.nvim",
