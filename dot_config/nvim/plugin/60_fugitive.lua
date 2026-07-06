@@ -284,6 +284,6 @@ vim.api.nvim_create_autocmd("FileType", {
 				0,
 				{ math.max(1, math.min(pos[2] + (deleted.idx <= pos[2] and 1 or 0), #qflist)), pos[3] - 1 }
 			)
-		end, { desc = "Undo removing quickfix item" })
+		end, { buf = ev.buf, desc = "Undo removing quickfix item" })
 	end,
 })
