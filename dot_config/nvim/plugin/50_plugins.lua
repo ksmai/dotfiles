@@ -73,6 +73,14 @@ vim.pack.add({
 	"https://github.com/williamboman/mason.nvim",
 })
 
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "*",
+	callback = function()
+		vim.api.nvim_set_hl(0, "MiniDiffOverContext", { link = "MiniDiffOverDelete" })
+		vim.api.nvim_set_hl(0, "MiniDiffOverContextBuf", { link = "MiniDiffOverAdd" })
+	end,
+})
+
 require("gruvbox").setup({ contrast = "hard" })
 vim.cmd([[colorscheme gruvbox]])
 

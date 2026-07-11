@@ -3,6 +3,7 @@ local jump2d = require("mini.jump2d")
 local operators = require("mini.operators")
 local splitjoin = require("mini.splitjoin")
 local pairs = require("mini.pairs")
+local diff = require("mini.diff")
 
 mini_ai.setup({
 	n_lines = 9999,
@@ -44,6 +45,10 @@ pairs.setup({
 		["["] = { neigh_pattern = "^[^\\][%s%])}]$" },
 		["{"] = { neigh_pattern = "^[^\\][%s%])}]$" },
 	},
+})
+
+diff.setup({
+	source = diff.gen_source.none(),
 })
 
 jump2d.setup({
