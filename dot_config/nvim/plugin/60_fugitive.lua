@@ -56,31 +56,46 @@ local function is_autodiff(buf)
 	local context = qflist.context
 
 	if idx == 0 or type(context) ~= "table" or type(context.items) ~= "table" then
-		return false, ""
+		return false, nil
 	end
 
 	if buf == nil or buf == 0 then
 		buf = vim.api.nvim_get_current_buf()
 	end
 	if vim.fn.getqflist()[idx].bufnr ~= buf then
-		return
+		return false, nil
 	end
 
 	local item = context.items[idx]
-	if
-		type(item) ~= "table"
-		or type(item.diff) ~= "table"
-		or #item.diff ~= 1
-		or type(item.diff[1].filename) ~= "string"
-	then
-		return false, ""
+	if type(item) ~= "table" then
+		return false, nil
+	end
+
+	if type(item.diff) ~= "table" or #item.diff ~= 1 or type(item.diff[1].filename) ~= "string" then
+		return true, nil
 	end
 
 	return true, item.diff[1].filename
 end
 
-local function read_fugitive_file(filename)
-	local ok, parsed = pcall(vim.fn.FugitiveParse, filename)
+local function read_text(arg)
+	if arg == nil or arg == "" then
+		arg = ":0:" .. vim.fn["fugitive#Path"](vim.fn.expand("%"), "")
+	end
+
+	if arg:sub(1, 11) ~= "fugitive://" then
+		arg = vim.fn.FugitiveFind(arg)
+	end
+
+	if arg:sub(1, 11) ~= "fugitive://" then
+		return vim.fn.readblob(arg)
+	end
+
+	if arg:match("//%x+/.+") == nil then
+		arg = arg .. (arg:match("/$") == nil and "/" or "") .. vim.fn["fugitive#Path"](vim.fn.expand("%"), "")
+	end
+
+	local ok, parsed = pcall(vim.fn.FugitiveParse, arg)
 	if not ok or type(parsed) ~= "table" or #parsed < 2 or parsed[1] == "" or parsed[2] == "" then
 		return nil
 	end
@@ -101,11 +116,11 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
 	callback = function(ev)
 		local autodiff, filename = is_autodiff(ev.buf)
-		if not autodiff then
+		if not autodiff or filename == nil then
 			return
 		end
 
-		local text = read_fugitive_file(filename)
+		local text = read_text(filename)
 		if text == nil then
 			return
 		end
@@ -262,4 +277,20 @@ vim.api.nvim_create_autocmd("FileType", {
 			)
 		end, { buf = ev.buf, desc = "Undo removing quickfix item" })
 	end,
+})
+
+vim.api.nvim_create_user_command("DiffUnified", function(opts)
+	MiniDiff.disable(0)
+
+	local text = read_text(opts.fargs[1])
+	if text == nil then
+		return
+	end
+
+	MiniDiff.set_ref_text(0, text)
+	MiniDiff.toggle_overlay(0)
+end, {
+	desc = "Unified diff",
+	nargs = "?",
+	complete = "customlist,fugitive#EditComplete",
 })
