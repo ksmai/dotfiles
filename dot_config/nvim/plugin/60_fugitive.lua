@@ -29,6 +29,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
 	pattern = "fugitive",
 	callback = function(ev)
+		vim.keymap.set("n", "<C-I>", "<C-I>", { buffer = ev.buf })
 		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = ev.buf, remap = true })
 		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = ev.buf, remap = true })
 		vim.bo[ev.buf].bufhidden = ""
@@ -162,6 +163,7 @@ vim.keymap.set("n", "<leader>dq", function()
 	end
 end, { silent = true, desc = "Diff off" })
 
+vim.keymap.set("n", "<C-I>", "<C-I>")
 vim.keymap.set("n", "<Tab>", function()
 	if vim.wo.diff then
 		local current = vim.fn.line(".")
