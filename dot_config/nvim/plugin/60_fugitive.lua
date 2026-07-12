@@ -6,8 +6,6 @@ vim.keymap.set("n", "<leader>s", function()
 	vim.cmd("Gedit :")
 end, { desc = "Git status" })
 
-vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit !^<cr><C-w>R", { desc = "Git diff against parent" })
-
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", { desc = "Git blame" })
 
 vim.keymap.set("n", "<leader>gp", "<cmd>Git log --patch -- %<cr>", { desc = "Git log with patch" })
