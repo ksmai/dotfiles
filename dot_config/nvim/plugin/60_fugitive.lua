@@ -7,19 +7,20 @@ local function is_autodiff(buf)
 		return false, nil
 	end
 
-	if buf == nil or buf == 0 then
-		buf = vim.api.nvim_get_current_buf()
-	end
-	if vim.fn.getqflist()[idx].bufnr ~= buf then
-		return false, nil
-	end
-
 	local item = context.items[idx]
 	if type(item) ~= "table" then
 		return false, nil
 	end
 
-	if type(item.diff) ~= "table" or #item.diff ~= 1 or type(item.diff[1].filename) ~= "string" then
+	if buf == nil or buf == 0 then
+		buf = vim.api.nvim_get_current_buf()
+	end
+	if
+		vim.fn.getqflist()[idx].bufnr ~= buf
+		or type(item.diff) ~= "table"
+		or #item.diff ~= 1
+		or type(item.diff[1].filename) ~= "string"
+	then
 		return true, nil
 	end
 
@@ -122,7 +123,7 @@ vim.keymap.set("n", "<Tab>", function()
 	local data = MiniDiff.get_buf_data()
 	local autodiff = is_autodiff()
 
-	if data ~= nil then
+	if data ~= nil and #data.hunks > 0 then
 		local current = vim.fn.line(".")
 
 		vim.cmd([[silent! lua MiniDiff.goto_hunk("next")]])
@@ -196,6 +197,16 @@ end, {
 	desc = "Unified diff",
 	nargs = "?",
 	complete = "customlist,fugitive#EditComplete",
+})
+
+vim.api.nvim_create_user_command("DiffTool", function(opts)
+	vim.cmd("Git difftool --name-status " .. opts.args)
+end, {
+	desc = "Unified difftool",
+	nargs = "*",
+	complete = function(_, CmdLine, _)
+		return vim.fn.getcompletion("Git difftool --name-status" .. CmdLine:sub(10), "cmdline")
+	end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
