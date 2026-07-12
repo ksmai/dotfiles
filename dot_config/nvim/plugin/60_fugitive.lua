@@ -88,7 +88,12 @@ local function read_text(arg)
 	end
 
 	if arg:sub(1, 11) ~= "fugitive://" then
-		return vim.fn.readblob(arg)
+		local ok, text = pcall(vim.fn.readblob, arg)
+		if not ok then
+			vim.notify("cannot read file: " .. arg, vim.log.levels.ERROR)
+			return nil
+		end
+		return text
 	end
 
 	if arg:match("//%x+/.+") == nil then
@@ -97,6 +102,7 @@ local function read_text(arg)
 
 	local ok, parsed = pcall(vim.fn.FugitiveParse, arg)
 	if not ok or type(parsed) ~= "table" or #parsed < 2 or parsed[1] == "" or parsed[2] == "" then
+		vim.notify("cannot read file: " .. arg, vim.log.levels.ERROR)
 		return nil
 	end
 
@@ -106,6 +112,7 @@ local function read_text(arg)
 	}):wait()
 
 	if result.code ~= 0 then
+		vim.notify("cannot read file: " .. arg, vim.log.levels.ERROR)
 		return nil
 	end
 
@@ -280,13 +287,12 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_user_command("DiffUnified", function(opts)
-	MiniDiff.disable(0)
-
 	local text = read_text(opts.fargs[1])
 	if text == nil then
 		return
 	end
 
+	MiniDiff.disable(0)
 	MiniDiff.set_ref_text(0, text)
 	MiniDiff.toggle_overlay(0)
 end, {
