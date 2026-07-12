@@ -49,7 +49,22 @@ pairs.setup({
 
 diff.setup({
 	source = diff.gen_source.none(),
+	mappings = {
+		apply = "",
+		reset = "",
+		textobject = "",
+	},
 })
+
+vim.keymap.set({ "n", "x" }, "gh", function()
+	return diff.operator("yank")
+end, { expr = true, desc = "Yank reference text in hunks", silent = true })
+
+vim.keymap.set({ "n", "x" }, "gH", function()
+	return diff.operator("reset")
+end, { expr = true, desc = "Reset hunks", silent = true })
+
+vim.keymap.set({ "o" }, "gh", "<Cmd>lua MiniDiff.textobject()<CR>", { desc = "Hunk range textobject", silent = true })
 
 jump2d.setup({
 	mappings = {
