@@ -56,15 +56,26 @@ diff.setup({
 	},
 })
 
-vim.keymap.set({ "n", "x" }, "gh", function()
+vim.keymap.set("n", "<Plug>(mini-diff-yank)", function()
 	return diff.operator("yank")
-end, { expr = true, desc = "Yank reference text in hunks", silent = true })
-
-vim.keymap.set({ "n", "x" }, "gH", function()
+end, { expr = true })
+vim.keymap.set("n", "<Plug>(mini-diff-reset)", function()
 	return diff.operator("reset")
-end, { expr = true, desc = "Reset hunks", silent = true })
+end, { expr = true })
+vim.keymap.set("o", "<Plug>(mini-diff-hunk)", diff.textobject)
 
-vim.keymap.set({ "o" }, "gh", "<Cmd>lua MiniDiff.textobject()<CR>", { desc = "Hunk range textobject", silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>dy",
+	"<Plug>(mini-diff-yank)<Plug>(mini-diff-hunk)",
+	{ remap = true, desc = "Yank current hunk's reference text", silent = true }
+)
+vim.keymap.set(
+	"n",
+	"<leader>dg",
+	"<Plug>(mini-diff-reset)<Plug>(mini-diff-hunk)",
+	{ remap = true, desc = "Reset current hunk", silent = true }
+)
 
 jump2d.setup({
 	mappings = {
