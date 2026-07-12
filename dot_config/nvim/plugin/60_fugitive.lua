@@ -240,6 +240,17 @@ end, {
 	desc = "Split unified diff",
 })
 
+vim.api.nvim_create_user_command("Diff4Way", function()
+	local win = vim.api.nvim_get_current_win()
+	vim.cmd("diffoff!")
+	vim.cmd("leftabove Ghdiffsplit :2")
+	vim.cmd("rightbelow Gvdiffsplit :3")
+	vim.cmd("leftabove Gvdiffsplit :1")
+	vim.api.nvim_set_current_win(win)
+end, {
+	desc = "4 way diff for merge conflicts",
+})
+
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
 	pattern = "fugitive",
