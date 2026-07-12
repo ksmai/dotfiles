@@ -1,53 +1,3 @@
-vim.keymap.set("n", "<leader>s", function()
-	if vim.bo.filetype == "fugitive" then
-		return
-	end
-
-	vim.cmd("Gedit :")
-end, { desc = "Git status" })
-
-vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", { desc = "Git blame" })
-
-vim.keymap.set("n", "<leader>gp", "<cmd>Git log --patch -- %<cr>", { desc = "Git log with patch" })
-
-vim.keymap.set(
-	"x",
-	"<leader>gp",
-	[[<esc><cmd>lua vim.cmd("Git log --patch -L" .. vim.api.nvim_buf_get_mark(0, "<")[1] .. "," .. vim.api.nvim_buf_get_mark(0, ">")[1] .. ":%")<cr>]],
-	{ desc = "Git log with patch" }
-)
-
-vim.keymap.set("n", "<leader>gh", "<cmd>GBrowse!<cr>", { desc = "Copy GitHub URL" })
-vim.keymap.set("n", "<leader>gH", "<cmd>GBrowse<cr>", { desc = "Open in GitHub" })
-
-vim.keymap.set("x", "<leader>gh", ":GBrowse!<cr>", { desc = "Copy GitHub URL (selected lines)" })
-vim.keymap.set("x", "<leader>gH", ":GBrowse<cr>", { desc = "Open in Github (selected lines)" })
-
-vim.api.nvim_create_autocmd("FileType", {
-	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
-	pattern = "fugitive",
-	callback = function(ev)
-		vim.keymap.set("n", "<C-I>", "<C-I>", { buffer = ev.buf })
-		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = ev.buf, remap = true })
-		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = ev.buf, remap = true })
-		vim.bo[ev.buf].bufhidden = ""
-	end,
-})
-
-vim.keymap.set("n", "<leader>gl", function()
-	vim.cmd("0Gclog")
-end, { desc = "Git log" })
-
-vim.keymap.set("x", "<leader>gl", function()
-	local line1 = vim.fn.line("v")
-	local line2 = vim.fn.line(".")
-
-	if line1 > line2 then
-		line1, line2 = line2, line1
-	end
-	vim.cmd(string.format("%d,%dGclog", line1, line2))
-end, { desc = "Git log (selected lines)" })
-
 local function is_autodiff(buf)
 	local qflist = vim.fn.getqflist({ idx = 0, context = 0 })
 	local idx = qflist.idx
@@ -117,24 +67,44 @@ local function read_text(arg)
 	return result.stdout
 end
 
-vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
-	callback = function(ev)
-		local autodiff, filename = is_autodiff(ev.buf)
-		if not autodiff or filename == nil then
-			return
-		end
+vim.keymap.set("n", "<leader>s", function()
+	if vim.bo.filetype == "fugitive" then
+		return
+	end
 
-		local text = read_text(filename)
-		if text == nil then
-			return
-		end
+	vim.cmd("Gedit :")
+end, { desc = "Git status" })
 
-		MiniDiff.disable(ev.buf)
-		MiniDiff.set_ref_text(ev.buf, text)
-		MiniDiff.toggle_overlay(ev.buf)
-	end,
-})
+vim.keymap.set("n", "<leader>gb", "<cmd>Git blame --date=relative<cr>", { desc = "Git blame" })
+
+vim.keymap.set("n", "<leader>gp", "<cmd>Git log --patch -- %<cr>", { desc = "Git log with patch" })
+
+vim.keymap.set(
+	"x",
+	"<leader>gp",
+	[[<esc><cmd>lua vim.cmd("Git log --patch -L" .. vim.api.nvim_buf_get_mark(0, "<")[1] .. "," .. vim.api.nvim_buf_get_mark(0, ">")[1] .. ":%")<cr>]],
+	{ desc = "Git log with patch" }
+)
+
+vim.keymap.set("n", "<leader>gh", "<cmd>GBrowse!<cr>", { desc = "Copy GitHub URL" })
+vim.keymap.set("n", "<leader>gH", "<cmd>GBrowse<cr>", { desc = "Open in GitHub" })
+
+vim.keymap.set("x", "<leader>gh", ":GBrowse!<cr>", { desc = "Copy GitHub URL (selected lines)" })
+vim.keymap.set("x", "<leader>gH", ":GBrowse<cr>", { desc = "Open in Github (selected lines)" })
+
+vim.keymap.set("n", "<leader>gl", function()
+	vim.cmd("0Gclog")
+end, { desc = "Git log" })
+
+vim.keymap.set("x", "<leader>gl", function()
+	local line1 = vim.fn.line("v")
+	local line2 = vim.fn.line(".")
+
+	if line1 > line2 then
+		line1, line2 = line2, line1
+	end
+	vim.cmd(string.format("%d,%dGclog", line1, line2))
+end, { desc = "Git log (selected lines)" })
 
 vim.keymap.set("n", "<leader>dw", "<cmd>diffoff! | windo diffthis<cr>", { silent = true, desc = "Diff windows" })
 vim.keymap.set("n", "<leader>dq", function()
@@ -213,6 +183,51 @@ vim.keymap.set("n", "<S-Tab>", function()
 	end
 end, { desc = "Prev hunk/quickfix item" })
 
+vim.api.nvim_create_user_command("DiffUnified", function(opts)
+	local text = read_text(opts.fargs[1])
+	if text == nil then
+		return
+	end
+
+	MiniDiff.disable(0)
+	MiniDiff.set_ref_text(0, text)
+	MiniDiff.toggle_overlay(0)
+end, {
+	desc = "Unified diff",
+	nargs = "?",
+	complete = "customlist,fugitive#EditComplete",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
+	pattern = "fugitive",
+	callback = function(ev)
+		vim.keymap.set("n", "<C-I>", "<C-I>", { buffer = ev.buf })
+		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = ev.buf, remap = true })
+		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = ev.buf, remap = true })
+		vim.bo[ev.buf].bufhidden = ""
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
+	callback = function(ev)
+		local autodiff, filename = is_autodiff(ev.buf)
+		if not autodiff or filename == nil then
+			return
+		end
+
+		local text = read_text(filename)
+		if text == nil then
+			return
+		end
+
+		MiniDiff.disable(ev.buf)
+		MiniDiff.set_ref_text(ev.buf, text)
+		MiniDiff.toggle_overlay(ev.buf)
+	end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("QuickfixKeymaps", { clear = true }),
 	pattern = "qf",
@@ -282,19 +297,4 @@ vim.api.nvim_create_autocmd("FileType", {
 			)
 		end, { buf = ev.buf, desc = "Undo removing quickfix item" })
 	end,
-})
-
-vim.api.nvim_create_user_command("DiffUnified", function(opts)
-	local text = read_text(opts.fargs[1])
-	if text == nil then
-		return
-	end
-
-	MiniDiff.disable(0)
-	MiniDiff.set_ref_text(0, text)
-	MiniDiff.toggle_overlay(0)
-end, {
-	desc = "Unified diff",
-	nargs = "?",
-	complete = "customlist,fugitive#EditComplete",
 })
