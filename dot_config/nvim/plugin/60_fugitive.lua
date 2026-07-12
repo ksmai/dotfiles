@@ -209,6 +209,37 @@ end, {
 	end,
 })
 
+vim.api.nvim_create_user_command("DiffVSplit", function()
+	local data = MiniDiff.get_buf_data()
+	if data == nil or data.ref_text == nil then
+		vim.notify("no diff to split", vim.log.levels.ERROR)
+		return
+	end
+
+	vim.cmd("diffoff!")
+
+	local current_win = vim.api.nvim_get_current_win()
+
+	local scratch_buf = vim.api.nvim_create_buf(false, true)
+
+	local lines = vim.split(data.ref_text, "\n", { plain = true })
+	vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, lines)
+
+	vim.cmd("aboveleft vsplit")
+	local scratch_win = vim.api.nvim_get_current_win()
+	vim.api.nvim_win_set_buf(scratch_win, scratch_buf)
+
+	vim.api.nvim_win_call(current_win, function()
+		MiniDiff.disable()
+		vim.cmd("diffthis")
+	end)
+	vim.api.nvim_win_call(scratch_win, function()
+		vim.cmd("diffthis")
+	end)
+end, {
+	desc = "Split unified diff",
+})
+
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
 	pattern = "fugitive",
