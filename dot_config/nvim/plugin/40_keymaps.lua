@@ -2,14 +2,7 @@ for _, cmd in ipairs({ "y", "Y", "p", "P", "]p", "[p", "]P", "[P" }) do
 	vim.keymap.set({ "x", "n" }, "<leader>" .. cmd, '"+' .. cmd, { remap = true, desc = "System clipboard" })
 end
 
-vim.keymap.set("n", "<leader>w", function()
-	local name = vim.api.nvim_buf_get_name(0)
-	if name:sub(1, 11) == "fugitive://" and name:find("/%.git//0/.") ~= nil then
-		vim.cmd("Gwrite!")
-	else
-		vim.cmd("write")
-	end
-end, { silent = true, desc = "Quick save" })
+vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { silent = true, desc = "Quick save" })
 
 vim.keymap.set(
 	"n",
