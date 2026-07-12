@@ -72,3 +72,13 @@ end, { desc = "Jump to previous test failure" })
 vim.keymap.set("n", "]x", function()
 	require("neotest").jump.next({ status = "failed" })
 end, { desc = "Jump to next test failure" })
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("NeotestOutput", { clear = true }),
+	pattern = "neotest-output",
+	callback = function(ev)
+		vim.keymap.set("n", "q", "<C-w>c", {
+			buf = ev.buf,
+		})
+	end,
+})
