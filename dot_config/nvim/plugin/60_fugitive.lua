@@ -28,15 +28,19 @@ local function is_autodiff(buf)
 end
 
 local function read_text(arg)
-	if arg == nil or arg == "" then
+	if arg == nil or arg == "" or arg == ":" or arg == ":0" then
 		arg = ":0:" .. vim.fn["fugitive#Path"](vim.fn.expand("%"), "")
 	end
 
-	if arg:sub(1, 11) ~= "fugitive://" then
+	if vim.endswith(arg, ":%") then
+		arg = arg:gsub("%%$", vim.fn["fugitive#Path"](vim.fn.expand("%"), ""))
+	end
+
+	if not vim.startswith(arg, "fugitive://") then
 		arg = vim.fn.FugitiveFind(arg)
 	end
 
-	if arg:sub(1, 11) ~= "fugitive://" then
+	if not vim.startswith(arg, "fugitive://") then
 		local ok, text = pcall(vim.fn.readblob, arg)
 		if not ok then
 			return nil
@@ -44,7 +48,7 @@ local function read_text(arg)
 		return text
 	end
 
-	if arg:match("//%x+/.+") == nil then
+	if arg:match("/%.git//%x+/.+") == nil then
 		arg = arg .. (arg:match("/$") == nil and "/" or "") .. vim.fn["fugitive#Path"](vim.fn.expand("%"), "")
 	end
 
