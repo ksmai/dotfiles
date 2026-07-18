@@ -39,7 +39,6 @@ local function read_text(arg)
 	if arg:sub(1, 11) ~= "fugitive://" then
 		local ok, text = pcall(vim.fn.readblob, arg)
 		if not ok then
-			vim.notify("cannot read file: " .. arg, vim.log.levels.ERROR)
 			return nil
 		end
 		return text
@@ -51,21 +50,32 @@ local function read_text(arg)
 
 	local ok, parsed = pcall(vim.fn.FugitiveParse, arg)
 	if not ok or type(parsed) ~= "table" or #parsed < 2 or parsed[1] == "" or parsed[2] == "" then
-		vim.notify("cannot read file: " .. arg, vim.log.levels.ERROR)
 		return nil
 	end
 
-	local result = vim.system({ "git", "cat-file", "-p", parsed[1] }, {
-		cwd = vim.fs.dirname(parsed[2]),
-		text = true,
-	}):wait()
+	local result = vim.fn.FugitiveExecute({ "cat-file", "-p", parsed[1] }, parsed[2])
 
-	if result.code ~= 0 then
-		vim.notify("cannot read file: " .. arg, vim.log.levels.ERROR)
+	if result.exit_status ~= 0 then
 		return nil
 	end
 
 	return result.stdout
+end
+
+local setup_autodiff = function(buf)
+	local autodiff, filename = is_autodiff(buf)
+	if not autodiff or filename == nil then
+		return
+	end
+
+	local text = read_text(filename)
+	if text == nil then
+		return
+	end
+
+	MiniDiff.disable(buf)
+	MiniDiff.set_ref_text(buf, text)
+	MiniDiff.toggle_overlay(buf)
 end
 
 vim.keymap.set("n", "<leader>s", function()
@@ -201,6 +211,7 @@ end, {
 
 vim.api.nvim_create_user_command("DiffTool", function(opts)
 	vim.cmd("Git difftool --name-status " .. opts.args)
+	setup_autodiff(vim.api.nvim_get_current_buf())
 end, {
 	desc = "Unified difftool",
 	nargs = "*",
@@ -212,7 +223,6 @@ end, {
 vim.api.nvim_create_user_command("DiffVSplit", function()
 	local data = MiniDiff.get_buf_data()
 	if data == nil or data.ref_text == nil then
-		vim.notify("no diff to split", vim.log.levels.ERROR)
 		return
 	end
 
@@ -265,19 +275,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = vim.api.nvim_create_augroup("FugitiveAutoDiff", { clear = true }),
 	callback = function(ev)
-		local autodiff, filename = is_autodiff(ev.buf)
-		if not autodiff or filename == nil then
-			return
-		end
-
-		local text = read_text(filename)
-		if text == nil then
-			return
-		end
-
-		MiniDiff.disable(ev.buf)
-		MiniDiff.set_ref_text(ev.buf, text)
-		MiniDiff.toggle_overlay(ev.buf)
+		setup_autodiff(ev.buf)
 	end,
 })
 
