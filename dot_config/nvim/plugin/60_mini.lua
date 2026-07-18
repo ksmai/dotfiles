@@ -15,6 +15,7 @@ mini_ai.setup({
 		k = mini_ai.gen_spec.function_call(),
 		f = mini_ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
 		c = mini_ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+		t = false,
 	},
 })
 
