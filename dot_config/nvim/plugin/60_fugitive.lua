@@ -168,7 +168,7 @@ vim.keymap.set("n", "<S-Tab>", function()
 	local data = MiniDiff.get_buf_data()
 	local autodiff = is_autodiff()
 
-	if data ~= nil then
+	if data ~= nil and #data.hunks > 0 then
 		local current = vim.fn.line(".")
 
 		vim.cmd([[silent! lua MiniDiff.goto_hunk("prev")]])
