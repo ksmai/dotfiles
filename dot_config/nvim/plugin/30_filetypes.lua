@@ -2,7 +2,16 @@ local chezmoi_dir = vim.fn.expand("~/.local/share/chezmoi/")
 
 vim.filetype.add({
 	pattern = {
-		[chezmoi_dir .. ".*"] = function(path, buf)
+		[vim.pesc(chezmoi_dir) .. ".*"] = function(path, buf)
+			if vim.startswith(path, chezmoi_dir .. "fugitive:/") then
+				local fixed_path = path:gsub("^" .. vim.pesc(chezmoi_dir .. "fugitive:/"), "fugitive:///")
+					:gsub(vim.pesc("/.git/"), "/.git//")
+				local ok, parsed = pcall(vim.fn.FugitiveReal, fixed_path)
+				if ok and parsed ~= "" then
+					path = parsed
+				end
+			end
+
 			local base_path = path:gsub("%.tmpl$", "")
 			local contents = vim.api.nvim_buf_get_lines(buf, 0, 100, false)
 			local filetype, _, fallback = vim.filetype.match({
