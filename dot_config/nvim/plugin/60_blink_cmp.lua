@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ "CmdlineEnter", "InsertEnter" }, {
 			completion = {
 				accept = {
 					auto_brackets = {
-						enabled = true,
+						enabled = false,
 					},
 				},
 
