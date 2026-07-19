@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("NeotestOutput", { clear = true }),
 	pattern = "neotest-output",
 	callback = function(ev)
-		vim.keymap.set("n", "q", "<C-w>c", {
+		vim.keymap.set("n", "q", "<cmd>bdelete!<cr>", {
 			buf = ev.buf,
 		})
 	end,

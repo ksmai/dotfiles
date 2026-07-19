@@ -39,7 +39,16 @@ splitjoin.setup({
 	},
 })
 
-operators.setup({})
+operators.setup({
+	exchange = {
+		prefix = "yx",
+	},
+
+	replace = {
+		prefix = "yr",
+	},
+})
+
 pairs.setup({
 	mappings = {
 		["("] = { neigh_pattern = "^[^\\][%s%])}]$" },
