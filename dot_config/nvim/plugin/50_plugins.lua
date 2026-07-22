@@ -73,11 +73,45 @@ vim.pack.add({
 	"https://github.com/williamboman/mason.nvim",
 })
 
+local function adjust_brightness(color, factor)
+	if color == nil then
+		return nil
+	end
+
+	local r = math.floor(color / 65536) % 256
+	local g = math.floor(color / 256) % 256
+	local b = color % 256
+
+	r = math.min(255, math.floor(r * factor))
+	g = math.min(255, math.floor(g * factor))
+	b = math.min(255, math.floor(b * factor))
+
+	return r * 65536 + g * 256 + b
+end
+
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()
-		vim.api.nvim_set_hl(0, "MiniDiffOverContext", { link = "MiniDiffOverDelete" })
-		vim.api.nvim_set_hl(0, "MiniDiffOverContextBuf", { link = "MiniDiffOverAdd" })
+		local del_hl = vim.api.nvim_get_hl(0, { name = "DiffDelete", link = false })
+		local add_hl = vim.api.nvim_get_hl(0, { name = "DiffAdd", link = false })
+
+		local brightness = 1 / 1.4
+		vim.api.nvim_set_hl(0, "MiniDiffOverDelete", {
+			bg = adjust_brightness(del_hl.bg, brightness),
+		})
+		vim.api.nvim_set_hl(0, "MiniDiffOverAdd", {
+			bg = adjust_brightness(add_hl.bg, brightness),
+		})
+
+		vim.api.nvim_set_hl(0, "MiniDiffOverContext", {
+			link = "MiniDiffOverDelete",
+		})
+		vim.api.nvim_set_hl(0, "MiniDiffOverContextBuf", {
+			link = "MiniDiffOverAdd",
+		})
+
+		vim.api.nvim_set_hl(0, "MiniDiffOverChange", { link = "DiffDelete" })
+		vim.api.nvim_set_hl(0, "MiniDiffOverChangeBuf", { link = "DiffAdd" })
 	end,
 })
 
