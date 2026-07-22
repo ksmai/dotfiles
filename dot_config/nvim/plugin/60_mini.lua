@@ -46,9 +46,9 @@ pairs.setup({
 		["("] = { neigh_pattern = "^[^\\][%s%])}]$" },
 		["["] = { neigh_pattern = "^[^\\][%s%])}]$" },
 		["{"] = { neigh_pattern = "^[^\\][%s%])}]$" },
-		['"'] = { neigh_pattern = "^[%s][%s]$" },
-		["'"] = { neigh_pattern = "^[%s][%s]$" },
-		["`"] = { neigh_pattern = "^[%s][%s]$" },
+		['"'] = { neigh_pattern = "^[%s[({][%s%])}]$" },
+		["'"] = { neigh_pattern = "^[%s[({][%s%])}]$" },
+		["`"] = { neigh_pattern = "^[%s[({][%s%])}]$" },
 	},
 })
 
