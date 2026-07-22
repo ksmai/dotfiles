@@ -39,15 +39,7 @@ splitjoin.setup({
 	},
 })
 
-operators.setup({
-	exchange = {
-		prefix = "yx",
-	},
-
-	replace = {
-		prefix = "yr",
-	},
-})
+operators.setup()
 
 pairs.setup({
 	mappings = {

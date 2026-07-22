@@ -73,24 +73,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ buf = ev.buf, desc = "LSP definitions" }
 		)
 
-		vim.keymap.set("n", "grd", "<cmd>FzfLua lsp_declarations<cr>", { buf = ev.buf, desc = "LSP declarations" })
+		vim.keymap.set("n", "gld", "<cmd>FzfLua lsp_declarations<cr>", { buf = ev.buf, desc = "LSP declarations" })
 
-		vim.keymap.set("n", "grt", "<cmd>FzfLua lsp_typedefs<cr>", { buf = ev.buf, desc = "LSP type definitions" })
+		vim.keymap.set("n", "glt", "<cmd>FzfLua lsp_typedefs<cr>", { buf = ev.buf, desc = "LSP type definitions" })
 
 		vim.keymap.set(
 			"n",
-			"gri",
+			"gli",
 			"<cmd>FzfLua lsp_implementations<cr>",
 			{ buf = ev.buf, desc = "LSP implementations" }
 		)
 
-		vim.keymap.set("n", "grr", "<cmd>FzfLua lsp_references<cr>", { buf = ev.buf, desc = "LSP references" })
+		vim.keymap.set("n", "glr", "<cmd>FzfLua lsp_references<cr>", { buf = ev.buf, desc = "LSP references" })
 
 		vim.keymap.set(
 			{ "n", "x" },
-			"gra",
+			"gla",
 			"<cmd>FzfLua lsp_code_actions<cr>",
-			{ buf = ev.buf, desc = "LSP Code action" }
+			{ buf = ev.buf, desc = "LSP code action" }
 		)
+
+		vim.keymap.set("n", "gln", vim.lsp.buf.rename, { buf = ev.buf, desc = "LSP rename" })
+
+		vim.keymap.set("n", "glx", vim.lsp.codelens.run, { buf = ev.buf, desc = "LSP codelens" })
 	end,
 })
