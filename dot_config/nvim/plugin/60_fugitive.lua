@@ -48,7 +48,7 @@ local function read_text(arg)
 		return text
 	end
 
-	if arg:match("/%.git//%x+/.+") == nil then
+	if arg:match("//%x+/.+") == nil then
 		arg = arg .. (arg:match("/$") == nil and "/" or "") .. vim.fn["fugitive#Path"](vim.fn.expand("%"), "")
 	end
 
