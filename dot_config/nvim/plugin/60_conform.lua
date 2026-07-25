@@ -46,7 +46,7 @@ require("conform").setup({
 		end
 		-- Disable autoformat for files in a certain path
 		local bufname = vim.api.nvim_buf_get_name(bufnr)
-		if bufname:match("/node_modules/") then
+		if bufname:match("/node_modules/") or bufname:match("/.venv/") then
 			return
 		end
 		-- ...additional logic...
