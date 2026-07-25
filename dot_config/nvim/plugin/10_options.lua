@@ -57,6 +57,7 @@ vim.opt.diffopt:append("algorithm:histogram")
 vim.opt.diffopt:append("followwrap")
 vim.opt.background = "dark"
 vim.opt.winborder = "single"
+vim.opt.fillchars:append({ diff = " " })
 
 if vim.fn.executable("rg") then
 	vim.opt.grepprg = "rg --no-heading --vimgrep --hidden --iglob !.git/"
