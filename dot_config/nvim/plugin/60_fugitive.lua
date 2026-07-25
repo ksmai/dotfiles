@@ -238,6 +238,7 @@ vim.api.nvim_create_user_command("DiffVSplit", function()
 
 	local lines = vim.split(data.ref_text, "\n", { plain = true })
 	vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, lines)
+	vim.bo[scratch_buf].filetype = vim.bo.filetype
 
 	vim.cmd("aboveleft vsplit")
 	local scratch_win = vim.api.nvim_get_current_win()
