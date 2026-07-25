@@ -1,5 +1,6 @@
 require("treewalker").setup({
 	highlight = false,
+	scope_confined = true,
 })
 
 vim.keymap.set(
