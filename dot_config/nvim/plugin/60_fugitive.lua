@@ -82,6 +82,56 @@ local setup_autodiff = function(buf)
 	MiniDiff.toggle_overlay(buf)
 end
 
+local function jump_to_next_hunk_or_file(opts)
+	local forward = opts.forward
+	local file_pattern = "^[A-Z?] ."
+	local hunk_pattern = "^@@ "
+
+	if vim.fn.match(vim.fn.getline("."), file_pattern) ~= -1 and vim.fn.col(".") ~= vim.fn.col("$") - 1 then
+		if forward then
+			vim.cmd.normal("i")
+		else
+			vim.cmd.normal("<[c")
+		end
+		vim.cmd.normal("zt")
+		return
+	end
+
+	local flags = "nW"
+	if not forward then
+		flags = flags .. "b"
+	end
+
+	local file_line = vim.fn.search(file_pattern, flags)
+	local hunk_line = vim.fn.search(hunk_pattern, flags)
+	local diff = hunk_line - file_line
+	if not forward then
+		diff = -diff
+	end
+
+	if diff == 0 then
+		vim.cmd.normal("<$")
+	elseif file_line == 0 or (hunk_line > 0 and diff < 0) then
+		if forward then
+			vim.cmd.normal("]c")
+		else
+			vim.cmd.normal("[c")
+		end
+	else
+		if forward then
+			vim.cmd.normal("]m")
+		else
+			local line = vim.api.nvim_win_get_cursor(0)[1]
+			vim.cmd.normal({ "<" })
+			if line == vim.api.nvim_win_get_cursor(0)[1] then
+				vim.cmd.normal("[c")
+			end
+		end
+	end
+
+	vim.cmd.normal("zt")
+end
+
 vim.keymap.set("n", "<leader>s", function()
 	if vim.bo.filetype == "fugitive" then
 		return
@@ -129,6 +179,11 @@ end, { silent = true, desc = "Diff off" })
 
 vim.keymap.set("n", "<C-I>", "<C-I>")
 vim.keymap.set("n", "<Tab>", function()
+	if vim.bo.filetype == "fugitive" then
+		jump_to_next_hunk_or_file({ forward = true })
+		return
+	end
+
 	if vim.wo.diff then
 		vim.cmd("normal! ]c")
 		return
@@ -164,6 +219,11 @@ vim.keymap.set("n", "<Tab>", function()
 end, { desc = "Next hunk/quickfix item" })
 
 vim.keymap.set("n", "<S-Tab>", function()
+	if vim.bo.filetype == "fugitive" then
+		jump_to_next_hunk_or_file({ forward = false })
+		return
+	end
+
 	if vim.wo.diff then
 		vim.cmd("normal! [c")
 		return
@@ -270,9 +330,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("FugitiveBuffer", { clear = true }),
 	pattern = "fugitive",
 	callback = function(ev)
-		vim.keymap.set("n", "<C-I>", "<C-I>", { buffer = ev.buf })
-		vim.keymap.set("n", "<tab>", "]czt<c-y>", { buffer = ev.buf, remap = true })
-		vim.keymap.set("n", "<s-tab>", "[czt<c-y>", { buffer = ev.buf, remap = true })
 		vim.bo[ev.buf].bufhidden = ""
 	end,
 })
