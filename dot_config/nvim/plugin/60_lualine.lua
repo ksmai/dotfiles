@@ -33,6 +33,54 @@ local function minidiff_hunk_count()
 	return string.format("H:[%d/%d]", cur_range, vim.b.minidiff_summary.n_ranges)
 end
 
+local aerial = require("aerial")
+local aerial_get_location = aerial.get_location
+local function get_location_with_fugitive(exact)
+	local ret = aerial_get_location(exact)
+	if vim.bo.filetype ~= "fugitive" or #vim.inspect_pos().syntax == 0 then
+		return ret
+	end
+
+	local config = require("aerial.config")
+	local kind = "Interface"
+	local icon = config.get_icon(0, "Interface")
+
+	ret = {}
+
+	local heading_line = vim.fn.search([[^[A-Z][a-z][^:]*\ze (\d\++\=)$]], "bnWc")
+	if heading_line > 0 then
+		local heading = vim.api.nvim_buf_get_lines(0, heading_line - 1, heading_line, false)[1]
+		if heading then
+			table.insert(ret, {
+				kind = kind,
+				icon = icon,
+				name = heading,
+				lnum = heading_line - 1,
+				col = 0,
+			})
+		end
+
+		local file_line = vim.fn.search("^[A-Z?] .", "bnWc", heading_line)
+		if file_line > 0 then
+			local filename = vim.api.nvim_buf_get_lines(0, file_line - 1, file_line, false)[1]
+
+			if filename then
+				table.insert(ret, {
+					kind = kind,
+					icon = icon,
+					name = filename,
+					lnum = file_line - 1,
+					col = 0,
+				})
+			end
+		end
+	end
+
+	return ret
+end
+
+aerial.get_location = get_location_with_fugitive
+
 local lualine_b = {
 	{
 		"FugitiveHead",
