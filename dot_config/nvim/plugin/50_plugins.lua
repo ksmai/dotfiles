@@ -80,12 +80,13 @@ require("gruvbox").setup({
 		DiffDelete = { bg = "#56191d" },
 		DiffChange = { bg = "#2c3425" },
 		DiffText = { bg = "#3e4934", fg = "NONE" },
-		DiffTextDelete = { bg = "#792329" },
-		DiffTextAdd = { bg = "#5a633a" },
+		FugitiveWorddiff = { reverse = true },
 		MiniDiffOverContext = { link = "MiniDiffOverDelete" },
 		MiniDiffOverContextBuf = { link = "MiniDiffOverAdd" },
-		MiniDiffOverChange = { link = "DiffTextDelete" },
-		MiniDiffOverChangeBuf = { link = "DiffTextAdd" },
+		MiniDiffOverChange = { bg = "#792329" },
+		MiniDiffOverChangeBuf = { bg = "#5a633a" },
+		diffAdded = { link = "GruvboxGreen" },
+		diffRemoved = { link = "GruvboxRed" },
 	},
 })
 vim.cmd([[colorscheme gruvbox]])
