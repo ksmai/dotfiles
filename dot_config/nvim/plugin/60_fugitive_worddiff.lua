@@ -74,7 +74,7 @@ H.enable = function(buf)
 		end,
 	})
 
-	vim.api.nvim_create_autocmd({ "BufDelete", "BufUnload" }, {
+	vim.api.nvim_create_autocmd("BufUnload", {
 		group = cache[buf].augroup,
 		buffer = buf,
 		callback = function(ev)
