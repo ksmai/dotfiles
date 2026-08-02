@@ -6,7 +6,7 @@ local function location()
 end
 
 local function minidiff_hunk_count()
-	local data = MiniDiff.get_buf_data()
+	local data = require("mini.diff").get_buf_data()
 	if data == nil or #data.hunks == 0 or vim.b.minidiff_summary == nil or vim.b.minidiff_summary.n_ranges == 0 then
 		return ""
 	end
