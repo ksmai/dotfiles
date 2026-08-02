@@ -10,5 +10,3 @@ require("nvim-highlight-colors").setup({
 })
 
 vim.cmd([[HighlightColors off]])
-
-vim.keymap.set("n", "<leader>cH", "<cmd>HighlightColors Toggle<cr>", { desc = "Toggle highlight colors" })
