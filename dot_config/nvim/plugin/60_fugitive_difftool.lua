@@ -164,6 +164,7 @@ H.handle_tab = function(opts)
 	if ok and autodiff then
 		local buf = vim.api.nvim_get_current_buf()
 		vim.api.nvim_create_autocmd("User", {
+			group = vim.api.nvim_create_augroup("FugitiveDiffToolTabbing", { clear = true }),
 			pattern = "MiniDiffUpdated",
 			once = true,
 			callback = function(ev)
