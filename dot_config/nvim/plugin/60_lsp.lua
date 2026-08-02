@@ -34,7 +34,7 @@ local diagnostic_config = {
 
 vim.diagnostic.config(diagnostic_config)
 
-vim.keymap.set("n", "<leader>cD", function()
+vim.api.nvim_create_user_command("DiagnosticVirtualLines", function()
 	local virtual_text = vim.diagnostic.config().virtual_text
 	if virtual_text then
 		vim.diagnostic.config({ virtual_text = false })
@@ -44,8 +44,6 @@ vim.keymap.set("n", "<leader>cD", function()
 		})
 	end
 end, { desc = "Toggle diagnostic virtual text" })
-
-vim.keymap.set("n", "<leader>cq", vim.diagnostic.setqflist, { desc = "Set diagnostic quickfix list" })
 
 vim.lsp.enable({
 	"jsonls",
