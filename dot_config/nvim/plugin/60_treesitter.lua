@@ -52,6 +52,10 @@ vim.api.nvim_create_autocmd("FileType", {
 		local lang = vim.treesitter.language.get_lang(args.match) or args.match
 		local buf = args.buf
 
+		if vim.tbl_contains({ "gitcommit" }, lang) then
+			return
+		end
+
 		-- disable in minified files
 		local line_count = vim.api.nvim_buf_line_count(buf)
 		local file_size = vim.api.nvim_buf_get_offset(buf, line_count)
