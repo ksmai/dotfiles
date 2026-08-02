@@ -11,6 +11,13 @@ vim.keymap.set(
 	{ silent = true, desc = "Refresh" }
 )
 
+vim.keymap.set("n", "<leader>dw", "<cmd>diffoff! | windo diffthis<cr>", { silent = true, desc = "Diff windows" })
+
+vim.keymap.set("n", "<leader>dq", function()
+	vim.cmd("diffoff!")
+	require("mini.diff").disable()
+end, { silent = true, desc = "Diff off" })
+
 vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], { silent = true, desc = "Esc" })
 
 vim.keymap.set("c", "<C-a>", "<Home>")

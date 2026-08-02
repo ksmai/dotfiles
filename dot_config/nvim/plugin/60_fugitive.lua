@@ -37,12 +37,6 @@ vim.keymap.set("x", "<leader>gl", function()
 	vim.cmd(string.format("%d,%dGclog", line1, line2))
 end, { desc = "Git log (selected lines)" })
 
-vim.keymap.set("n", "<leader>dw", "<cmd>diffoff! | windo diffthis<cr>", { silent = true, desc = "Diff windows" })
-vim.keymap.set("n", "<leader>dq", function()
-	vim.cmd("diffoff!")
-	MiniDiff.disable()
-end, { silent = true, desc = "Diff off" })
-
 vim.api.nvim_create_user_command("Diff4Way", function()
 	local win = vim.api.nvim_get_current_win()
 	vim.cmd("diffoff!")
