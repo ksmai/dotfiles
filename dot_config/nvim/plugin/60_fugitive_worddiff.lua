@@ -263,10 +263,12 @@ H.slice_line = function(line)
 		table.insert(byte_ends, byte_starts[i + 1] - 1)
 	end
 
-	table.insert(sliced, line:sub(byte_starts[#byte_starts], line:len()))
-	table.insert(byte_ends, line:len())
+	if #byte_starts > 0 then
+		table.insert(sliced, line:sub(byte_starts[#byte_starts], line:len()))
+		table.insert(byte_ends, line:len())
+	end
 
-	return table.concat(sliced, "\n") .. "\n", byte_starts, byte_ends
+	return table.concat(sliced, "\n"), byte_starts, byte_ends
 end
 
 H.clear_all_hl = function(buf)
