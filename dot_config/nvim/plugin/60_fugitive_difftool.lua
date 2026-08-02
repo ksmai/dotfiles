@@ -183,13 +183,19 @@ H.jump_to_next_hunk_or_file = function(opts)
 	local file_pattern = "^[A-Z?] ."
 	local hunk_pattern = "^@@ "
 
-	if vim.fn.match(vim.fn.getline("."), file_pattern) ~= -1 and vim.fn.col(".") ~= vim.fn.col("$") - 1 then
+	if vim.fn.match(vim.fn.getline("."), file_pattern) ~= -1 then
+		local line = vim.api.nvim_win_get_cursor(0)[1]
+
 		if forward then
 			vim.cmd.normal("i")
 		else
 			vim.cmd.normal("<[c")
 		end
-		vim.cmd.normal("zt")
+
+		if line ~= vim.api.nvim_win_get_cursor(0)[1] then
+			vim.cmd.normal("zt")
+		end
+
 		return
 	end
 
@@ -206,7 +212,7 @@ H.jump_to_next_hunk_or_file = function(opts)
 	end
 
 	if diff == 0 then
-		vim.cmd.normal("<$")
+		return
 	elseif file_line == 0 or (hunk_line > 0 and diff < 0) then
 		if forward then
 			vim.cmd.normal("]c")
