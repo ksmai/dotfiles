@@ -11,14 +11,6 @@ vim.keymap.set(
 	{ silent = true, desc = "Refresh" }
 )
 
-vim.keymap.set("n", "<leader>q", function()
-	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
-		vim.cmd("copen")
-	else
-		vim.cmd("cclose")
-	end
-end, { silent = true, desc = "Toggle quickfix list" })
-
 vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], { silent = true, desc = "Esc" })
 
 vim.keymap.set("c", "<C-a>", "<Home>")
