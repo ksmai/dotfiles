@@ -3,7 +3,6 @@ local jump2d = require("mini.jump2d")
 local operators = require("mini.operators")
 local splitjoin = require("mini.splitjoin")
 local pairs = require("mini.pairs")
-local diff = require("mini.diff")
 
 mini_ai.setup({
 	n_lines = 9999,
@@ -53,36 +52,6 @@ pairs.setup({
 		["`"] = { neigh_pattern = "^[%s[({:][%s%])},]$" },
 	},
 })
-
-diff.setup({
-	source = diff.gen_source.none(),
-	mappings = {
-		apply = "",
-		reset = "",
-		textobject = "",
-	},
-})
-
-vim.keymap.set("n", "<Plug>(mini-diff-yank)", function()
-	return diff.operator("yank")
-end, { expr = true })
-vim.keymap.set("n", "<Plug>(mini-diff-reset)", function()
-	return diff.operator("reset")
-end, { expr = true })
-vim.keymap.set("o", "<Plug>(mini-diff-hunk)", diff.textobject)
-
-vim.keymap.set(
-	"n",
-	"<leader>dy",
-	"<Plug>(mini-diff-yank)<Plug>(mini-diff-hunk)",
-	{ remap = true, desc = "Yank current hunk's reference text", silent = true }
-)
-vim.keymap.set(
-	"n",
-	"<leader>dg",
-	"<Plug>(mini-diff-reset)<Plug>(mini-diff-hunk)",
-	{ remap = true, desc = "Reset current hunk", silent = true }
-)
 
 jump2d.setup({
 	mappings = {
