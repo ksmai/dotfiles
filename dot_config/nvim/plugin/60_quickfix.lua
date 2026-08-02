@@ -6,6 +6,20 @@ vim.keymap.set("n", "<leader>q", function()
 	end
 end, { silent = true, desc = "Toggle quickfix list" })
 
+vim.api.nvim_create_user_command("QuickfixTruncate", function()
+	local current = vim.fn.getqflist({ all = 0 })
+	if current.nr == 1 then
+		vim.fn.setqflist({}, "f")
+	else
+		current.nr = current.nr - 1
+	end
+	vim.fn.setqflist({}, " ", current)
+end, { desc = "Truncate quickfix list after current" })
+
+vim.api.nvim_create_user_command("QuickfixFreeAll", function()
+	vim.fn.setqflist({}, "f")
+end, { desc = "Free all quickfix lists" })
+
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("QuickfixKeymaps", { clear = true }),
 	pattern = "qf",
