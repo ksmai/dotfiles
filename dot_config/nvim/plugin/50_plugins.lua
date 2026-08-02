@@ -108,3 +108,22 @@ require("mason-nvim-dap").setup({
 	handlers = {},
 	ensure_installed = { "codelldb", "python" },
 })
+
+require("mini.splitjoin").setup({
+	mappings = {
+		toggle = "<leader>cj",
+	},
+})
+
+require("mini.operators").setup()
+
+require("mini.pairs").setup({
+	mappings = {
+		["("] = { neigh_pattern = "^[^\\][%s%])}]$" },
+		["["] = { neigh_pattern = "^[^\\][%s%])}]$" },
+		["{"] = { neigh_pattern = "^[^\\][%s%])}]$" },
+		['"'] = { neigh_pattern = "^[%s[({:][%s%])},]$" },
+		["'"] = { neigh_pattern = "^[%s[({:][%s%])},]$" },
+		["`"] = { neigh_pattern = "^[%s[({:][%s%])},]$" },
+	},
+})
