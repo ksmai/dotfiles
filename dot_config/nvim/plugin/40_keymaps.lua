@@ -23,6 +23,11 @@ vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], { silent = true, desc = "Esc" })
 vim.keymap.set("c", "<C-a>", "<Home>")
 vim.keymap.set("c", "<C-e>", "<End>")
 
+vim.api.nvim_create_user_command("ScratchBuf", function()
+	local buf = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_win_set_buf(0, buf)
+end, { desc = "Open a Scratch buffer" })
+
 vim.api.nvim_create_user_command("Q", "q", { bang = true })
 vim.api.nvim_create_user_command("W", "w", { bang = true })
 vim.api.nvim_create_user_command("Wq", "wq", { bang = true })
