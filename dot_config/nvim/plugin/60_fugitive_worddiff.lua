@@ -30,14 +30,7 @@ vim.api.nvim_set_decoration_provider(ns, {
 		for i = top, bottom do
 			if hl_ranges[i] then
 				for _, data in ipairs(hl_ranges[i]) do
-					vim.hl.range(
-						buf,
-						ns,
-						"FugitiveWorddiff",
-						{ i, data[1] },
-						{ i, data[2] },
-						{ inclusive = true, priority = 199 }
-					)
+					vim.hl.range(buf, ns, data.hl, { i, data[1] }, { i, data[2] }, { inclusive = true, priority = 199 })
 				end
 				hl_ranges[i] = nil
 			end
@@ -208,6 +201,7 @@ H.compute_hl_ranges = function(diff_groups)
 							hl_ranges[old_row] = {}
 						end
 
+						range.hl = "DiffTextDelete"
 						table.insert(hl_ranges[old_row], range)
 					end
 
@@ -216,6 +210,7 @@ H.compute_hl_ranges = function(diff_groups)
 							hl_ranges[new_row] = {}
 						end
 
+						range.hl = "DiffTextAdd"
 						table.insert(hl_ranges[new_row], range)
 					end
 				end
