@@ -8,6 +8,16 @@ dap_view.setup({
 	winbar = {
 		sections = { "watches", "exceptions", "breakpoints", "scopes", "threads", "repl", "console" },
 		default_section = "scopes",
+		base_sections = {
+			watches = { keymap = "<c-1>" },
+			exceptions = { keymap = "<c-2>" },
+			breakpoints = { keymap = "<c-3>" },
+			scopes = { keymap = "<c-4>" },
+			threads = { keymap = "<c-5>" },
+			repl = { keymap = "<c-6>" },
+			console = { keymap = "<c-7>" },
+		},
+		show_keymap_hints = false,
 	},
 	virtual_text = {
 		enabled = true,
@@ -20,6 +30,12 @@ dap_view.setup({
 		end,
 	},
 	auto_toggle = true,
+	keymaps = {
+		base = {
+			next_view = "<tab>",
+			prev_view = "<s-tab>",
+		},
+	},
 })
 
 vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })

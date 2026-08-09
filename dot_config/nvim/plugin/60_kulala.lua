@@ -66,23 +66,37 @@ vim.api.nvim_create_autocmd("FileType", {
 
 			kulala_keymaps = {
 				["Next response"] = {
-					"<tab>",
+					"<C-n>",
 					function()
 						require("kulala.ui").show_next()
 					end,
 				},
 				["Previous response"] = {
-					"<s-tab>",
+					"<C-p>",
 					function()
 						require("kulala.ui").show_previous()
 					end,
 				},
-				["Show verbose"] = {
-					"D",
+				["Next tab"] = {
+					"<tab>",
 					function()
-						require("kulala.ui").show_verbose()
+						require("kulala.ui").show_next_tab()
 					end,
 				},
+				["Previous tab"] = {
+					"<s-tab>",
+					function()
+						require("kulala.ui").show_previous_tab()
+					end,
+				},
+				["Show headers"] = false,
+				["Show body"] = false,
+				["Show headers and body"] = false,
+				["Show verbose"] = false,
+				["Show script output"] = false,
+				["Show stats"] = false,
+				["Show report"] = false,
+				["Show filter"] = false,
 			},
 
 			ui = {
