@@ -76,12 +76,12 @@ vim.pack.add({
 require("gruvbox").setup({
 	contrast = "hard",
 	overrides = {
-		DiffAdd = { bg = "#404729" },
-		DiffDelete = { bg = "#56191d" },
-		DiffChange = { bg = "#2c3425" },
-		DiffText = { bg = "#3e4934", fg = "NONE" },
-		DiffTextDelete = { bg = "#792329" },
-		DiffTextAdd = { bg = "#5a633a" },
+		DiffAdd = { bg = "#515934" },
+		DiffDelete = { bg = "#6d2025" },
+		DiffChange = { bg = "#38422f" },
+		DiffText = { bg = "#434f38", fg = "NONE" },
+		DiffTextDelete = { bg = "#83262c" },
+		DiffTextAdd = { bg = "#616b3e" },
 		MiniDiffOverContext = { link = "MiniDiffOverDelete" },
 		MiniDiffOverContextBuf = { link = "MiniDiffOverAdd" },
 		MiniDiffOverChange = { link = "DiffTextDelete" },
