@@ -79,7 +79,8 @@ vim.api.nvim_create_autocmd("FileType", {
 			vim.wo[0][0].foldlevel = 99
 		end
 
-		if vim.treesitter.query.get(lang, "indents") then
+		-- treesitter indent doesn't work well inside macro_rules! {...}
+		if vim.treesitter.query.get(lang, "indents") and lang ~= "rust" then
 			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 		end
 	end,
