@@ -2,6 +2,7 @@
   "Fast IO": {
     "prefix": "fastio",
     "body": [
+      "#![allow(clippy::needless_range_loop)]",
       "use std::io::{self, BufWriter, Read, StdoutLock, Write};",
       "",
       "pub struct FastReader {",
