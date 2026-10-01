@@ -158,6 +158,8 @@ ShellRoot {
                     barPopup.close();
                 }
             }
+
+            TaskNotifier {}
         }
     }
 }
