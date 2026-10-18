@@ -114,7 +114,11 @@ require("mini.splitjoin").setup({
 	},
 })
 
-require("mini.operators").setup()
+require("mini.operators").setup({
+	replace = {
+		prefix = "gz",
+	},
+})
 
 require("mini.pairs").setup({
 	mappings = {
