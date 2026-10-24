@@ -395,9 +395,28 @@
       "            write!(f, \"{}\", s)",
       "        }",
       "    }",
+      "",
+      "     pub struct SpaceSeparated<'a, T>(pub &'a [T]);",
+      "",
+      "     impl<'a, T> std::fmt::Display for SpaceSeparated<'a, T>",
+      "     where",
+      "         T: Display,",
+      "     {",
+      "         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {",
+      "             if let Some(first) = self.0.first() {",
+      "                 write!(f, \"{}\", first)?;",
+
+      "                 for x in self.0.iter().skip(1) {",
+      "                     write!(f, \" {}\", x)?;",
+      "                 }",
+      "             }",
+      "             Ok(())",
+      "         }",
+      "     }",
+      "",
       "}",
       "",
-      "pub use fastio::AsStr;"
+      "pub use fastio::{AsStr, SpaceSeparated};"
     ],
     "description": "Fast IO"
   }
