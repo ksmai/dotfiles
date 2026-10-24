@@ -19,7 +19,6 @@ vim.keymap.set("n", "<leader>dq", function()
 end, { silent = true, desc = "Diff off" })
 
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { silent = true, desc = "Esc" })
-vim.keymap.set("t", "<C-[>", [[<C-\><C-n>]], { silent = true, desc = "Esc" })
 
 vim.keymap.set("c", "<C-a>", "<Home>")
 vim.keymap.set("c", "<C-e>", "<End>")
