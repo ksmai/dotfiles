@@ -61,6 +61,7 @@ vim.lsp.enable({
 	"svelte",
 	"gopls",
 	"qmlls",
+	"clangd",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {

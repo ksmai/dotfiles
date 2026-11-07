@@ -28,6 +28,7 @@ require("conform").setup({
 		python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 		go = { "goimports", "gofmt" },
 		http = { "kulala-fmt" },
+		cpp = { "clang_format" },
 	},
 
 	default_format_opts = {
