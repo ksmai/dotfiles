@@ -29,10 +29,6 @@
       "rev": "154eb5ff5b96d0641307113fa385eaf0d36d9796",
       "src": "https://github.com/ellisonleao/gruvbox.nvim"
     },
-    "kulala.nvim": {
-      "rev": "b1c1cd9430d1f506e9b7add09cc2f2aac067565f",
-      "src": "https://github.com/mistweaverco/kulala.nvim"
-    },
     "lspkind.nvim": {
       "rev": "c7274c48137396526b59d86232eabcdc7fed8a32",
       "src": "https://github.com/onsails/lspkind.nvim"

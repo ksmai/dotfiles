@@ -168,7 +168,7 @@ require("lualine").setup({
 		theme = "gruvbox",
 		disabled_filetypes = {
 			statusline = {},
-			winbar = { "kulala_ui", "dap-view", "dap-view-term", "dap-repl" },
+			winbar = { "dap-view", "dap-view-term", "dap-repl" },
 		},
 	},
 	sections = {
